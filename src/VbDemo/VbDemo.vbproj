@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B959B91E-4C2A-4725-B04E-69C803C03AC2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>VbDemo.My.MyApplication</StartupObject>
+    <RootNamespace>VbDemo</RootNamespace>
+    <AssemblyName>VbDemo</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DemoForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DemoForm.Designer.vb">
+      <DependentUpon>DemoForm.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DemoForm.resx">
+      <DependentUpon>DemoForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Windows.Forms.Ribbon\System.Windows.Forms.Ribbon35.csproj">
+      <Project>{46A18A55-5AE8-49CE-91CD-C7421B642E7E}</Project>
+      <Name>System.Windows.Forms.Ribbon35</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\addons32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bold16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\borderbottom16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\casing16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copy16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copyformat16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cut16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eraseformat16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exit16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fill16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\find32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fontcolor16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fontsizedecrease16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fontsizeincrease16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\goto16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hilight16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\indentdecrease16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\indentdecrease161.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\indentincrease16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\invisiblechars16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\italic16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\multilevellist16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\newdocument32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\open16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\open32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\options16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\orderedlist16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pageblank16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paragraphspacing16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paste16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paste32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paste321.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pastelink16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pastespecial16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\prepare32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\print32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\print321.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\printpreview32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\printquick16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\printquick32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\publish32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\replace16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveas32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveas321.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\select16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\send32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sort16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\strikethru16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\style16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stylechange32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\styleset16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\subindex16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\superindex16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\textaligncenter16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\textalignjustify16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\textalignleft16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\textalignright16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\themefont.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\underline16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\undo16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unorderedlist16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\word2003doc32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\worddocument32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wordtemplate32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image1.bmp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
