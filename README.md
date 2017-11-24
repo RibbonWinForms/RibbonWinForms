@@ -19,6 +19,8 @@ In 31 March 2017, codeplex.com has announced the shutdown of the site's operatio
 
 For historical articles and source code, you can still obtain it at the old sites, but for support and new development, you may continue to seek or contribute here.
 
+Jose Menendez Poo is back and joined this project here.
+
 by adriancs, Nov 23 2017
 
 # Introduction
