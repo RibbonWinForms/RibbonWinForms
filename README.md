@@ -23,9 +23,6 @@ Jase Menendez Poo is back with us in this repository :)
 
 by adriancs, Nov 23 2017
 
-# Joining This Project
-We welcome any passionate programmer to join this project, to improve or to fix bugs. Thanks for your contribution to this project. For the community, by the community. You may send your request to avoomj@yahoo.com (Dude, don't spam please, thanks).
-
 # Introduction
 *Below is the original introductory message written by Jose Menedez Poo on May 10th, 2008*
 
