@@ -37,6 +37,11 @@ namespace RibbonDemo2
             }
         }
 
+        private void frmMainDemo_Load(object sender, EventArgs e)
+        {
+            btForm1_Click(null, null);
+        }
+
         private void rbTheme_Click(object sender, EventArgs e)
         {
             this.ribbon1.ThemeColor = (RibbonTheme)Enum.Parse(typeof(RibbonTheme), ((RibbonButton)sender).Text);
@@ -83,6 +88,9 @@ namespace RibbonDemo2
             f.Parent = panel1;
             f.WindowState = FormWindowState.Maximized;
             f.Show();
+
+            GC.Collect();
         }
+
     }
 }

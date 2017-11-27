@@ -353,6 +353,8 @@
             this.KeyPreview = true;
             this.Name = "frmMainDemo";
             this.Text = "frmMainDemo";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.frmMainDemo_Load);
             this.ResumeLayout(false);
 
         }
