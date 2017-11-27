@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("System.Windows.Forms.Ribbon35")]
-[assembly: AssemblyDescription("Ribbon Control for .NET WinForm")]
+[assembly: AssemblyTitle("System.Windows.Forms.Ribbon")]
+[assembly: AssemblyDescription("Ribbon Control for .NET WinForms")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("http://officeribbon.codeplex.com")]
+[assembly: AssemblyCompany("https://github.com/RibbonWinForms/RibbonWinForms")]
 [assembly: AssemblyProduct("System.Windows.Forms.Ribbon")]
-[assembly: AssemblyCopyright("http://officeribbon.codeplex.com")]
-[assembly: AssemblyTrademark("http://officeribbon.codeplex.com")]
+[assembly: AssemblyCopyright("https://github.com/RibbonWinForms/RibbonWinForms")]
+[assembly: AssemblyTrademark("https://github.com/RibbonWinForms/RibbonWinForms")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.5.8.4")]
-[assembly: AssemblyFileVersion("3.5.8.4")]
+[assembly: AssemblyVersion("4.0.0.0")]
+[assembly: AssemblyFileVersion("4.0.0.0")]
