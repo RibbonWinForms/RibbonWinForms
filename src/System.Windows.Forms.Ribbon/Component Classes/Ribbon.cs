@@ -2346,7 +2346,7 @@ namespace System.Windows.Forms
 					}
 				}
 
-				if (OrbVisible && !_expanded && OrbText.Length > 0)
+				if (OrbVisible && !_expanded && !string.IsNullOrEmpty(OrbText))
 				{
 					if (OrbStyle == RibbonOrbStyle.Office_2010)
 					{
