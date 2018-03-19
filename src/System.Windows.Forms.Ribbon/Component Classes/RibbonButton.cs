@@ -738,16 +738,16 @@ namespace System.Windows.Forms
             {
                 if (SmallImage != null)
                 {
-                    return new Rectangle(
-                        Bounds.Left + Owner.ItemMargin.Left,
-                        Bounds.Top + ((Bounds.Height - SmallImage.Height) / 2),
-                        SmallImage.Width,
-                        SmallImage.Height);
+                    if (SmallImage.PixelFormat != Drawing.Imaging.PixelFormat.DontCare )
+                    {
+                        return new Rectangle(
+                            Bounds.Left + Owner.ItemMargin.Left,
+                            Bounds.Top + ((Bounds.Height - SmallImage.Height) / 2),
+                            SmallImage.Width,
+                            SmallImage.Height);
+                    }
                 }
-                else
-                {
-                    return new Rectangle(ContentBounds.Location, new Size(0, 0));
-                }
+                return new Rectangle(ContentBounds.Location, new Size(0, 0));
             }
         }
 
