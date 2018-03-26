@@ -31,7 +31,9 @@ namespace System.Windows.Forms
 	{
 		delegate void HandlerCallbackMethode();
 
-		#region Const
+        #region Const
+
+        public const string Version = "5.0";
 
 		private const int DefaultTabSpacing = 6;
 		private const int DefaultPanelSpacing = 3;
