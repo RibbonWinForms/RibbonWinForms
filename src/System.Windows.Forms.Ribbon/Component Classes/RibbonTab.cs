@@ -1001,6 +1001,7 @@ namespace System.Windows.Forms
 			int curRight = TabContentBounds.Left + Owner.PanelPadding.Left + _offset;
 			int curLeft = TabContentBounds.Right - Owner.PanelPadding.Right;
 			int panelsTop = TabContentBounds.Top + Owner.PanelPadding.Top;
+			int panelsVisibles = 0;
 
 			using (Graphics g = Owner.CreateGraphics())
 			{
@@ -1029,7 +1030,10 @@ namespace System.Windows.Forms
 
 						///Update curRight
 						curRight = bounds.Right + Owner.PanelSpacing;
-					}
+
+						///Update panelsVisibles
+						panelsVisibles += 1;
+                    }
 					else if (panel.Visible && Owner.RightToLeft == RightToLeft.Yes)
 					{
 						RibbonElementSizeMode sMode = panel.FlowsTo == RibbonPanelFlowDirection.Right ? RibbonElementSizeMode.Medium : RibbonElementSizeMode.Large;
@@ -1055,7 +1059,10 @@ namespace System.Windows.Forms
 
 						///Update curLeft
 						curLeft = bounds.Left - 1 - Owner.PanelSpacing;
-					}
+
+						///Update panelsVisibles
+						panelsVisibles += 1;
+                    }
 					else
 					{
 						panel.SetBounds(Rectangle.Empty);
@@ -1064,36 +1071,40 @@ namespace System.Windows.Forms
 
 				if (!Owner.IsDesignMode())
 				{
-					while (curRight > TabContentBounds.Right && !AllPanelsOverflow())
+					///check if there are visible panels
+					if (panelsVisibles > 0)
 					{
-						#region Down grade the larger panel one position
-
-						RibbonPanel larger = GetLargerPanel();
-
-						if (larger.SizeMode == RibbonElementSizeMode.Large)
-							larger.SetSizeMode(RibbonElementSizeMode.Medium);
-						else if (larger.SizeMode == RibbonElementSizeMode.Medium)
-							larger.SetSizeMode(RibbonElementSizeMode.Compact);
-						else if (larger.SizeMode == RibbonElementSizeMode.Compact)
-							larger.SetSizeMode(RibbonElementSizeMode.Overflow);
-
-						Size size = larger.MeasureSize(this, new RibbonElementMeasureSizeEventArgs(g, larger.SizeMode));
-
-						larger.SetBounds(new Rectangle(larger.Bounds.Location, new Size(size.Width + Owner.PanelMargin.Horizontal, size.Height)));
-
-						#endregion
-
-						///Reset x-axis reminder
-						curRight = TabContentBounds.Left + Owner.PanelPadding.Left;
-
-						///Re-arrange location because of the new bounds
-						foreach (RibbonPanel panel in Panels)
+						while (curRight > TabContentBounds.Right && !AllPanelsOverflow())
 						{
-							Size s = panel.Bounds.Size;
-							panel.SetBounds(new Rectangle(new Point(curRight, panelsTop), s));
-							curRight += panel.Bounds.Width + Owner.PanelSpacing;
-						}
+							#region Down grade the larger panel one position
 
+							RibbonPanel larger = GetLargerPanel();
+
+							if (larger.SizeMode == RibbonElementSizeMode.Large)
+								larger.SetSizeMode(RibbonElementSizeMode.Medium);
+							else if (larger.SizeMode == RibbonElementSizeMode.Medium)
+								larger.SetSizeMode(RibbonElementSizeMode.Compact);
+							else if (larger.SizeMode == RibbonElementSizeMode.Compact)
+								larger.SetSizeMode(RibbonElementSizeMode.Overflow);
+
+							Size size = larger.MeasureSize(this, new RibbonElementMeasureSizeEventArgs(g, larger.SizeMode));
+
+							larger.SetBounds(new Rectangle(larger.Bounds.Location, new Size(size.Width + Owner.PanelMargin.Horizontal, size.Height)));
+
+							#endregion
+
+							///Reset x-axis reminder
+							curRight = TabContentBounds.Left + Owner.PanelPadding.Left;
+
+							///Re-arrange location because of the new bounds
+							foreach (RibbonPanel panel in Panels)
+							{
+								Size s = panel.Bounds.Size;
+								panel.SetBounds(new Rectangle(new Point(curRight, panelsTop), s));
+								curRight += panel.Bounds.Width + Owner.PanelSpacing;
+							}
+
+						}
 					}
 				}
 
