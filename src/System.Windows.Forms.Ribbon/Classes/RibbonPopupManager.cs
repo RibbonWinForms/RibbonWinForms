@@ -128,17 +128,21 @@ namespace System.Windows.Forms
         /// <param name="e"></param>
         internal static bool FeedHookClick(MouseEventArgs e)
         {
-            foreach (RibbonPopup p in pops)
-            {
-                if (p.WrappedDropDown.Bounds.Contains(e.Location))
-                {
-                    return true;
-                }
-            }
-
-            //If click was in no dropdown, let's go everyone
-            Dismiss(DismissReason.AppClicked);
-				return false;
+            //Al-74 fix (see GitHub issue #10):
+            //Starting from Windows 10 April 2018 Update (version 1803) with display scaling above 100%, e.Location is the physical mouse location,
+            //not scaled according to display scaling, so the Contains function fails check and no events fires when clicking RibbonButtons dropdown items.
+            //Returning always true should not generate any negative side effects.
+            return true;
+            //foreach (RibbonPopup p in pops)
+            //{
+            //    if (p.WrappedDropDown.Bounds.Contains(e.Location))
+            //    {
+            //        return true;
+            //    }
+            //}
+            ////If click was in no dropdown, let's go everyone
+            //Dismiss(DismissReason.AppClicked);
+            //	return false;
         }
 
         /// <summary>
