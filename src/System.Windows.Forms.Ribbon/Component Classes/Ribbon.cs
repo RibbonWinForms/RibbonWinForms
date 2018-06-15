@@ -12,6 +12,8 @@
 
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Windows.Forms.RibbonHelpers;
 
 namespace System.Windows.Forms
@@ -23,7 +25,7 @@ namespace System.Windows.Forms
 	public class Ribbon
 		 : Control, IMessageFilter
 	{
-		delegate void HandlerCallbackMethode();
+	    private delegate void HandlerCallbackMethode();
 
         #region Const
 
@@ -50,7 +52,7 @@ namespace System.Windows.Forms
 		//private int _minimizedHeight;//height when minimized
 		private int _expandedHeight; //height when expanded
 		private RibbonRenderer _renderer;
-		private bool _useAlwaysStandardTheme = false;
+		private bool _useAlwaysStandardTheme;
 		private Theme _theme;
 	    private Padding _panelMargin;
 	    private RibbonTab _activeTab;
@@ -216,9 +218,9 @@ namespace System.Windows.Forms
 			return false;
 		}
 
-		internal bool AltPressed = false;
+		internal bool AltPressed;
 
-		void parent_KeyDown(object sender, KeyEventArgs e)
+	    private void parent_KeyDown(object sender, KeyEventArgs e)
 		{
 			//var reDraw = false;
 
@@ -235,7 +237,7 @@ namespace System.Windows.Forms
 		}
 
 		// Function to check if item was targeted by AltKey            
-		bool IsTargetedAltKey(string key, string altKey)
+	    private bool IsTargetedAltKey(string key, string altKey)
 		{
 			if (!String.IsNullOrEmpty(key) && String.Equals(key, altKey, StringComparison.InvariantCultureIgnoreCase))
 				return true;
@@ -244,7 +246,7 @@ namespace System.Windows.Forms
 		}
 
 		// Choose an action for the selected item
-		void ParseItem(RibbonItem item)
+	    private void ParseItem(RibbonItem item)
 		{
 			//if (item is RibbonDropDown)
 			//    (item as RibbonDropDown).Focus();
@@ -360,14 +362,14 @@ namespace System.Windows.Forms
 		{
 			if (_mouseHook != null)
 			{
-				_mouseHook.MouseWheel -= new MouseEventHandler(_mouseHook_MouseWheel);
-				_mouseHook.MouseDown -= new MouseEventHandler(_mouseHook_MouseDown);
+				_mouseHook.MouseWheel -= _mouseHook_MouseWheel;
+				_mouseHook.MouseDown -= _mouseHook_MouseDown;
 				_mouseHook.Dispose();
 				_mouseHook = null;
 			}
 			if (_keyboardHook != null)
 			{
-				_keyboardHook.KeyDown -= new KeyEventHandler(_keyboardHook_KeyDown);
+				_keyboardHook.KeyDown -= _keyboardHook_KeyDown;
 				_keyboardHook.Dispose();
 				_keyboardHook = null;
 			}
@@ -846,83 +848,84 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				if (OrbStyle == RibbonOrbStyle.Office_2007)
-				{
-					if (OrbVisible && RightToLeft == RightToLeft.No && CaptionBarVisible)
+			    if (OrbStyle == RibbonOrbStyle.Office_2007)
+			    {
+			        if (OrbVisible && RightToLeft == RightToLeft.No && CaptionBarVisible)
 					{
 						return new Rectangle(4, 4, 36, 36);
 					}
-					else if (OrbVisible && RightToLeft == RightToLeft.Yes && CaptionBarVisible)
-					{
-						return new Rectangle(Width - 36 - 4, 4, 36, 36);
-					}
-					else if (RightToLeft == RightToLeft.No)
-					{
-						return new Rectangle(4, 4, 0, 0);
-					}
-					else
-					{
-						return new Rectangle(Width - 4, 4, 0, 0);
-					}
-				}
-				else if (OrbStyle == RibbonOrbStyle.Office_2010)//Kevin Carbis - office 2010 style orb
-				{
-					//Measure the string size of the button text so we know how big to make the button
-					Size contentSize = _orbTextSize;
-					//If we are using an image adjust the size
-					if (OrbImage != null)
-					{
-						contentSize.Width = Math.Max(contentSize.Width, OrbImage.Size.Width);
-						contentSize.Height = Math.Max(contentSize.Height, OrbImage.Size.Height);
-					}
 
-					if (OrbVisible && RightToLeft == RightToLeft.No)
-					{
-						return new Rectangle(1, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
-					}
-					else if (OrbVisible && RightToLeft == RightToLeft.Yes && CaptionBarVisible)
-					{
-						return new Rectangle(Width - contentSize.Width - OrbsPadding.Left - OrbsPadding.Right - 1, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
-					}
-					else if (RightToLeft == RightToLeft.No)
-					{
-						return new Rectangle(4, 4, 0, 0);
-					}
-					else
-					{
-						return new Rectangle(Width - 4, 4, 0, 0);
-					}
-				}
-				else  //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
-				{
-					//Measure the string size of the button text so we know how big to make the button
-					Size contentSize = _orbTextSize;
-					//If we are using an image adjust the size
-					if (OrbImage != null)
-					{
-						contentSize.Width = Math.Max(contentSize.Width, OrbImage.Size.Width);
-						contentSize.Height = Math.Max(contentSize.Height, OrbImage.Size.Height);
-					}
+			        if (OrbVisible && RightToLeft == RightToLeft.Yes && CaptionBarVisible)
+			        {
+			            return new Rectangle(Width - 36 - 4, 4, 36, 36);
+			        }
 
-					if (OrbVisible && RightToLeft == RightToLeft.No)
-					{
-						//Steve
-						//return new Rectangle(0, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
-						return new Rectangle(0, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom + 1);
-					}
-					else if (OrbVisible && RightToLeft == RightToLeft.Yes && CaptionBarVisible)
-					{
-						return new Rectangle(Width - contentSize.Width - OrbsPadding.Left - OrbsPadding.Right - 4, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
-					}
-					else if (RightToLeft == RightToLeft.No)
-					{
-						return new Rectangle(4, 4, 0, 0);
-					}
-					else
-					{
-						return new Rectangle(Width - 4, 4, 0, 0);
-					}
-				}
+			        if (RightToLeft == RightToLeft.No)
+			        {
+			            return new Rectangle(4, 4, 0, 0);
+			        }
+
+			        return new Rectangle(Width - 4, 4, 0, 0);
+			    }
+
+			    if (OrbStyle == RibbonOrbStyle.Office_2010)//Kevin Carbis - office 2010 style orb
+			    {
+			        //Measure the string size of the button text so we know how big to make the button
+			        Size contentSize = _orbTextSize;
+			        //If we are using an image adjust the size
+			        if (OrbImage != null)
+			        {
+			            contentSize.Width = Math.Max(contentSize.Width, OrbImage.Size.Width);
+			            contentSize.Height = Math.Max(contentSize.Height, OrbImage.Size.Height);
+			        }
+
+			        if (OrbVisible && RightToLeft == RightToLeft.No)
+			        {
+			            return new Rectangle(1, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
+			        }
+
+			        if (OrbVisible && RightToLeft == RightToLeft.Yes && CaptionBarVisible)
+			        {
+			            return new Rectangle(Width - contentSize.Width - OrbsPadding.Left - OrbsPadding.Right - 1, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
+			        }
+
+			        if (RightToLeft == RightToLeft.No)
+			        {
+			            return new Rectangle(4, 4, 0, 0);
+			        }
+
+			        return new Rectangle(Width - 4, 4, 0, 0);
+			    }
+			    else  //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
+			    {
+			        //Measure the string size of the button text so we know how big to make the button
+			        Size contentSize = _orbTextSize;
+			        //If we are using an image adjust the size
+			        if (OrbImage != null)
+			        {
+			            contentSize.Width = Math.Max(contentSize.Width, OrbImage.Size.Width);
+			            contentSize.Height = Math.Max(contentSize.Height, OrbImage.Size.Height);
+			        }
+
+			        if (OrbVisible && RightToLeft == RightToLeft.No)
+			        {
+			            //Steve
+			            //return new Rectangle(0, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
+			            return new Rectangle(0, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom + 1);
+			        }
+
+			        if (OrbVisible && RightToLeft == RightToLeft.Yes && CaptionBarVisible)
+			        {
+			            return new Rectangle(Width - contentSize.Width - OrbsPadding.Left - OrbsPadding.Right - 4, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
+			        }
+
+			        if (RightToLeft == RightToLeft.No)
+			        {
+			            return new Rectangle(4, 4, 0, 0);
+			        }
+
+			        return new Rectangle(Width - 4, 4, 0, 0);
+			    }
 			}
 		}
 
@@ -950,11 +953,8 @@ namespace System.Windows.Forms
 				{
 					return ActiveTab;
 				}
-				else
-				{
 
-					return Tabs[index + 1];
-				}
+			    return Tabs[index + 1];
 			}
 		}
 
@@ -982,10 +982,8 @@ namespace System.Windows.Forms
 				{
 					return ActiveTab;
 				}
-				else
-				{
-					return Tabs[index - 1];
-				}
+
+			    return Tabs[index - 1];
 			}
 		}
 
@@ -1147,8 +1145,7 @@ namespace System.Windows.Forms
 			get => _renderer;
 	        set
 			{
-				if (value == null) throw new ApplicationException("Null renderer!");
-				_renderer = value;
+			    _renderer = value ?? throw new ApplicationException("Null renderer!");
 				Invalidate();
 			}
 		}
@@ -1285,7 +1282,7 @@ namespace System.Windows.Forms
 				{
 					if (InvokeRequired)
 					{
-						HandlerCallbackMethode del = new HandlerCallbackMethode(Refresh);
+						HandlerCallbackMethode del = Refresh;
 						Invoke(del);
 					}
 					else
@@ -1427,14 +1424,14 @@ namespace System.Windows.Forms
 				if (_mouseHook == null)
 				{
 					_mouseHook = new GlobalHook(GlobalHook.HookTypes.Mouse);
-					_mouseHook.MouseWheel += new MouseEventHandler(_mouseHook_MouseWheel);
-					_mouseHook.MouseDown += new MouseEventHandler(_mouseHook_MouseDown);
+					_mouseHook.MouseWheel += _mouseHook_MouseWheel;
+					_mouseHook.MouseDown += _mouseHook_MouseDown;
 				}
 
 				if (_keyboardHook == null)
 				{
 					_keyboardHook = new GlobalHook(GlobalHook.HookTypes.Keyboard);
-					_keyboardHook.KeyDown += new KeyEventHandler(_keyboardHook_KeyDown);
+					_keyboardHook.KeyDown += _keyboardHook_KeyDown;
 				}
 			}
 		}
@@ -1741,7 +1738,7 @@ namespace System.Windows.Forms
 						tabSize.Width = Math.Max(tabSize.Width, contextSize.Width);
 					}
 
-					tabTop = (tab.Invisible == false || OrbVisible == true)
+					tabTop = (tab.Invisible == false || OrbVisible)
 					   ? TabsMargin.Top
 					   : TabsMargin.Top - tabSize.Height - 8 + (OrbStyle == RibbonOrbStyle.Office_2013 ? 2 : 0);
 					Rectangle bounds = new Rectangle(0, tabTop,
@@ -1840,7 +1837,7 @@ namespace System.Windows.Forms
 							tabSize.Width = Math.Max(tabSize.Width, contextSize.Width);
 						}
 
-						tabTop = (tab.Invisible == false || OrbVisible == true)
+						tabTop = (tab.Invisible == false || OrbVisible)
 						   ? TabsMargin.Top
 						   : TabsMargin.Top - tabSize.Height - 8 + (OrbStyle == RibbonOrbStyle.Office_2013 ? 2 : 0);
 						Rectangle bounds = new Rectangle(0, tabTop,
@@ -1955,12 +1952,12 @@ namespace System.Windows.Forms
 					 tab.TabBounds.Bottom);
 
 				g.SetClip(clip);
-				Drawing.Drawing2D.SmoothingMode sm = g.SmoothingMode;
-				g.SmoothingMode = Drawing.Drawing2D.SmoothingMode.AntiAlias;
-				g.TextRenderingHint = Drawing.Text.TextRenderingHint.AntiAlias;
+				SmoothingMode sm = g.SmoothingMode;
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				g.TextRenderingHint = TextRenderingHint.AntiAlias;
 				tab.OnPaint(this, new RibbonElementPaintEventArgs(tab.TabBounds, g, RibbonElementSizeMode.None));
 				g.SmoothingMode = sm;
-				g.TextRenderingHint = Drawing.Text.TextRenderingHint.SystemDefault;
+				g.TextRenderingHint = TextRenderingHint.SystemDefault;
 			}
 		}
 
@@ -2119,8 +2116,8 @@ namespace System.Windows.Forms
 			{
 				if (WinApi.IsWindows && Environment.OSVersion.Platform == PlatformID.Win32NT)
 				{
-					g.SmoothingMode = Drawing.Drawing2D.SmoothingMode.AntiAlias;
-					g.TextRenderingHint = Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 				}
 
 				//Caption Background
@@ -2595,7 +2592,7 @@ namespace System.Windows.Forms
 					p = p.Parent;
 				Form parentForm = p as Form;
 				if (parentForm != null)
-					parentForm.Deactivate += new EventHandler(parentForm_Deactivate);
+					parentForm.Deactivate += parentForm_Deactivate;
 			}
 		}
 

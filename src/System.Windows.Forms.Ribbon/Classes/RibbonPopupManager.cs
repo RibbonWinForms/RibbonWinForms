@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows.Forms.RibbonHelpers;
 
 namespace System.Windows.Forms
 {
@@ -128,8 +129,8 @@ namespace System.Windows.Forms
             //not scaled according to display scaling, so the Contains function fails check and no events fires when clicking RibbonButtons dropdown items.
             //Use GetCursorPos api instead of e.Location seems to solve the problem.
 
-            RibbonHelpers.WinApi.POINT pos;
-            if (RibbonHelpers.WinApi.GetCursorPos(out pos))
+            WinApi.POINT pos;
+            if (WinApi.GetCursorPos(out pos))
             {
                 foreach (RibbonPopup p in pops)
                 {

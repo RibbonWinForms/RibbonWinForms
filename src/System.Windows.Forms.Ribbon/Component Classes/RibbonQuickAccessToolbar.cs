@@ -10,8 +10,8 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {
@@ -90,7 +90,7 @@ namespace System.Windows.Forms
                 {
 
                     g.DrawLine(p, x, y, x + 4, y);
-                    g.FillPolygon(b, new Point[] { 
+                    g.FillPolygon(b, new[] { 
                             new Point(x, y + 3),
                             new Point(x + 5, y + 3),
                             new Point(x + 2, y + 6)

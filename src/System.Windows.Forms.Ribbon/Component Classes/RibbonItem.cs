@@ -11,6 +11,7 @@
 
 
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -33,11 +34,11 @@ namespace System.Windows.Forms
 	    private Control _canvas;
 		private bool _visible;
 		private RibbonItemTextAlignment _textAlignment;
-		private bool _flashEnabled = false;
+		private bool _flashEnabled;
 		private int _flashIntervall = 1000;
 		private Image _flashImage;
 		private Timer _flashTimer = new Timer();
-		protected bool _showFlashImage = false;
+		protected bool _showFlashImage;
 
 		private RibbonToolTip _TT;
 		private static RibbonToolTip _lastActiveToolTip;
@@ -87,17 +88,19 @@ namespace System.Windows.Forms
 		{
 			_enabled = true;
 			_visible = true;
-			Click += new EventHandler(RibbonItem_Click);
-			_flashTimer.Tick += new EventHandler(_flashTimer_Tick);
+			Click += RibbonItem_Click;
+			_flashTimer.Tick += _flashTimer_Tick;
 
-			//Initialize the ToolTip for this Item
-			_TT = new RibbonToolTip(this);
-			_TT.InitialDelay = 100;
-			_TT.AutomaticDelay = 800;
-			_TT.AutoPopDelay = 8000;
-			_TT.UseAnimation = true;
-			_TT.Active = false;
-			_TT.Popup += new PopupEventHandler(_TT_Popup);
+            //Initialize the ToolTip for this Item
+            _TT = new RibbonToolTip(this)
+            {
+                InitialDelay = 100,
+                AutomaticDelay = 800,
+                AutoPopDelay = 8000,
+                UseAnimation = true,
+                Active = false
+            };
+            _TT.Popup += _TT_Popup;
 		}
 
       protected override void Dispose(bool disposing)
@@ -129,7 +132,7 @@ namespace System.Windows.Forms
 			if (dd != null && dd.SelectionService != null)
 			{
 				dd.SelectionService.SetSelectedComponents(
-					 new Component[] { this }, System.ComponentModel.Design.SelectionTypes.Primary);
+					 new Component[] { this }, SelectionTypes.Primary);
 
 			}
 		}
@@ -211,7 +214,7 @@ namespace System.Windows.Forms
               {
                   _flashEnabled = value;
 
-                  if (_flashEnabled == true)
+                  if (_flashEnabled)
                   {
                       _showFlashImage = false;
                       _flashTimer.Interval = _flashIntervall;
@@ -349,13 +352,13 @@ namespace System.Windows.Forms
                 {
                     _checked = value;
                     //Kevin Carbis - implementing the CheckGroup property logic.  This will uncheck all the other buttons in this group
-                    if (value == true)
+                    if (value)
                     {
                         if (Canvas is RibbonDropDown)
                         {
                             foreach (RibbonItem itm in ((RibbonDropDown)Canvas).Items)
                             {
-                                if (itm.CheckedGroup == _checkedGroup && itm.Checked == true && itm != this)
+                                if (itm.CheckedGroup == _checkedGroup && itm.Checked && itm != this)
                                 {
                                     itm.Checked = false;
                                     itm.RedrawItem();
@@ -365,7 +368,7 @@ namespace System.Windows.Forms
                         else if ((OwnerPanel != null) && (_checkedGroup != null))
                             foreach (RibbonItem itm in OwnerPanel.Items)
                             {
-                                if (itm.CheckedGroup == _checkedGroup && itm.Checked == true && itm != this)
+                                if (itm.CheckedGroup == _checkedGroup && itm.Checked && itm != this)
                                 {
                                     itm.Checked = false;
                                     itm.RedrawItem();
@@ -434,14 +437,12 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				if (Owner != null)
+			    if (Owner != null)
 				{
 					return _enabled && Owner.Enabled;
 				}
-				else
-				{
-					return _enabled;
-				}
+
+			    return _enabled;
 			}
 			set
 			{
@@ -526,7 +527,7 @@ namespace System.Windows.Forms
 		/// <summary>
 		/// Gets or sets the custom object data associated with this control
 		/// </summary>
-		[DescriptionAttribute("An Object field for associating custom data for this control")]
+		[Description("An Object field for associating custom data for this control")]
 		[DefaultValue(null)]
         [Category("Data")]
         [TypeConverter(typeof(StringConverter))]
@@ -545,7 +546,7 @@ namespace System.Windows.Forms
 		/// </summary>
 		[DefaultValue(null)]
         [Category("Data")]
-        [DescriptionAttribute("A string field for associating custom data for this control")]
+        [Description("A string field for associating custom data for this control")]
 		public string Value
 		{
 			get => _value;
@@ -657,7 +658,7 @@ namespace System.Windows.Forms
 
         #region Flashtimer
 
-        void _flashTimer_Tick(object sender, EventArgs e)
+	    private void _flashTimer_Tick(object sender, EventArgs e)
         {
             _showFlashImage = !_showFlashImage;
             NotifyOwnerRegionsChanged();

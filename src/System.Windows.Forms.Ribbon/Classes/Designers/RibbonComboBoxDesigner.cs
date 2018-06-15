@@ -18,9 +18,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonComboBox)
+                if (Component is RibbonComboBox box)
                 {
-                    return (Component as RibbonComboBox).Owner;
+                    return box.Owner;
                 }
                 return null; 
             }
@@ -30,9 +30,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonComboBox)
+                if (Component is RibbonComboBox box)
                 {
-                    return (Component as RibbonComboBox).DropDownItems;
+                    return box.DropDownItems;
                 }
                 return null; 
             }

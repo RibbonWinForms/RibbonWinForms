@@ -4,7 +4,6 @@ namespace System.Windows.Forms
         : ToolStripDropDown
     {
         public RibbonWrappedDropDown()
-            : base()
         {
             DoubleBuffered = false;
             SetStyle(ControlStyles.Opaque, true);

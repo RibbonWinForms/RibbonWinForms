@@ -33,7 +33,7 @@ namespace System.Windows.Forms
         private int _offset;
 		private bool _visible = true;
 
-		RibbonToolTip _TT;
+        private RibbonToolTip _TT;
 
         /// <summary>
 		/// Occurs when the mouse pointer enters the panel
@@ -59,14 +59,16 @@ namespace System.Windows.Forms
             Panels = new RibbonPanelCollection(this);
             _enabled = true;
 
-			//Initialize the ToolTip for this Item
-			_TT = new RibbonToolTip(this);
-			_TT.InitialDelay = 100;
-			_TT.AutomaticDelay = 800;
-			_TT.AutoPopDelay = 8000;
-			_TT.UseAnimation = true;
-			_TT.Active = false;
-			_TT.Popup += new PopupEventHandler(_TT_Popup);
+            //Initialize the ToolTip for this Item
+            _TT = new RibbonToolTip(this)
+            {
+                InitialDelay = 100,
+                AutomaticDelay = 800,
+                AutoPopDelay = 8000,
+                UseAnimation = true,
+                Active = false
+            };
+            _TT.Popup += _TT_Popup;
 		}
 
       public RibbonTab(string text)
@@ -152,10 +154,8 @@ namespace System.Windows.Forms
                 {
                     return _enabled && Owner.Enabled;
                 }
-                else
-                {
-                    return _enabled;
-                }
+
+                return _enabled;
             }
             set
             {
@@ -282,7 +282,7 @@ namespace System.Windows.Forms
         /// <summary>
 		/// Gets or sets the object that contains data about the control
 		/// </summary>
-      [DescriptionAttribute("An Object field for associating custom data for this control")]
+      [Description("An Object field for associating custom data for this control")]
       [DefaultValue(null)]
         [Category("Data")]
         [TypeConverter(typeof(StringConverter))]
@@ -293,7 +293,7 @@ namespace System.Windows.Forms
 		/// </summary>
 		[DefaultValue(null)]
       [Category("Data")]
-      [DescriptionAttribute("A string field for associating custom data for this control")]
+      [Description("A string field for associating custom data for this control")]
 		public string Value { get; set; }
 
         /// <summary>

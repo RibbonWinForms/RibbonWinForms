@@ -9,8 +9,8 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace System.Windows.Forms

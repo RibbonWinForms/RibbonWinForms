@@ -1,11 +1,14 @@
-﻿namespace RibbonDemo
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace RibbonDemo
 {
     partial class RightToLeftForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -133,11 +136,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Ribbon ribbon1;
-        private System.Windows.Forms.RibbonTab ribbonTab1;
-        private System.Windows.Forms.RibbonPanel ribbonPanel1;
-        private System.Windows.Forms.RibbonPanel ribbonPanel2;
-        private System.Windows.Forms.RibbonButton ribbonButton1;
-        private System.Windows.Forms.RibbonPanel ribbonPanel3;
+        private Ribbon ribbon1;
+        private RibbonTab ribbonTab1;
+        private RibbonPanel ribbonPanel1;
+        private RibbonPanel ribbonPanel2;
+        private RibbonButton ribbonButton1;
+        private RibbonPanel ribbonPanel3;
     }
 }

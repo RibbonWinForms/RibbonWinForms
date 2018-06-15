@@ -12,13 +12,13 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.ComponentModel.Design;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {
    [ToolboxItem(false)]
-   public partial class RibbonDropDown
+   public class RibbonDropDown
        : RibbonPopup, IScrollableRibbonItem
    {
       #region Static
@@ -128,7 +128,7 @@ namespace System.Windows.Forms
                 //If item is a RibbonHost, the MouseSensor will not detect the mouse move event, so manually hook into the event.
                if (item is RibbonHost)
                {
-                   ((RibbonHost)item).ClientMouseMove += new MouseEventHandler(OnRibbonHostMouseMove);
+                   ((RibbonHost)item).ClientMouseMove += OnRibbonHostMouseMove;
                }
             }
 
@@ -169,16 +169,15 @@ namespace System.Windows.Forms
       {
          get
          {
-            if ((double)_fullContentBounds.Height > (double)ContentBounds.Height)
-               return ((double)ContentBounds.Top - (double)_fullContentBounds.Top) /
-                   ((double)_fullContentBounds.Height - (double)ContentBounds.Height);
-            else
-               return 0.0;
+             if (_fullContentBounds.Height > (double)ContentBounds.Height)
+               return (ContentBounds.Top - (double)_fullContentBounds.Top) /
+                   (_fullContentBounds.Height - (double)ContentBounds.Height);
+             return 0.0;
          }
          set
          {
             _avoidNextThumbMeasure = true;
-            ScrollTo(-Convert.ToInt32((double)(_fullContentBounds.Height - ContentBounds.Height) * value));
+            ScrollTo(-Convert.ToInt32((_fullContentBounds.Height - ContentBounds.Height) * value));
          }
       }
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

@@ -10,8 +10,9 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace System.Windows.Forms.RibbonHelpers
 {
@@ -268,17 +269,15 @@ namespace System.Windows.Forms.RibbonHelpers
             {
                 return WinApi.CallNextHookEx(Handle, code, wParam, lParam);
             }
-            else
+
+            switch (HookType)
             {
-                switch (HookType)
-                {
-                    case HookTypes.Mouse:       
-                        return MouseProc(code, wParam, lParam);
-                    case HookTypes.Keyboard:    
-                        return KeyboardProc(code, wParam, lParam);
-                    default:
-                        throw new Exception("HookType not supported");
-                }
+                case HookTypes.Mouse:       
+                    return MouseProc(code, wParam, lParam);
+                case HookTypes.Keyboard:    
+                    return KeyboardProc(code, wParam, lParam);
+                default:
+                    throw new Exception("HookType not supported");
             }
         }
 
@@ -437,12 +436,12 @@ namespace System.Windows.Forms.RibbonHelpers
             #endregion
 
             /// Delegate to recieve message
-            _HookProc = new HookProcCallBack(HookProc);
+            _HookProc = HookProc;
 
             /// Hook
             /// Ed Obeda suggestion for .net 4.0
             //_hHook = WinApi.SetWindowsHookEx(htype, _HookProc, Marshal.GetHINSTANCE(Assembly.GetExecutingAssembly().GetModules()[0]), 0);
-            Handle = WinApi.SetWindowsHookEx(htype, _HookProc, Diagnostics.Process.GetCurrentProcess().MainModule.BaseAddress, 0);
+            Handle = WinApi.SetWindowsHookEx(htype, _HookProc, Process.GetCurrentProcess().MainModule.BaseAddress, 0);
             
             /// Error check
             if (Handle == 0) throw new Win32Exception(Marshal.GetLastWin32Error());

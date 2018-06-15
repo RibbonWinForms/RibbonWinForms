@@ -19,9 +19,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonButtonList)
+                if (Component is RibbonButtonList list)
                 {
-                    return (Component as RibbonButtonList).Owner;
+                    return list.Owner;
                 }
                 return null;
             }
@@ -31,9 +31,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonButtonList)
+                if (Component is RibbonButtonList list)
                 {
-                    return (Component as RibbonButtonList).Buttons;
+                    return list.Buttons;
                 }
                 return null;
             }

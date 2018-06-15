@@ -2,13 +2,13 @@
 {
     public enum RibbonTheme
     {
-       /// <summary>
-       /// The default theme is identical to the Blue theme.
-       /// </summary>
+        /// <summary>
+        /// The default theme is identical to the Blue theme.
+        /// </summary>
         Normal,
-       /// <summary>
-       /// This theme is identical to the normal "default" theme.
-       /// </summary>
+        /// <summary>
+        /// This theme is identical to the normal "default" theme.
+        /// </summary>
         Blue,
         Blue_2010,
         Black,
@@ -68,7 +68,7 @@
         /// <summary>
         /// Mimics a standard drop down list item with no image
         /// </summary>
-        DropDownListItem,
+        DropDownListItem
     }
 
     /// <summary>
@@ -135,7 +135,7 @@
         /// <summary>
         /// No size mode specified
         /// </summary>
-        None = 0,
+        None = 0
     }
 
     /// <summary>
@@ -151,6 +151,6 @@
         /// <summary>
         /// Partial width to divide similar items
         /// </summary>
-        Partial = 0,
+        Partial = 0
     }
 }

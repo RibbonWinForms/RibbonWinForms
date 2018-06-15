@@ -11,8 +11,9 @@
 
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms.VisualStyles;
 
 namespace System.Windows.Forms
 {
@@ -95,7 +96,7 @@ namespace System.Windows.Forms
             //add the handlers
             foreach (RibbonItem item in buttons)
             {
-               item.Click += new EventHandler(item_Click);
+               item.Click += item_Click;
             }
          }
 
@@ -106,7 +107,7 @@ namespace System.Windows.Forms
             //add the handlers
             foreach (RibbonItem item in dropDownItems)
             {
-               item.Click += new EventHandler(item_Click);
+               item.Click += item_Click;
             }
          }
       }
@@ -117,11 +118,11 @@ namespace System.Windows.Forms
          {
             foreach (RibbonItem item in Buttons)
             {
-               item.Click -= new EventHandler(item_Click);
+               item.Click -= item_Click;
             }
             foreach (RibbonItem item in DropDownItems)
             {
-               item.Click -= new EventHandler(item_Click);
+               item.Click -= item_Click;
             }
          }
          base.Dispose(disposing);
@@ -152,12 +153,12 @@ namespace System.Windows.Forms
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
       public double ScrolledPercent
       {
-         get => ((double)ContentBounds.Top - (double)fullContentBounds.Top) /
-                ((double)fullContentBounds.Height - (double)ContentBounds.Height);
+         get => (ContentBounds.Top - (double)fullContentBounds.Top) /
+                (fullContentBounds.Height - (double)ContentBounds.Height);
            set
          {
             _avoidNextThumbMeasure = true;
-            ScrollTo(-Convert.ToInt32((double)(fullContentBounds.Height - ContentBounds.Height) * value));
+            ScrollTo(-Convert.ToInt32((fullContentBounds.Height - ContentBounds.Height) * value));
          }
       }
 
@@ -166,14 +167,12 @@ namespace System.Windows.Forms
       {
          get
          {
-            if (ScrollType == ListScrollType.Scrollbar)
+             if (ScrollType == ListScrollType.Scrollbar)
             {
                return ButtonUpBounds.Bottom;
             }
-            else
-            {
-               return 0;
-            }
+
+             return 0;
          }
       }
 
@@ -182,15 +181,13 @@ namespace System.Windows.Forms
       {
          get
          {
-            if (ScrollType == ListScrollType.Scrollbar)
+             if (ScrollType == ListScrollType.Scrollbar)
             {
                //return ButtonDownBounds.Top - ThumbBounds.Height;
                return ButtonDownBounds.Top - ThumbBounds.Height;
             }
-            else
-            {
-               return 0;
-            }
+
+             return 0;
          }
       }
 
@@ -485,11 +482,13 @@ namespace System.Windows.Forms
 
          IgnoreDeactivation();
 
-         _dropDown = new RibbonDropDown(this, DropDownItems, Owner);
-         //_dropDown.FormClosed += new FormClosedEventHandler(dropDown_FormClosed);
-         //_dropDown.StartPosition = FormStartPosition.Manual;
-         _dropDown.ShowSizingGrip = true;
-         Point location = Canvas.PointToScreen(new Point(Bounds.Left, Bounds.Top));
+            _dropDown = new RibbonDropDown(this, DropDownItems, Owner)
+            {
+                //_dropDown.FormClosed += new FormClosedEventHandler(dropDown_FormClosed);
+                //_dropDown.StartPosition = FormStartPosition.Manual;
+                ShowSizingGrip = true
+            };
+            Point location = Canvas.PointToScreen(new Point(Bounds.Left, Bounds.Top));
 
          SetDropDownVisible(true);
          _dropDown.Show(location);
@@ -838,7 +837,7 @@ namespace System.Windows.Forms
 
          if (ScrollBarRenderer.IsSupported)
          {
-            _thumbBounds = new Rectangle(Point.Empty, ScrollBarRenderer.GetSizeBoxSize(e.Graphics, VisualStyles.ScrollBarState.Normal));
+            _thumbBounds = new Rectangle(Point.Empty, ScrollBarRenderer.GetSizeBoxSize(e.Graphics, ScrollBarState.Normal));
          }
          else
          {

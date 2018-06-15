@@ -19,9 +19,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonItemGroup)
+                if (Component is RibbonItemGroup @group)
                 {
-                    return (Component as RibbonItemGroup).Owner;
+                    return @group.Owner;
                 }
                 return null;
             }
@@ -31,9 +31,9 @@ namespace System.Windows.Forms
         {
             get 
             {
-                if (Component is RibbonItemGroup)
+                if (Component is RibbonItemGroup @group)
                 {
-                    return (Component as RibbonItemGroup).Items;
+                    return @group.Items;
                 }
                 return null;
             }

@@ -15,8 +15,7 @@ namespace System.Windows.Forms
    public class RibbonItemEventArgs : EventArgs
    {
        public RibbonItemEventArgs( RibbonItem item)
-         : base()
-      {
+       {
          Item = item;
       }
 

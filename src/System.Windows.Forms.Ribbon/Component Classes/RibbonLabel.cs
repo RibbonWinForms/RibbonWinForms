@@ -15,10 +15,9 @@ namespace System.Windows.Forms
       #region Methods
       protected virtual int MeasureHeight()
       {
-         if (Owner != null)
+          if (Owner != null)
             return 16 + Owner.ItemMargin.Vertical;
-         else
-            return 16 + 4;
+          return 16 + 4;
       }
 
       /// <summary>

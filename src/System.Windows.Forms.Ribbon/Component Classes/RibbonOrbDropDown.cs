@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace System.Windows.Forms
 {
@@ -42,7 +43,6 @@ namespace System.Windows.Forms
 		#region Ctor
 
 		internal RibbonOrbDropDown(Ribbon ribbon)
-			: base()
 		{
 			DoubleBuffered = true;
 			Ribbon = ribbon;
@@ -170,7 +170,7 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				if (RecentItemsCaption != null)
+			    if (RecentItemsCaption != null)
 				{
 					//Lets measure the height of the text so we take into account the font and its size
 					SizeF cs;
@@ -187,8 +187,8 @@ namespace System.Windows.Forms
 						r.X += _contentButtonsWidth;
 					return r;
 				}
-				else
-					return Rectangle.Empty;
+
+			    return Rectangle.Empty;
 			}
 		}
 
@@ -362,14 +362,12 @@ namespace System.Windows.Forms
 		/// <returns></returns>
 		private int SeparatorHeight(RibbonSeparator s)
 		{
-			if (!string.IsNullOrEmpty(s.Text))
+		    if (!string.IsNullOrEmpty(s.Text))
 			{
 				return 20;
 			}
-			else
-			{
-				return 3;
-			}
+
+		    return 3;
 		}
 
 		/// <summary>
@@ -645,7 +643,7 @@ namespace System.Windows.Forms
 
 				using (Pen p = new Pen(Color.Black))
 				{
-					p.DashStyle = Drawing.Drawing2D.DashStyle.Dot;
+					p.DashStyle = DashStyle.Dot;
 					e.Graphics.DrawRectangle(p, designerSelectedBounds);
 				}
 

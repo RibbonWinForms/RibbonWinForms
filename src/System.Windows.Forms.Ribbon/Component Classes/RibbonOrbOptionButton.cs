@@ -20,7 +20,6 @@ namespace System.Windows.Forms
         #region Ctors
 
         public RibbonOrbOptionButton()
-            : base()
         {
 
         }

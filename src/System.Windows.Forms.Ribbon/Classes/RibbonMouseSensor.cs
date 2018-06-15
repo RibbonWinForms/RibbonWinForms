@@ -35,11 +35,8 @@ namespace System.Windows.Forms
 		public RibbonMouseSensor(Control control, Ribbon ribbon)
 			: this()
 		{
-			if (control == null) throw new ArgumentNullException(nameof(control));
-			if (ribbon == null) throw new ArgumentNullException(nameof(ribbon));
-
-			Control = control;
-			Ribbon = ribbon;
+		    Control = control ?? throw new ArgumentNullException(nameof(control));
+			Ribbon = ribbon ?? throw new ArgumentNullException(nameof(ribbon));
 
 			AddHandlers();
 		}
@@ -233,12 +230,12 @@ namespace System.Windows.Forms
 				throw new ApplicationException("Control is Null, cant Add RibbonMouseSensor Handles");
 			}
 
-			Control.MouseMove += new MouseEventHandler(Control_MouseMove);
-			Control.MouseLeave += new EventHandler(Control_MouseLeave);
-			Control.MouseDown += new MouseEventHandler(Control_MouseDown);
-			Control.MouseUp += new MouseEventHandler(Control_MouseUp);
-			Control.MouseClick += new MouseEventHandler(Control_MouseClick);
-			Control.MouseDoubleClick += new MouseEventHandler(Control_MouseDoubleClick);
+			Control.MouseMove += Control_MouseMove;
+			Control.MouseLeave += Control_MouseLeave;
+			Control.MouseDown += Control_MouseDown;
+			Control.MouseUp += Control_MouseUp;
+			Control.MouseClick += Control_MouseClick;
+			Control.MouseDoubleClick += Control_MouseDoubleClick;
 			//Control.MouseEnter 
 		}
 

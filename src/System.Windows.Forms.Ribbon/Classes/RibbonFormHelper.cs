@@ -10,8 +10,8 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 using System.Windows.Forms.RibbonHelpers;
 
 namespace System.Windows.Forms
@@ -61,12 +61,12 @@ namespace System.Windows.Forms
         public RibbonFormHelper(Form f)
         {
             Form = f;
-            Form.Load += new EventHandler(Form_Load);
-            Form.ResizeEnd += new EventHandler(_form_ResizeEnd);
-            Form.Layout += new LayoutEventHandler(_form_Layout);
+            Form.Load += Form_Load;
+            Form.ResizeEnd += _form_ResizeEnd;
+            Form.Layout += _form_Layout;
         }
 
-        void _form_Layout(object sender, LayoutEventArgs e)
+        private void _form_Layout(object sender, LayoutEventArgs e)
         {
             if (_lastState == Form.WindowState)
             {
@@ -86,7 +86,7 @@ namespace System.Windows.Forms
             _lastState = Form.WindowState;
         }
 
-        void _form_ResizeEnd(object sender, EventArgs e)
+        private void _form_ResizeEnd(object sender, EventArgs e)
         {
             UpdateRibbonConditions();
             Form.Refresh();

@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.Text.RegularExpressions;
 
 namespace System.Windows.Forms
@@ -124,18 +126,14 @@ namespace System.Windows.Forms
                 {
                     return null;
                 }
-                else
+
+                if (DropDownItems.Contains(_selectedItem))
                 {
-                    if (DropDownItems.Contains(_selectedItem))
-                    {
-                        return _selectedItem;
-                    }
-                    else
-                    {
-                        _selectedItem = null;
-                        return null;
-                    }
+                    return _selectedItem;
                 }
+
+                _selectedItem = null;
+                return null;
             }
 
             set
@@ -168,10 +166,8 @@ namespace System.Windows.Forms
                 {
                     return null;
                 }
-                else
-                {
-                    return _selectedItem.Value;
-                }
+
+                return _selectedItem.Value;
             }
             set
             {
@@ -520,13 +516,13 @@ namespace System.Windows.Forms
                 if (Owner.AltPressed || Owner.OrbDropDown.MenuItems.Contains(this))
                 {
                     
-                    sf.HotkeyPrefix = Drawing.Text.HotkeyPrefix.Show;
+                    sf.HotkeyPrefix = HotkeyPrefix.Show;
 
                 }
                 else
                 {
 
-                    sf.HotkeyPrefix = Drawing.Text.HotkeyPrefix.Hide;
+                    sf.HotkeyPrefix = HotkeyPrefix.Hide;
                 }
 
                 if (SizeMode == RibbonElementSizeMode.Large)
@@ -642,26 +638,22 @@ namespace System.Windows.Forms
                     Image.Width,
                     Image.Height);
                 }
-                else
-                {
-                    return new Rectangle(ContentBounds.Location, new Size(32, 32));
-                }
+
+                return new Rectangle(ContentBounds.Location, new Size(32, 32));
             }
-            else
+
+            if (SmallImage != null)
             {
-                if (SmallImage != null)
+                if (SmallImage.PixelFormat != PixelFormat.DontCare )
                 {
-                    if (SmallImage.PixelFormat != Drawing.Imaging.PixelFormat.DontCare )
-                    {
-                        return new Rectangle(
-                            Bounds.Left + Owner.ItemMargin.Left,
-                            Bounds.Top + ((Bounds.Height - SmallImage.Height) / 2),
-                            SmallImage.Width,
-                            SmallImage.Height);
-                    }
+                    return new Rectangle(
+                        Bounds.Left + Owner.ItemMargin.Left,
+                        Bounds.Top + ((Bounds.Height - SmallImage.Height) / 2),
+                        SmallImage.Width,
+                        SmallImage.Height);
                 }
-                return new Rectangle(ContentBounds.Location, new Size(0, 0));
             }
+            return new Rectangle(ContentBounds.Location, new Size(0, 0));
         }
 
         /// <summary>
@@ -692,18 +684,16 @@ namespace System.Windows.Forms
                     Bounds.Right - Owner.ItemMargin.Right,
                     Bounds.Bottom - Owner.ItemMargin.Bottom);
             }
-            else
-            {
-                // ddw is the dropdown arrow width
-                int ddw = (Style == RibbonButtonStyle.Normal || Style == RibbonButtonStyle.DropDownListItem) ? 0 : _dropDownMargin.Horizontal;
-                int imageToTextSpacing = (sMode == RibbonElementSizeMode.DropDown) ? Owner.ItemImageToTextSpacing : 0;
+
+            // ddw is the dropdown arrow width
+            int ddw = (Style == RibbonButtonStyle.Normal || Style == RibbonButtonStyle.DropDownListItem) ? 0 : _dropDownMargin.Horizontal;
+            int imageToTextSpacing = (sMode == RibbonElementSizeMode.DropDown) ? Owner.ItemImageToTextSpacing : 0;
                 
-                return Rectangle.FromLTRB(
+            return Rectangle.FromLTRB(
                 Bounds.Left + imgw + Owner.ItemMargin.Horizontal + Owner.ItemMargin.Left + imageToTextSpacing,
                 Bounds.Top + Owner.ItemMargin.Top,
                 Bounds.Right - ddw,
                 Bounds.Bottom - Owner.ItemMargin.Bottom);
-            }
         }
 
         /// <summary>
@@ -886,7 +876,7 @@ namespace System.Windows.Forms
                     heightSum += simg.Height;
                     break;
                 default:
-                    throw new ApplicationException("SizeMode not supported: " + e.SizeMode.ToString());
+                    throw new ApplicationException("SizeMode not supported: " + e.SizeMode);
             }
 
             //if (theSize == RibbonElementSizeMode.DropDown)
@@ -973,8 +963,8 @@ namespace System.Windows.Forms
             AssignHandlers();
 
             CreateDropDown();
-            DropDown.MouseEnter += new EventHandler(DropDown_MouseEnter);
-            DropDown.Closed += new EventHandler(DropDown_Closed);
+            DropDown.MouseEnter += DropDown_MouseEnter;
+            DropDown.Closed += DropDown_Closed;
             DropDown.ShowSizingGrip = DropDownResizable;
             DropDown.DrawIconsBar = DrawDropDownIconsBar;
 
@@ -989,7 +979,7 @@ namespace System.Windows.Forms
             DropDown.Show(location);
         }
 
-        void DropDownItem_Click(object sender, EventArgs e)
+        private void DropDownItem_Click(object sender, EventArgs e)
         {
             _selectedItem = (sender as RibbonItem);
 
@@ -1003,7 +993,7 @@ namespace System.Windows.Forms
             {
                 if (_assignedHandlers.Contains(item) == false)
                 {
-                    item.Click += new EventHandler(DropDownItem_Click);
+                    item.Click += DropDownItem_Click;
                     _assignedHandlers.Add(item);
                 }
             }
@@ -1025,7 +1015,7 @@ namespace System.Windows.Forms
             _assignedHandlers.Clear();
         }
 
-        void DropDown_MouseEnter(object sender, EventArgs e)
+        private void DropDown_MouseEnter(object sender, EventArgs e)
         {
             SetSelected(true);
             RedrawItem();
@@ -1162,14 +1152,13 @@ namespace System.Windows.Forms
             {
                 return false;
             }
-            else if (Style == RibbonButtonStyle.SplitDropDown)
+
+            if (Style == RibbonButtonStyle.SplitDropDown)
             {
                 return ButtonFaceBounds.Contains(p);
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
 
         internal override void SetSizeMode(RibbonElementSizeMode sizeMode)

@@ -20,9 +20,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonButton)
+                if (Component is RibbonButton button)
                 {
-                    return (Component as RibbonButton).Owner;
+                    return button.Owner;
                 }
                 return null;
             }
@@ -32,9 +32,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonButton)
+                if (Component is RibbonButton button)
                 {
-                    return (Component as RibbonButton).DropDownItems;
+                    return button.DropDownItems;
                 }
                 return null;
             }

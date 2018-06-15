@@ -30,21 +30,13 @@ namespace System.Windows.Forms
         private string _text;
         private Color _glowColor;
 
-        private bool _visible = false;
+        private bool _visible;
         //private ContextualTabCollection _tabs;
         public event EventHandler OwnerChanged;
 
         #endregion
 
         #region Ctor
-
-        /// <summary>
-        /// Creates a new RibbonTabContext
-        /// </summary>
-        public RibbonContext()
-        {
-            //_tabs = new RibbonTabCollection(_owner);
-        }
 
         #endregion
 

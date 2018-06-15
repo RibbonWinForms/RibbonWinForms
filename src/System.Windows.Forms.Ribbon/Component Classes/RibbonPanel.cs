@@ -157,14 +157,12 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				if (OwnerTab != null)
+			    if (OwnerTab != null)
 				{
 					return _enabled && OwnerTab.Enabled;
 				}
-				else
-				{
-					return _enabled;
-				}
+
+			    return _enabled;
 			}
 			set
 			{
@@ -360,7 +358,7 @@ namespace System.Windows.Forms
 	    /// <summary>
 		/// Gets or sets the object that contains data about the control
 		/// </summary>
-		[DescriptionAttribute("An Object field for associating custom data for this control")]
+		[Description("An Object field for associating custom data for this control")]
 		[DefaultValue(null)]
 		[Category("Data")]
 		[TypeConverter(typeof(StringConverter))]
@@ -435,12 +433,14 @@ namespace System.Windows.Forms
 
 			if (PopupShowed && e.Control == Owner)
 			{
-				//Draw a fake collapsed and pressed panel
+                //Draw a fake collapsed and pressed panel
 
-				#region Create fake panel
-				RibbonPanel fakePanel = new RibbonPanel(Text);
-				fakePanel.Image = Image;
-				fakePanel.SetSizeMode(RibbonElementSizeMode.Overflow);
+                #region Create fake panel
+                RibbonPanel fakePanel = new RibbonPanel(Text)
+                {
+                    Image = Image
+                };
+                fakePanel.SetSizeMode(RibbonElementSizeMode.Overflow);
 				fakePanel.SetBounds(overflowBoundsBuffer);
 				fakePanel.SetPressed(true);
 				fakePanel.SetOwner(Owner);

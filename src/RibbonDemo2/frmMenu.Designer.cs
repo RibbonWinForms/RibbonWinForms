@@ -1,11 +1,14 @@
-﻿namespace RibbonDemo2
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace RibbonDemo2
 {
     partial class frmMenu
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -90,9 +93,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btMainDemo;
-        private System.Windows.Forms.ComboBox cmbColor;
-        private System.Windows.Forms.ComboBox cmbOrbStyle;
-        private System.Windows.Forms.Label lblDescription;
+        private Button btMainDemo;
+        private ComboBox cmbColor;
+        private ComboBox cmbOrbStyle;
+        private Label lblDescription;
     }
 }

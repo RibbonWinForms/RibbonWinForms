@@ -16,7 +16,7 @@ using System.Drawing;
 namespace System.Windows.Forms
 {
     [ToolboxItem(false)]
-    public partial class RibbonPanelPopup : RibbonPopup
+    public class RibbonPanelPopup : RibbonPopup
     {
         #region Fields
 
@@ -29,8 +29,10 @@ namespace System.Windows.Forms
         {
             DoubleBuffered = true;
 
-            Sensor = new RibbonMouseSensor(this, panel.Owner, panel.Items);
-            Sensor.PanelLimit = panel;
+            Sensor = new RibbonMouseSensor(this, panel.Owner, panel.Items)
+            {
+                PanelLimit = panel
+            };
             Panel = panel;
             Panel.PopUp = this;
             panel.Owner.SuspendSensor();
@@ -71,10 +73,8 @@ namespace System.Windows.Forms
             {
                 return RibbonElementSizeMode.Medium;
             }
-            else
-            {
-                return RibbonElementSizeMode.Large;
-            }
+
+            return RibbonElementSizeMode.Large;
         }
 
         /// <summary>
@@ -103,7 +103,6 @@ namespace System.Windows.Forms
             if (_ignoreNext)
             {
                 _ignoreNext = false;
-                return;
             }
 
         }

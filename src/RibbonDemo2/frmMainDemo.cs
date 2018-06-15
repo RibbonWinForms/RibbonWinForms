@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using RibbonDemo2.Properties;
 
 namespace RibbonDemo2
 {
@@ -11,22 +12,26 @@ namespace RibbonDemo2
 
             foreach (object value in Enum.GetValues(typeof(RibbonOrbStyle)))
             {
-                RibbonButton rb = new RibbonButton();
-                rb.Style = RibbonButtonStyle.Normal;
-                rb.MinSizeMode = RibbonElementSizeMode.Large;
-                rb.Text = value + "";
-                rb.LargeImage = Properties.Resources.newdocument32;
+                RibbonButton rb = new RibbonButton
+                {
+                    Style = RibbonButtonStyle.Normal,
+                    MinSizeMode = RibbonElementSizeMode.Large,
+                    Text = value + "",
+                    LargeImage = Resources.newdocument32
+                };
                 rb.Click += rbOrbStyle_Click;
                 ribbonPanel_OrbStyle.Items.Add(rb);
             }
 
             foreach (object value in Enum.GetValues(typeof(RibbonTheme)))
             {
-                RibbonButton rb = new RibbonButton();
-                rb.Style = RibbonButtonStyle.Normal;
-                rb.MinSizeMode = RibbonElementSizeMode.Large;
-                rb.Text = value + "";
-                rb.LargeImage = Properties.Resources.addons32;
+                RibbonButton rb = new RibbonButton
+                {
+                    Style = RibbonButtonStyle.Normal,
+                    MinSizeMode = RibbonElementSizeMode.Large,
+                    Text = value + "",
+                    LargeImage = Resources.addons32
+                };
                 rb.Click += rbTheme_Click;
                 ribbonPanel_Theme.Items.Add(rb);
             }
@@ -66,14 +71,14 @@ namespace RibbonDemo2
             OpenForm(typeof(frmForm3));
         }
 
-        void OpenForm(Type t)
+        private void OpenForm(Type t)
         {
             foreach(var c in panel1.Controls)
             {
-                if (c is Form)
+                if (c is Form form)
                 {
-                    ((Form)c).Close();
-                    ((Form)c).Dispose();
+                    form.Close();
+                    form.Dispose();
                 }
             }
 

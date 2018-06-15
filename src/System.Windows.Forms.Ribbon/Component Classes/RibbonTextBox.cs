@@ -10,7 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 using System.ComponentModel;
-
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -242,14 +241,14 @@ namespace System.Windows.Forms
 
             InitTextBox(_actualTextBox);
 
-            _actualTextBox.TextChanged += new EventHandler(_actualTextbox_TextChanged);
-            _actualTextBox.KeyDown += new KeyEventHandler(_actualTextbox_KeyDown);
-            _actualTextBox.KeyUp += new KeyEventHandler(_actualTextbox_KeyUp);
-            _actualTextBox.KeyPress += new KeyPressEventHandler(_actualTextbox_KeyPress);
-            _actualTextBox.LostFocus += new EventHandler(_actualTextbox_LostFocus);
-            _actualTextBox.VisibleChanged += new EventHandler(_actualTextBox_VisibleChanged);
-            _actualTextBox.Validating += new CancelEventHandler(_actualTextbox_Validating);
-            _actualTextBox.Validated += new EventHandler(_actualTextbox_Validated);
+            _actualTextBox.TextChanged += _actualTextbox_TextChanged;
+            _actualTextBox.KeyDown += _actualTextbox_KeyDown;
+            _actualTextBox.KeyUp += _actualTextbox_KeyUp;
+            _actualTextBox.KeyPress += _actualTextbox_KeyPress;
+            _actualTextBox.LostFocus += _actualTextbox_LostFocus;
+            _actualTextBox.VisibleChanged += _actualTextBox_VisibleChanged;
+            _actualTextBox.Validating += _actualTextbox_Validating;
+            _actualTextBox.Validated += _actualTextbox_Validated;
             
             _actualTextBox.PasswordChar = PasswordChar;
 

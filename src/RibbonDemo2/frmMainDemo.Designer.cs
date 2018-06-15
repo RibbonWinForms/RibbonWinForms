@@ -1,11 +1,14 @@
-﻿namespace RibbonDemo2
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace RibbonDemo2
 {
     partial class frmMainDemo
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -361,37 +364,37 @@
 
         #endregion
 
-        private System.Windows.Forms.Ribbon ribbon1;
-        private System.Windows.Forms.RibbonTab ribbonTab1;
-        private System.Windows.Forms.RibbonTab ribbonTab2;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem1;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem2;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem3;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem4;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem5;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem6;
-        private System.Windows.Forms.RibbonSeparator ribbonSeparator1;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem7;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem8;
-        private System.Windows.Forms.RibbonButton ribbonButton15;
-        private System.Windows.Forms.RibbonButton ribbonButton16;
-        private System.Windows.Forms.RibbonButton ribbonButton17;
-        private System.Windows.Forms.RibbonSeparator ribbonSeparator2;
-        private System.Windows.Forms.RibbonButton ribbonButton18;
-        private System.Windows.Forms.RibbonButton ribbonButton19;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem9;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem10;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem11;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem12;
-        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem1;
-        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem2;
-        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem3;
-        private System.Windows.Forms.RibbonPanel ribbonPanel3;
-        private System.Windows.Forms.RibbonButton btForm1;
-        private System.Windows.Forms.RibbonButton btForm2;
-        private System.Windows.Forms.RibbonButton btForm3;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RibbonPanel ribbonPanel_OrbStyle;
-        private System.Windows.Forms.RibbonPanel ribbonPanel_Theme;
+        private Ribbon ribbon1;
+        private RibbonTab ribbonTab1;
+        private RibbonTab ribbonTab2;
+        private RibbonOrbMenuItem ribbonOrbMenuItem1;
+        private RibbonOrbMenuItem ribbonOrbMenuItem2;
+        private RibbonOrbMenuItem ribbonOrbMenuItem3;
+        private RibbonOrbMenuItem ribbonOrbMenuItem4;
+        private RibbonOrbMenuItem ribbonOrbMenuItem5;
+        private RibbonOrbMenuItem ribbonOrbMenuItem6;
+        private RibbonSeparator ribbonSeparator1;
+        private RibbonOrbMenuItem ribbonOrbMenuItem7;
+        private RibbonOrbMenuItem ribbonOrbMenuItem8;
+        private RibbonButton ribbonButton15;
+        private RibbonButton ribbonButton16;
+        private RibbonButton ribbonButton17;
+        private RibbonSeparator ribbonSeparator2;
+        private RibbonButton ribbonButton18;
+        private RibbonButton ribbonButton19;
+        private RibbonOrbMenuItem ribbonOrbMenuItem9;
+        private RibbonOrbMenuItem ribbonOrbMenuItem10;
+        private RibbonOrbMenuItem ribbonOrbMenuItem11;
+        private RibbonOrbMenuItem ribbonOrbMenuItem12;
+        private RibbonOrbRecentItem ribbonOrbRecentItem1;
+        private RibbonOrbRecentItem ribbonOrbRecentItem2;
+        private RibbonOrbRecentItem ribbonOrbRecentItem3;
+        private RibbonPanel ribbonPanel3;
+        private RibbonButton btForm1;
+        private RibbonButton btForm2;
+        private RibbonButton btForm3;
+        private Panel panel1;
+        private RibbonPanel ribbonPanel_OrbStyle;
+        private RibbonPanel ribbonPanel_Theme;
     }
 }

@@ -1,5 +1,5 @@
-using System.Windows.Forms.Design.Behavior;
 using System.Drawing;
+using System.Windows.Forms.Design.Behavior;
 
 namespace System.Windows.Forms
 {
@@ -8,8 +8,8 @@ namespace System.Windows.Forms
     {
         #region Fields
 
-        private BehaviorService _behaviorService;
-        private Ribbon _ribbon;
+        private readonly BehaviorService _behaviorService;
+        private readonly Ribbon _ribbon;
         private RibbonDesigner _componentDesigner;
         #endregion
 

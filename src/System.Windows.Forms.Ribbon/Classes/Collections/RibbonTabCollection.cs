@@ -29,7 +29,7 @@ namespace System.Windows.Forms
         internal RibbonTabCollection(Ribbon owner)
            : base(owner)
         {
-            if (owner == null) throw new ArgumentNullException("null");
+            if (owner == null) throw new ArgumentNullException("owner");
         }
 
         internal override void SetOwner(RibbonTab item)
@@ -50,6 +50,7 @@ namespace System.Windows.Forms
             }
             catch
             {
+                // ignored
             }
         }
 
@@ -74,10 +75,6 @@ namespace System.Windows.Forms
                     // This is not the last tab , make the tab following this tab active.
                     Owner.ActiveTab = Owner.Tabs[Owner.Tabs.IndexOf(tab) + 1];
                     Owner.Tabs.Remove(tab);
-                }
-                else
-                {
-                    // This is the only tab. Deleting causes errors, so we shall leave it.
                 }
             }
 

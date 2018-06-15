@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.Windows.Forms;
+
 namespace RibbonDemo
 {
     partial class TestForm
@@ -5,7 +8,7 @@ namespace RibbonDemo
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -289,33 +292,33 @@ namespace RibbonDemo
 
         #endregion
 
-        private System.Windows.Forms.Ribbon ribbon1;
-        private System.Windows.Forms.RibbonTab ribbonTab1;
-        private System.Windows.Forms.RibbonPanel ribbonPanel1;
-        private System.Windows.Forms.RibbonComboBox ribbonComboBox1;
-        private System.Windows.Forms.RibbonComboBox ribbonComboBox2;
-        private System.Windows.Forms.RibbonButton ribbonButton1;
-        private System.Windows.Forms.RibbonButton ribbonButton2;
-        private System.Windows.Forms.RibbonPanel ribbonPanel2;
-        private System.Windows.Forms.RibbonUpDown ribbonUpDown1;
-        private System.Windows.Forms.RibbonPanel ribbonPanel3;
-        private System.Windows.Forms.RibbonCheckBox ribbonCheckBox1;
-        private System.Windows.Forms.RibbonCheckBox ribbonCheckBox2;
-        private System.Windows.Forms.RibbonButton ribbonButton3;
-        private System.Windows.Forms.RibbonSeparator ribbonSeparator1;
-        private System.Windows.Forms.RibbonTextBox ribbonTextBox1;
-        private System.Windows.Forms.RibbonTab ribbonTab2;
-        private System.Windows.Forms.RibbonCheckBox ribbonCheckBox3;
-        private System.Windows.Forms.RibbonCheckBox ribbonCheckBox4;
-        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.RibbonSeparator ribbonSeparator2;
-        private System.Windows.Forms.RibbonButton ribbonButton4;
-        private System.Windows.Forms.RibbonPanel ribbonPanel4;
-        private System.Windows.Forms.RibbonButton ribbonButton5;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.RibbonPanel ribbonPanel5;
-        private System.Windows.Forms.RibbonButton ribbonButton6;
+        private Ribbon ribbon1;
+        private RibbonTab ribbonTab1;
+        private RibbonPanel ribbonPanel1;
+        private RibbonComboBox ribbonComboBox1;
+        private RibbonComboBox ribbonComboBox2;
+        private RibbonButton ribbonButton1;
+        private RibbonButton ribbonButton2;
+        private RibbonPanel ribbonPanel2;
+        private RibbonUpDown ribbonUpDown1;
+        private RibbonPanel ribbonPanel3;
+        private RibbonCheckBox ribbonCheckBox1;
+        private RibbonCheckBox ribbonCheckBox2;
+        private RibbonButton ribbonButton3;
+        private RibbonSeparator ribbonSeparator1;
+        private RibbonTextBox ribbonTextBox1;
+        private RibbonTab ribbonTab2;
+        private RibbonCheckBox ribbonCheckBox3;
+        private RibbonCheckBox ribbonCheckBox4;
+        private RibbonOrbMenuItem ribbonOrbMenuItem1;
+        private Button button1;
+        private RibbonSeparator ribbonSeparator2;
+        private RibbonButton ribbonButton4;
+        private RibbonPanel ribbonPanel4;
+        private RibbonButton ribbonButton5;
+        private Button button2;
+        private Button button3;
+        private RibbonPanel ribbonPanel5;
+        private RibbonButton ribbonButton6;
     }
 }

@@ -29,11 +29,7 @@ namespace System.Windows.Forms
       public event RibbonHostSizeModeHandledEventHandler SizeModeChanging;
       public delegate void RibbonHostSizeModeHandledEventHandler(object sender, RibbonHostSizeModeHandledEventArgs e);
 
-      public RibbonHost()
-      {
-      }
-
-      /// <summary>
+       /// <summary>
       /// Gets or sets the control that this item will host
       /// </summary>
       public Control HostedControl
@@ -55,11 +51,11 @@ namespace System.Windows.Forms
                ctlSize = ctl.Size;
 
                //hook into some needed events
-               ctl.MouseMove += new MouseEventHandler(ctl_MouseMove);
-               CanvasChanged += new EventHandler(RibbonHost_CanvasChanged);
+               ctl.MouseMove += ctl_MouseMove;
+               CanvasChanged += RibbonHost_CanvasChanged;
                //we must know when our tab changes so we can hide the control
                if (OwnerTab != null)
-                  Owner.ActiveTabChanged += new EventHandler(Owner_ActiveTabChanged);
+                  Owner.ActiveTabChanged += Owner_ActiveTabChanged;
 
                //the control must always have the same parent as the host item so set it here.
                if (Owner != null)

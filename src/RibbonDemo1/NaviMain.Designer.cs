@@ -1,11 +1,14 @@
-﻿namespace RibbonDemo
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace RibbonDemo
 {
 	partial class NaviMain
 	{
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+		private IContainer components = null;
 
 		/// <summary> 
 		/// Clean up any resources being used.
@@ -160,12 +163,12 @@
 
 		#endregion
 
-        internal System.Windows.Forms.ToolStrip tlsNaviHelper;
-        internal System.Windows.Forms.ToolStripButton tsbtnPin;
-        internal System.Windows.Forms.ToolStrip tlstrpNaviButtons;
-        internal System.Windows.Forms.ToolStripButton btnInbox;
-        internal System.Windows.Forms.ToolStripButton btnSearch;
-        private System.Windows.Forms.TreeView treeView1;
-        internal System.Windows.Forms.ImageList lstViewImageList;
+        internal ToolStrip tlsNaviHelper;
+        internal ToolStripButton tsbtnPin;
+        internal ToolStrip tlstrpNaviButtons;
+        internal ToolStripButton btnInbox;
+        internal ToolStripButton btnSearch;
+        private TreeView treeView1;
+        internal ImageList lstViewImageList;
 	}
 }

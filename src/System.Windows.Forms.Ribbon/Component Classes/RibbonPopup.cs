@@ -10,14 +10,14 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms.RibbonHelpers;
 
 namespace System.Windows.Forms
 {
-    [ToolboxItemAttribute(false)]
+    [ToolboxItem(false)]
     public class RibbonPopup
         : Control
     {
@@ -85,18 +85,20 @@ namespace System.Windows.Forms
            if (WrappedDropDown == null)
            {
               ToolStripControlHost host = new ToolStripControlHost(this);
-              WrappedDropDown = new RibbonWrappedDropDown();
-              WrappedDropDown.AutoClose = RibbonDesigner.Current != null;
-              WrappedDropDown.Items.Add(host);
+                WrappedDropDown = new RibbonWrappedDropDown
+                {
+                    AutoClose = RibbonDesigner.Current != null
+                };
+                WrappedDropDown.Items.Add(host);
 
               WrappedDropDown.Padding = Padding.Empty;
               WrappedDropDown.Margin = Padding.Empty;
               host.Padding = Padding.Empty;
               host.Margin = Padding.Empty;
 
-              WrappedDropDown.Opening += new CancelEventHandler(ToolStripDropDown_Opening);
-              WrappedDropDown.Closing += new ToolStripDropDownClosingEventHandler(ToolStripDropDown_Closing);
-              WrappedDropDown.Closed += new ToolStripDropDownClosedEventHandler(ToolStripDropDown_Closed);
+              WrappedDropDown.Opening += ToolStripDropDown_Opening;
+              WrappedDropDown.Closing += ToolStripDropDown_Closing;
+              WrappedDropDown.Closed += ToolStripDropDown_Closed;
               WrappedDropDown.Size = Size;
            }
             WrappedDropDown.Show(screenLocation);

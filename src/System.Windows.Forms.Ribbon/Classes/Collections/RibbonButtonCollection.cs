@@ -57,7 +57,7 @@ namespace System.Windows.Forms
             item.SetOwnerTab(OwnerTab);
             item.SetOwnerItem(OwnerItem);
 
-            item.Click += new EventHandler(OwnerList.item_Click);
+            item.Click += OwnerList.item_Click;
 
             base.Add(item);
         }

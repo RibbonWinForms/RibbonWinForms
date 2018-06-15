@@ -4,7 +4,7 @@ using System.Drawing;
 namespace System.Windows.Forms
 {
    //[Designer(typeof(RibbonUpDown))]
-   public partial class RibbonUpDown : RibbonTextBox
+   public class RibbonUpDown : RibbonTextBox
    {
       #region Fields
       private const int spacing = 3;

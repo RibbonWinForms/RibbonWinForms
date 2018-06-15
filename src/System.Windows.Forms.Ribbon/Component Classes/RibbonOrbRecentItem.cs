@@ -19,7 +19,6 @@ namespace System.Windows.Forms
         #region Ctor
 
         public RibbonOrbRecentItem()
-            : base()
         {
 
         }

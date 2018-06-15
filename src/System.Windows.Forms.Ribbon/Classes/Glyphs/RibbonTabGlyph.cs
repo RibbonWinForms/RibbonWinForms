@@ -7,10 +7,10 @@ namespace System.Windows.Forms
    public class RibbonTabGlyph
        : Glyph
    {
-      BehaviorService _behaviorService;
-      Ribbon _ribbon;
-      RibbonDesigner _componentDesigner;
-      Rectangle bounds;
+       private BehaviorService _behaviorService;
+       private Ribbon _ribbon;
+       private RibbonDesigner _componentDesigner;
+       private Rectangle bounds;
 
       public RibbonTabGlyph(BehaviorService behaviorService, RibbonDesigner designer, Ribbon ribbon)
          : base(new RibbonTabGlyphBehavior(designer, ribbon))
@@ -83,8 +83,8 @@ namespace System.Windows.Forms
    public class RibbonTabGlyphBehavior
        : Behavior
    {
-      Ribbon _ribbon;
-      RibbonDesigner _designer;
+       private Ribbon _ribbon;
+       private RibbonDesigner _designer;
 
       public RibbonTabGlyphBehavior(RibbonDesigner designer, Ribbon ribbon)
       {

@@ -10,8 +10,8 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {

@@ -11,6 +11,7 @@
 
 
 using System.ComponentModel;
+using System.Windows.Forms.Classes.Collections;
 
 namespace System.Windows.Forms
 {
@@ -18,7 +19,7 @@ namespace System.Windows.Forms
     /// Represents a collection of RibbonPanel objects
     /// </summary>
     public sealed class RibbonPanelCollection
-        : System.Windows.Forms.Classes.Collections.RibbonCollectionBase<RibbonPanel>
+        : RibbonCollectionBase<RibbonPanel>
     {
         /// <summary>
         /// Creates a new RibbonPanelCollection
@@ -28,9 +29,7 @@ namespace System.Windows.Forms
         public RibbonPanelCollection(RibbonTab ownerTab)
            : base(null)
         {
-           if (ownerTab == null) throw new ArgumentNullException(nameof(ownerTab));
-
-           OwnerTab = ownerTab;
+            OwnerTab = ownerTab ?? throw new ArgumentNullException(nameof(ownerTab));
         }
 
         /// <summary>
@@ -72,6 +71,7 @@ namespace System.Windows.Forms
             }
             catch
             {
+                // ignored
             }
         }
 
@@ -90,7 +90,6 @@ namespace System.Windows.Forms
         /// <summary>
         /// Sets the value of the OwnerTab Property
         /// </summary>
-        /// <param name="onwerTab"></param>
         internal void SetOwnerTab(RibbonTab ownerTab)
         {
             OwnerTab = ownerTab;

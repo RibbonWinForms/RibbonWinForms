@@ -20,9 +20,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonPanel)
+                if (Component is RibbonPanel panel)
                 {
-                    return (Component as RibbonPanel).Owner;
+                    return panel.Owner;
                 }
                 return null;
             }
@@ -32,9 +32,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonPanel)
+                if (Component is RibbonPanel panel)
                 {
-                    return (Component as RibbonPanel).Items;
+                    return panel.Items;
                 }
                 return null;
             }

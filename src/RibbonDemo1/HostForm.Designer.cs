@@ -1,11 +1,14 @@
-﻿namespace RibbonDemo
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace RibbonDemo
 {
    partial class HostForm
    {
       /// <summary>
       /// Required designer variable.
       /// </summary>
-      private System.ComponentModel.IContainer components = null;
+      private IContainer components = null;
 
       /// <summary>
       /// Clean up any resources being used.
@@ -306,29 +309,29 @@
 
       #endregion
 
-      private System.Windows.Forms.RibbonTab ribbonTab1;
-      private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem2;
-      private System.Windows.Forms.RibbonButton ribbonButton5;
-      private System.Windows.Forms.Ribbon ribbon1;
-      private System.Windows.Forms.MonthCalendar month1;
-      private System.Windows.Forms.DateTimePicker dateTimePicker1;
-      private System.Windows.Forms.RibbonPanel ribbonPanel3;
-      private System.Windows.Forms.RibbonLabel ribbonLabel1;
-      private System.Windows.Forms.RibbonComboBox ribbonComboBox1;
-      private System.Windows.Forms.RibbonHost ribbonHost2;
-      private System.Windows.Forms.RibbonPanel ribbonPanel1;
-      private System.Windows.Forms.RibbonLabel ribbonLabel2;
-      private System.Windows.Forms.RibbonHost ribbonHost1;
-      private System.Windows.Forms.RibbonLabel ribbonLabel4;
-      private System.Windows.Forms.RibbonLabel ribbonLabel3;
-      private System.Windows.Forms.RibbonPanel ribbonPanel2;
-      private System.Windows.Forms.DataGridView dataGridView1;
-      private System.Windows.Forms.RibbonHost ribbonHost3;
-      private System.Windows.Forms.DataGridViewTextBoxColumn GridID;
-      private System.Windows.Forms.DataGridViewTextBoxColumn GridName;
-      private System.Windows.Forms.Label label1;
-      private System.Windows.Forms.Label label2;
-      private System.Windows.Forms.Label label3;
-      private System.Windows.Forms.RibbonButton ribbonButton1;
+      private RibbonTab ribbonTab1;
+      private RibbonOrbMenuItem ribbonOrbMenuItem2;
+      private RibbonButton ribbonButton5;
+      private Ribbon ribbon1;
+      private MonthCalendar month1;
+      private DateTimePicker dateTimePicker1;
+      private RibbonPanel ribbonPanel3;
+      private RibbonLabel ribbonLabel1;
+      private RibbonComboBox ribbonComboBox1;
+      private RibbonHost ribbonHost2;
+      private RibbonPanel ribbonPanel1;
+      private RibbonLabel ribbonLabel2;
+      private RibbonHost ribbonHost1;
+      private RibbonLabel ribbonLabel4;
+      private RibbonLabel ribbonLabel3;
+      private RibbonPanel ribbonPanel2;
+      private DataGridView dataGridView1;
+      private RibbonHost ribbonHost3;
+      private DataGridViewTextBoxColumn GridID;
+      private DataGridViewTextBoxColumn GridName;
+      private Label label1;
+      private Label label2;
+      private Label label3;
+      private RibbonButton ribbonButton1;
     }
 }

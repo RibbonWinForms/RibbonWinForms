@@ -1,6 +1,6 @@
-﻿using System.IO;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace System.Windows.Forms
 {
@@ -127,23 +127,21 @@ namespace System.Windows.Forms
             {
                 return Corners.All;
             }
-            else
+
+            ToolStrip g = item.Owner;
+            int iLast = item.Owner.Items.Count - 1;
+            Corners c = Corners.None;
+            if (item.Owner.Items.IndexOf(item) == 0)
             {
-                ToolStrip g = item.Owner as ToolStrip;
-                int iLast = item.Owner.Items.Count - 1;
-                Corners c = Corners.None;
-                if (item.Owner.Items.IndexOf(item) == 0)
-                {
-                    c |= Corners.West;
-                }
-
-                if (item.Owner.Items.IndexOf(item) == iLast)
-                {
-                    c |= Corners.East;
-                }
-
-                return c;
+                c |= Corners.West;
             }
+
+            if (item.Owner.Items.IndexOf(item) == iLast)
+            {
+                c |= Corners.East;
+            }
+
+            return c;
         }
 
         #region "Gripper"
@@ -321,7 +319,7 @@ namespace System.Windows.Forms
                 Rectangle rect = new Rectangle(2, 2, e.Item.Width - 2, e.Item.Height - 2);
 
                 Rectangle innerR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, e.Item.Height - 2);
-                Rectangle glossyR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, 1 + Convert.ToInt32((double)e.Item.Bounds.Height * .36));
+                Rectangle glossyR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, 1 + Convert.ToInt32(e.Item.Bounds.Height * .36));
 
                 using (SolidBrush brus = new SolidBrush(Theme.Standard.RendererColorTable.ButtonSelectedBgOut))
                 {
@@ -351,11 +349,13 @@ namespace System.Windows.Forms
                         gradient.WrapMode = WrapMode.Clamp;
                         gradient.CenterPoint = new PointF(Convert.ToSingle(1 + e.Item.Width / 2), Convert.ToSingle(e.Item.Bounds.Height));
                         gradient.CenterColor = Theme.Standard.RendererColorTable.ButtonSelectedBgCenter;
-                        gradient.SurroundColors = new Color[] { Theme.Standard.RendererColorTable.ButtonSelectedBgOut };
+                        gradient.SurroundColors = new[] { Theme.Standard.RendererColorTable.ButtonSelectedBgOut };
 
-                        Blend blend = new Blend(3);
-                        blend.Factors = new float[] { 0f, 0.8f, 0f };
-                        blend.Positions = new float[] { 0f, 0.30f, 1f };
+                        Blend blend = new Blend(3)
+                        {
+                            Factors = new[] { 0f, 0.8f, 0f },
+                            Positions = new[] { 0f, 0.30f, 1f }
+                        };
 
 
                         Region lastClip = e.Graphics.Clip;
@@ -404,7 +404,7 @@ namespace System.Windows.Forms
                 Rectangle rect = new Rectangle(2, 2, e.Item.Width - 2, e.Item.Height - 2);
 
                 Rectangle innerR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, e.Item.Height - 2);
-                Rectangle glossyR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, 1 + Convert.ToInt32((double)e.Item.Bounds.Height * .36));
+                Rectangle glossyR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, 1 + Convert.ToInt32(e.Item.Bounds.Height * .36));
 
                 using (SolidBrush brus = new SolidBrush(Theme.Standard.RendererColorTable.ButtonPressedBgOut))
                 {
@@ -434,11 +434,13 @@ namespace System.Windows.Forms
                         gradient.WrapMode = WrapMode.Clamp;
                         gradient.CenterPoint = new PointF(Convert.ToSingle(1 + e.Item.Width / 2), Convert.ToSingle(e.Item.Bounds.Height));
                         gradient.CenterColor = Theme.Standard.RendererColorTable.ButtonPressedBgCenter;
-                        gradient.SurroundColors = new Color[] { Theme.Standard.RendererColorTable.ButtonPressedBgOut };
+                        gradient.SurroundColors = new[] { Theme.Standard.RendererColorTable.ButtonPressedBgOut };
 
-                        Blend blend = new Blend(3);
-                        blend.Factors = new float[] { 0f, 0.8f, 0f };
-                        blend.Positions = new float[] { 0f, 0.30f, 1f };
+                        Blend blend = new Blend(3)
+                        {
+                            Factors = new[] { 0f, 0.8f, 0f },
+                            Positions = new[] { 0f, 0.30f, 1f }
+                        };
 
 
                         Region lastClip = e.Graphics.Clip;
@@ -496,7 +498,7 @@ namespace System.Windows.Forms
                 {
                     if (e.Item.Text != string.Empty)
                     {
-                        if (e.Item.Enabled == true)
+                        if (e.Item.Enabled)
                         {
                             if (e.Item is ToolStripButton)
                             {
@@ -531,7 +533,7 @@ namespace System.Windows.Forms
                 {
                     if (e.Item.Text != string.Empty)
                     {
-                        if (e.Item.Enabled == true)
+                        if (e.Item.Enabled)
                         {
                             if (e.Item is ToolStripButton)
                             {

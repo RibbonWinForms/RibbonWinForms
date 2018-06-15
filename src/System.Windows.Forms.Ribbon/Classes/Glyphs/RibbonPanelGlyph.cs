@@ -7,10 +7,10 @@ namespace System.Windows.Forms
     public class RibbonPanelGlyph
         : Glyph
     {
-        BehaviorService _behaviorService;
-        RibbonTab _tab;
-        RibbonTabDesigner _componentDesigner;
-        Size size;
+        private readonly BehaviorService _behaviorService;
+        private readonly RibbonTab _tab;
+        private RibbonTabDesigner _componentDesigner;
+        private readonly Size size;
 
         public RibbonPanelGlyph(BehaviorService behaviorService, RibbonTabDesigner designer, RibbonTab tab)
             : base(new RibbonPanelGlyphBehavior(designer, tab))
@@ -81,8 +81,8 @@ namespace System.Windows.Forms
     public class RibbonPanelGlyphBehavior
         : Behavior
     {
-        RibbonTab _tab;
-        RibbonTabDesigner _designer;
+        private RibbonTab _tab;
+        private readonly RibbonTabDesigner _designer;
 
         public RibbonPanelGlyphBehavior(RibbonTabDesigner designer, RibbonTab tab)
         {

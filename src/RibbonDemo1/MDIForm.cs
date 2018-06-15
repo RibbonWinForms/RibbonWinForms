@@ -34,8 +34,10 @@ namespace RibbonDemo
                     return;
                 }
             }
-            Form form = new MDIChild1();
-            form.MdiParent = this;
+            Form form = new MDIChild1
+            {
+                MdiParent = this
+            };
             form.Show();
         }
 
@@ -49,8 +51,10 @@ namespace RibbonDemo
                     return;
                 }
             }
-            Form form = new MDIChild2();
-            form.MdiParent = this;
+            Form form = new MDIChild2
+            {
+                MdiParent = this
+            };
             form.Show();
         }
     }

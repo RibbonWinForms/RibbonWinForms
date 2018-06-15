@@ -18,10 +18,12 @@ namespace RibbonDemo
          }
       }
 
+/*
       private void ribbonCalendar1_DateSelected(object sender, EventArgs e)
       {
          //Console.WriteLine("Date Selected " + ribbonCalendar1.Calendar.SelectionStart.ToShortDateString());
       }
+*/
 
       private void month1_DateSelected(object sender, DateRangeEventArgs e)
       {
@@ -53,16 +55,12 @@ namespace RibbonDemo
                   dataGridView1.Visible = false;
                   break;
                }
-            default:
-               {
-                  break;
-               }
          }
       }
 
       private void ribbon1_OrbDoubleClick(object sender, EventArgs e)
       {
-         MessageBox.Show("Orb Double CLicked");
+         MessageBox.Show(@"Orb Double CLicked");
       }
    }
 }

@@ -123,7 +123,7 @@ namespace System.Windows.Forms
       {
          get
          {
-            if (_selectedItem == null)
+             if (_selectedItem == null)
             {
                 foreach (RibbonItem item in DropDownItems)
                 {
@@ -135,18 +135,14 @@ namespace System.Windows.Forms
                 }
                 return null;
             }
-            else
-            {
-               if (DropDownItems.Contains(_selectedItem))
-               {
-                  return _selectedItem;
-               }
-               else
-               {
-                  _selectedItem = null;
-                  return null;
-               }
-            }
+
+             if (DropDownItems.Contains(_selectedItem))
+             {
+                 return _selectedItem;
+             }
+
+             _selectedItem = null;
+             return null;
          }
          //Steve
          set
@@ -177,14 +173,12 @@ namespace System.Windows.Forms
       {
          get
          {
-            if (_selectedItem == null)
+             if (_selectedItem == null)
             {
                return null;
             }
-            else
-            {
-               return _selectedItem.Value;
-            }
+
+             return _selectedItem.Value;
          }
          set
          {
@@ -262,7 +256,7 @@ namespace System.Windows.Forms
             DropDown.DropDownMaxHeight = DropDownMaxHeight;
             DropDown.ShowSizingGrip = DropDownResizable;
             DropDown.DrawIconsBar = DrawIconsBar;
-            DropDown.Closed += new EventHandler(DropDown_Closed);
+            DropDown.Closed += DropDown_Closed;
 
             Point location = OnGetDropDownMenuLocation();
             DropDown.Show(location);
@@ -290,7 +284,7 @@ namespace System.Windows.Forms
          {
             if (_assignedHandlers.Contains(item) == false)
             {
-               item.Click += new EventHandler(DropDownItem_Click);
+               item.Click += DropDownItem_Click;
                _assignedHandlers.Add(item);
             }
          }
@@ -305,7 +299,7 @@ namespace System.Windows.Forms
          _assignedHandlers.Clear();
       }
 
-      void DropDownItem_Click(object sender, EventArgs e)
+       private void DropDownItem_Click(object sender, EventArgs e)
       {
          // Steve
          _selectedItem = (sender as RibbonItem);

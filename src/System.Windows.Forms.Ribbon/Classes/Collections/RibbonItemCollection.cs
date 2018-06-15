@@ -14,12 +14,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
+using System.Windows.Forms.Classes.Collections;
 
 namespace System.Windows.Forms
 {
     [Editor(typeof(RibbonItemCollectionEditor), typeof(UITypeEditor))]
     public class RibbonItemCollection
-        : System.Windows.Forms.Classes.Collections.RibbonCollectionBase<RibbonItem>
+        : RibbonCollectionBase<RibbonItem>
     {
         #region Fields
 

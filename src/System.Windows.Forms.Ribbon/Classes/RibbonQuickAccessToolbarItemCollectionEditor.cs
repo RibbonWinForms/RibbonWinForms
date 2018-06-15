@@ -30,7 +30,7 @@ namespace System.Windows.Forms
 
         protected override Type[] CreateNewItemTypes()
         {
-            return new Type[] {
+            return new[] {
             typeof(RibbonButton),
             typeof(RibbonComboBox),
             typeof(RibbonSeparator),

@@ -9,10 +9,10 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System.Drawing;
 using System.ComponentModel;
-using System.Windows.Forms.VisualStyles;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms.VisualStyles;
 
 namespace System.Windows.Forms
 {
@@ -145,7 +145,7 @@ namespace System.Windows.Forms
 
             if (Style == CheckBoxStyle.CheckBox)
             {
-               CheckBoxState CheckState = Checked == true ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal;
+               CheckBoxState CheckState = Checked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal;
                if (Selected)
                   CheckState += 1;
 
@@ -156,7 +156,7 @@ namespace System.Windows.Forms
             }
             else
             {
-               RadioButtonState RadioState = Checked == true ? RadioButtonState.CheckedNormal : RadioButtonState.UncheckedNormal;
+               RadioButtonState RadioState = Checked ? RadioButtonState.CheckedNormal : RadioButtonState.UncheckedNormal;
                if (Selected)
                   RadioState += 1;
                if (CheckBoxOrientation == CheckBoxOrientationEnum.Left)
@@ -230,7 +230,7 @@ namespace System.Windows.Forms
          }
       }
 
-      private bool checkedGlyphSize = false;
+      private bool checkedGlyphSize;
       public override Size MeasureSize(object sender, RibbonElementMeasureSizeEventArgs e)
       {
          if (!checkedGlyphSize)
@@ -238,9 +238,9 @@ namespace System.Windows.Forms
             try
             {
                if (Style == CheckBoxStyle.CheckBox)
-                  _checkboxSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, Checked == true ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal).Height + spacing;
+                  _checkboxSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, Checked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal).Height + spacing;
                else
-                  _checkboxSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, Checked == true ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal).Height + spacing;
+                  _checkboxSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, Checked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal).Height + spacing;
             }
             catch { /* I don't mind at all */ }
             checkedGlyphSize = true;
@@ -326,7 +326,7 @@ namespace System.Windows.Forms
           Rectangle clickableBounds = TextClickable ? Bounds : CheckBoxBounds;
           if (clickableBounds.Contains(e.X, e.Y))
           {
-              Debug.WriteLine("Owner.Cursor = Cursors.Hand e.X=" +e.X + " e.Y=" + e.Y + " CheckBoxBounds (" + CheckBoxBounds.ToString() + ")");
+              Debug.WriteLine("Owner.Cursor = Cursors.Hand e.X=" +e.X + " e.Y=" + e.Y + " CheckBoxBounds (" + CheckBoxBounds + ")");
               Canvas.Cursor = Cursors.Hand;
 
               if (!Selected)
@@ -334,7 +334,7 @@ namespace System.Windows.Forms
           }
           else
           {
-              Debug.WriteLine("Owner.Cursor = Cursors.Default e.X=" + e.X + " e.Y=" + e.Y + " CheckBoxBounds (" + CheckBoxBounds.ToString() + ")");
+              Debug.WriteLine("Owner.Cursor = Cursors.Default e.X=" + e.X + " e.Y=" + e.Y + " CheckBoxBounds (" + CheckBoxBounds + ")");
               Canvas.Cursor = Cursors.Default;
  
               if (Selected)

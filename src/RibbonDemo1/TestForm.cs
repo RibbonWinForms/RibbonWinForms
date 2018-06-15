@@ -44,7 +44,7 @@ namespace RibbonDemo
 
       private void ribbonComboBox1_DropDownItemClicked(object sender, RibbonItemEventArgs e)
       {
-         MessageBox.Show("Item Clicked");
+         MessageBox.Show(@"Item Clicked");
       }
 
       private void button2_Click(object sender, EventArgs e)
