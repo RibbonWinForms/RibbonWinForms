@@ -24,7 +24,7 @@ namespace System.Windows.Forms
        // Steve
       private RibbonItem _selectedItem;
 
-      private Set<RibbonItem> _assignedHandlers = new Set<RibbonItem>();
+      private readonly Set<RibbonItem> _assignedHandlers = new Set<RibbonItem>();
 
       #endregion
 

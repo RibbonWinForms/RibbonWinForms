@@ -37,10 +37,10 @@ namespace System.Windows.Forms
 		private bool _flashEnabled;
 		private int _flashIntervall = 1000;
 		private Image _flashImage;
-		private Timer _flashTimer = new Timer();
+		private readonly Timer _flashTimer = new Timer();
 		protected bool _showFlashImage;
 
-		private RibbonToolTip _TT;
+		private readonly RibbonToolTip _TT;
 		private static RibbonToolTip _lastActiveToolTip;
 		private string _tooltip;
 

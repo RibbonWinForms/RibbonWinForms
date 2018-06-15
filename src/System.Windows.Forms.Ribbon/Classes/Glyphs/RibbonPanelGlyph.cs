@@ -89,9 +89,7 @@ namespace System.Windows.Forms
             _designer = designer;
             _tab = tab;
         }
-
-
-
+        
         public override bool OnMouseUp(Glyph g, MouseButtons button)
         {
             _designer.AddPanel(this, EventArgs.Empty);

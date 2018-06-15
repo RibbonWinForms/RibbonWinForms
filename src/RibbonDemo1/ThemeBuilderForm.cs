@@ -10,8 +10,8 @@ namespace RibbonDemo
 {
     public partial class ThemeBuilderForm : RibbonForm
     {
-        private Dictionary<RibbonColorPart, Panel> dicPanel = new Dictionary<RibbonColorPart, Panel>();
-        private Dictionary<RibbonColorPart, TextBox> dicTxt = new Dictionary<RibbonColorPart, TextBox>();
+        private readonly Dictionary<RibbonColorPart, Panel> dicPanel = new Dictionary<RibbonColorPart, Panel>();
+        private readonly Dictionary<RibbonColorPart, TextBox> dicTxt = new Dictionary<RibbonColorPart, TextBox>();
 
         public ThemeBuilderForm()
         {

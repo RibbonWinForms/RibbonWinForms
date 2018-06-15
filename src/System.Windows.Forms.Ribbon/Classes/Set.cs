@@ -15,7 +15,7 @@ namespace System.Windows.Forms
 	[Serializable]
 	public class Set<T> : ICollection<T>, IEnumerable<T>, IEnumerable
 	{
-		private Dictionary<T, object> _items = new Dictionary<T, object>();
+		private readonly Dictionary<T, object> _items = new Dictionary<T, object>();
 
 		#region ICollection<T>
 

@@ -9,8 +9,8 @@ namespace System.Windows.Forms
         : Glyph
 
     {
-        private BehaviorService _behaviorService;
-        private Ribbon _ribbon;
+        private readonly BehaviorService _behaviorService;
+        private readonly Ribbon _ribbon;
         private RibbonDesigner _componentDesigner;
 
         public RibbonQuickAccessToolbarGlyph(BehaviorService behaviorService, RibbonDesigner designer, Ribbon ribbon)
@@ -75,8 +75,8 @@ namespace System.Windows.Forms
     public class RibbonQuickAccessGlyphBehavior
         : Behavior
     {
-        private Ribbon _ribbon;
-        private RibbonDesigner _designer;
+        private readonly Ribbon _ribbon;
+        private readonly RibbonDesigner _designer;
 
         public RibbonQuickAccessGlyphBehavior(RibbonDesigner designer, Ribbon ribbon)
         {

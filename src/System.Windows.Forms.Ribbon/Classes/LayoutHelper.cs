@@ -7,7 +7,7 @@ namespace System.Windows.Forms
     /// </summary>
     public class LayoutHelper
     {
-        private Ribbon _ribbon;
+        private readonly Ribbon _ribbon;
 
         public LayoutHelper(Ribbon ribbon)
         {

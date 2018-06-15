@@ -44,9 +44,9 @@ namespace System.Windows.Forms
 
         #region Fields
 
-        private Size arrowSize = new Size(5, 3);
+        private readonly Size arrowSize = new Size(5, 3);
 
-        private Ribbon _ownerRibbon;
+        private readonly Ribbon _ownerRibbon;
 
         #endregion
 

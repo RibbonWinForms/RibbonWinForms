@@ -33,7 +33,7 @@ namespace System.Windows.Forms
         private int _offset;
 		private bool _visible = true;
 
-        private RibbonToolTip _TT;
+        private readonly RibbonToolTip _TT;
 
         /// <summary>
 		/// Occurs when the mouse pointer enters the panel

@@ -22,11 +22,11 @@ namespace System.Windows.Forms
 		#endregion
 
 		#region Fields
-		private IRibbonElement _RibbonElement;
+		private readonly IRibbonElement _RibbonElement;
 
 	    private static Color _BorderColor = Color.Red;
-		private Font _Font = new Font("Segoe UI", 8);
-		private Padding TipPadding = new Padding(5, 5, 5, 5);
+		private readonly Font _Font = new Font("Segoe UI", 8);
+		private readonly Padding TipPadding = new Padding(5, 5, 5, 5);
 
 		private Rectangle _ImageRectangle;
 		private Rectangle _TitleRectangle;

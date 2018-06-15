@@ -30,7 +30,7 @@ namespace System.Windows.Forms
       #region Fields
       internal RibbonOrbMenuItem LastPoppedMenuItem;
 		private Rectangle designerSelectedBounds;
-		private int glyphGap = 3;
+		private readonly int glyphGap = 3;
 		private Padding _contentMargin;
        private DateTime OpenedTime; //Steve - capture time popup was shown
 		private string _recentItemsCaption;

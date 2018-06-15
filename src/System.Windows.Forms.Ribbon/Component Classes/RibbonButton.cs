@@ -37,7 +37,7 @@ namespace System.Windows.Forms
         //Kevin - Tracks the selected item when it has dropdownitems assigned
         private RibbonItem _selectedItem;
 
-        private Set<RibbonItem> _assignedHandlers = new Set<RibbonItem>();
+        private readonly Set<RibbonItem> _assignedHandlers = new Set<RibbonItem>();
 
         private Size _MinimumSize;
         private Size _MaximumSize;

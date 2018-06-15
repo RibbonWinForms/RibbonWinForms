@@ -22,7 +22,7 @@ namespace System.Windows.Forms
         IContainsSelectableRibbonItems, IContainsRibbonComponents
     {
         #region Fields
-        private RibbonQuickAccessToolbarItemCollection _items;
+        private readonly RibbonQuickAccessToolbarItemCollection _items;
         private bool _DropDownButtonVisible;
         #endregion
 

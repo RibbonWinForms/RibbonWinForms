@@ -9,7 +9,7 @@ namespace System.Windows.Forms
       #region Fields
       private const int spacing = 3;
       //private Ribbon _ownerRibbon;
-       private int _UpDownSize = 16;
+       private readonly int _UpDownSize = 16;
 
        #endregion
 

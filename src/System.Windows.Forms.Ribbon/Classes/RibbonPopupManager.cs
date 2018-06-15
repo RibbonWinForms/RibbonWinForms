@@ -53,7 +53,7 @@ namespace System.Windows.Forms
 
         #region Fields
 
-        private static List<RibbonPopup> pops;
+        private static readonly List<RibbonPopup> pops;
 
         #endregion
 

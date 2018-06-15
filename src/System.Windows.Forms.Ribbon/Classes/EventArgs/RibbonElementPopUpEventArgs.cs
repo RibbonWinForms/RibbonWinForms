@@ -6,7 +6,7 @@ namespace System.Windows.Forms
 
 	public class RibbonElementPopupEventArgs : PopupEventArgs
 	{
-	    private PopupEventArgs _args;
+	    private readonly PopupEventArgs _args;
 
 		public RibbonElementPopupEventArgs(IRibbonElement item)
 			: base(item.Owner, item.Owner, false, new Size(-1, -1))
