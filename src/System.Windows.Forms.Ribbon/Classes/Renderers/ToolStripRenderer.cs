@@ -1,14 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Forms.VisualStyles;
+﻿using System.IO;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 
 namespace System.Windows.Forms
@@ -189,7 +180,7 @@ namespace System.Windows.Forms
 
         // This utility method cretes a bitmap from 
         // a Base64-encoded string. 
-        static internal Bitmap DeserializeFromBase64(string data)
+        internal static Bitmap DeserializeFromBase64(string data)
         {
             // Decode the string and create a memory stream 
             // on the decoded string data.
@@ -236,7 +227,7 @@ namespace System.Windows.Forms
             }
         }
 
-        protected override void OnRenderMenuItemBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderMenuItemBackground(e);
 
@@ -246,7 +237,7 @@ namespace System.Windows.Forms
         }
 
         //RENDER DROP DOWN BUTTON SELECTED, CHECKED, OR UNSELECTED
-        protected override void OnRenderDropDownButtonBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderDropDownButtonBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderDropDownButtonBackground(e);
 
@@ -256,7 +247,7 @@ namespace System.Windows.Forms
         }
 
         //RENDER BUTTON SELECTED, CHECKED, OR UNSELECTED
-        protected override void OnRenderButtonBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderButtonBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderButtonBackground(e);
 
@@ -265,7 +256,7 @@ namespace System.Windows.Forms
             drawText(e, e.Graphics);
         }
 
-        protected override void OnRenderItemBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderItemBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderItemBackground(e);
 
@@ -274,7 +265,7 @@ namespace System.Windows.Forms
             drawText(e, e.Graphics);
         }
 
-        protected override void OnRenderLabelBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderLabelBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderLabelBackground(e);
 
@@ -283,7 +274,7 @@ namespace System.Windows.Forms
             drawText(e, e.Graphics);
         }
 
-        private void RenderBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        private void RenderBackground(ToolStripItemRenderEventArgs e)
         {
             //IF ITEM IS SELECTED OR CHECKED
             if (e.Item.Selected | ((ToolStripButton)e.Item).Checked)
@@ -304,7 +295,7 @@ namespace System.Windows.Forms
             }
         }
 
-        private void RenderItemBackgroundSelected(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        private void RenderItemBackgroundSelected(ToolStripItemRenderEventArgs e)
         {
             if (e.Item.Bounds.Height <= 0 || e.Item.Bounds.Width <= 0) return;
 
@@ -390,7 +381,7 @@ namespace System.Windows.Forms
             }
         }
 
-        private void RenderItemBackgroundPressed(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        private void RenderItemBackgroundPressed(ToolStripItemRenderEventArgs e)
         {
            if (Theme.Standard.Style == RibbonOrbStyle.Office_2013)
             {
@@ -473,7 +464,7 @@ namespace System.Windows.Forms
             }
         }
 
-        private void RenderItemBackgroundDefault(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        private void RenderItemBackgroundDefault(ToolStripItemRenderEventArgs e)
         {
            if (Theme.Standard.Style == RibbonOrbStyle.Office_2013)
             {
@@ -495,7 +486,7 @@ namespace System.Windows.Forms
             }
         }
 
-        private void drawText(System.Windows.Forms.ToolStripItemRenderEventArgs e, Graphics graphics)
+        private void drawText(ToolStripItemRenderEventArgs e, Graphics graphics)
         {
             try
             {
@@ -602,8 +593,8 @@ namespace System.Windows.Forms
                                 }
                             }
 
-                            e.Item.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                            e.Item.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+                            e.Item.ImageAlign = ContentAlignment.MiddleLeft;
+                            e.Item.TextAlign = ContentAlignment.MiddleRight;
                             break;
                         case ToolStripItemDisplayStyle.None:
                             break;

@@ -80,10 +80,7 @@ namespace System.Windows.Forms
         [DefaultValue(true)]
         public bool AllowTextEdit
         {
-            get
-            {
-                return _AllowTextEdit;
-            }
+            get => _AllowTextEdit;
             set
             {
                 _AllowTextEdit = value;
@@ -107,10 +104,7 @@ namespace System.Windows.Forms
         [RefreshProperties(RefreshProperties.Repaint)]
         public char PasswordChar
         {
-            get
-            {
-                return _passwordChar;
-            }
+            get => _passwordChar;
             set
             {
                 _passwordChar = value;
@@ -131,10 +125,7 @@ namespace System.Windows.Forms
         [Description("Text on the textbox")]
         public string TextBoxText
         {
-            get
-            {
-                return _textBoxText;
-            }
+            get => _textBoxText;
             set
             {
                 _textBoxText = value;
@@ -150,87 +141,45 @@ namespace System.Windows.Forms
         /// Gets the bounds of the text on the textbox
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual Rectangle TextBoxTextBounds
-        {
-            get
-            {
-                return TextBoxBounds;
-            }
-        }
+        public virtual Rectangle TextBoxTextBounds => TextBoxBounds;
 
         /// <summary>
         /// Gets the bounds of the image
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle ImageBounds
-        {
-            get
-            {
-                return _imageBounds;
-            }
-        }
+        public Rectangle ImageBounds => _imageBounds;
 
         /// <summary>
         /// Gets the bounds of the label that is shown next to the textbox
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual Rectangle LabelBounds
-        {
-            get
-            {
-                return _labelBounds;
-            }
-        }
+        public virtual Rectangle LabelBounds => _labelBounds;
 
         /// <summary>
         /// Gets a value indicating if the image is currenlty visible
         /// </summary>
         [Category("Appearance")]
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool ImageVisible
-        {
-            get
-            {
-                return _imageVisible;
-            }
-        }
+        public bool ImageVisible => _imageVisible;
 
         /// <summary>
         /// Gets a value indicating if the label is currently visible
         /// </summary>
         [Category("Appearance")]
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool LabelVisible
-        {
-            get
-            {
-                return _labelVisible;
-            }
-        }
+        public bool LabelVisible => _labelVisible;
 
         /// <summary>
         /// Gets the bounds of the text
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual Rectangle TextBoxBounds
-        {
-            get
-            {
-                return _textBoxBounds;
-            }
-        }
+        public virtual Rectangle TextBoxBounds => _textBoxBounds;
 
         /// <summary>
         /// Gets a value indicating if user is currently editing the text of the textbox
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Editing
-        {
-            get
-            {
-                return _actualTextBox != null;
-            }
-        }
+        public bool Editing => _actualTextBox != null;
 
         /// <summary>
         /// Gets or sets the width of the textbox
@@ -239,10 +188,7 @@ namespace System.Windows.Forms
         [DefaultValue(100)]
         public int TextBoxWidth
         {
-            get
-            {
-                return _textboxWidth;
-            }
+            get => _textboxWidth;
             set
             {
                 _textboxWidth = value;
@@ -257,10 +203,7 @@ namespace System.Windows.Forms
         [DefaultValue(0)]
         public int LabelWidth
         {
-            get
-            {
-                return _labelWidth;
-            }
+            get => _labelWidth;
             set
             {
                 _labelWidth = value;
@@ -569,7 +512,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public override void SetBounds(System.Drawing.Rectangle bounds)
+        public override void SetBounds(Rectangle bounds)
         {
             base.SetBounds(bounds);
 

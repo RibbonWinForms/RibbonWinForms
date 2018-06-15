@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -40,7 +37,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Called to make the element aware of its actual bounds on the control
         /// </summary>
-        void SetBounds(System.Drawing.Rectangle bounds);
+        void SetBounds(Rectangle bounds);
 
         /// <summary>
         /// Gets the bounds of the item

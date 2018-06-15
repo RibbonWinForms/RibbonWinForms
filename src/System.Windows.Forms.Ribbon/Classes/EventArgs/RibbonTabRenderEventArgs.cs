@@ -10,17 +10,12 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace System.Windows.Forms
 {
     public sealed class RibbonTabRenderEventArgs : RibbonRenderEventArgs
     {
-        private RibbonTab _tab;
-
         public RibbonTabRenderEventArgs(Ribbon owner, Graphics g, Rectangle clip, RibbonTab tab)
             : base(owner, g, clip)
         {
@@ -30,16 +25,6 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets or sets the RibbonTab related to the evennt
         /// </summary>
-        public RibbonTab Tab
-        {
-            get
-            {
-                return _tab;
-            }
-            set
-            {
-                _tab = value;
-            }
-        }
+        public RibbonTab Tab { get; set; }
     }
 }

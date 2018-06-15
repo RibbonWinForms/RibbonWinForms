@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -9,10 +6,7 @@ namespace System.Windows.Forms
         : RibbonItemBoundsEventArgs
     {
         #region Fields
-        private string _text;
-        private StringFormat _format;
-        private FontStyle _style;
-        private Color _color;
+
         #endregion
 
         #region Ctor
@@ -64,41 +58,23 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets or sets the color of the text to render
         /// </summary>
-        public Color Color
-        {
-            get { return _color; }
-            set { _color = value; }
-        }
+        public Color Color { get; set; }
 
 
         /// <summary>
         /// Gets or sets the text to render
         /// </summary>
-        public string Text
-        {
-            get { return _text; }
-            set { _text = value; }
-        }
+        public string Text { get; set; }
 
         /// <summary>
         /// Gets or sets the format of the text
         /// </summary>
-        public StringFormat Format
-        {
-            get { return _format; }
-            set { _format = value; }
-        }
+        public StringFormat Format { get; set; }
 
         /// <summary>
         /// Gets or sets the font style of the text
         /// </summary>
-        public FontStyle Style
-        {
-            get { return _style; }
-            set { _style = value; }
-        }
-
-
+        public FontStyle Style { get; set; }
 
         #endregion
     }

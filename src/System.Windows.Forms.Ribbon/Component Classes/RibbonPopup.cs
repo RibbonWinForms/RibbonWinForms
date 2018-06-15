@@ -10,11 +10,7 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Drawing.Design;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms.RibbonHelpers;
@@ -26,8 +22,6 @@ namespace System.Windows.Forms
         : Control
     {
         #region Fields
-        private RibbonWrappedDropDown _toolStripDropDown;
-        private int _borderRoundness;
 
         #endregion
 
@@ -70,21 +64,13 @@ namespace System.Windows.Forms
         /// Gets or sets the roundness of the border
         /// </summary>
         [Browsable(false)]
-        public int BorderRoundness
-        {
-            get { return _borderRoundness; }
-            set { _borderRoundness = value; }
-        }
+        public int BorderRoundness { get; set; }
 
 
         /// <summary>
         /// Gets the related ToolStripDropDown
         /// </summary>
-        internal RibbonWrappedDropDown WrappedDropDown
-        {
-            get { return _toolStripDropDown; }
-            set { _toolStripDropDown = value; }
-        }
+        internal RibbonWrappedDropDown WrappedDropDown { get; set; }
 
         #endregion
 

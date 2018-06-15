@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 
 using System.Text;
@@ -18,9 +16,9 @@ namespace RibbonDemo
         public ThemeBuilderForm()
         {
             InitializeComponent();
-            this.Height = Screen.PrimaryScreen.WorkingArea.Height;
+            Height = Screen.PrimaryScreen.WorkingArea.Height;
             LoadTheme();
-            this.StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void LoadTheme()
@@ -116,7 +114,7 @@ namespace RibbonDemo
             tableLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.Controls.Add(tableLayoutPanel1);
             ribbon1.Refresh();
-            this.Refresh();
+            Refresh();
         }
 
         private void nud_ValueChanged(object sender, EventArgs e)
@@ -194,7 +192,7 @@ namespace RibbonDemo
             dicPanel[rcp].BackColor = color;
             dicTxt[rcp].Text = ribbon1.Theme.RendererColorTable.GetColorHexStr(rcp);
             ribbon1.Refresh();
-            this.Refresh();
+            Refresh();
         }
 
         private void btGenerateThemeClass_Click(object sender, EventArgs e)
@@ -364,7 +362,7 @@ namespace RibbonDemo
 
             LoadTheme();
 
-            this.Refresh();
+            Refresh();
 
             cboChooseTheme.Enabled = true;
             cboChooseTheme.Focus();
@@ -380,7 +378,7 @@ namespace RibbonDemo
                 ribbon1.OrbStyle = RibbonOrbStyle.Office_2013;
 
             // A hack to reapply Glass to the form when the Orb style changes
-            this.Helper.ReapplyGlass();
+            Helper.ReapplyGlass();
         }
 
         private void ThemeBuilderForm_Load(object sender, EventArgs e)
@@ -393,22 +391,22 @@ namespace RibbonDemo
         private void DummyAppButton_Click(object sender, EventArgs e)
         {
             // Get the system menu of this application
-            IntPtr wMenu = WinApi.GetSystemMenu(this.Handle, false);
+            IntPtr wMenu = WinApi.GetSystemMenu(Handle, false);
 
             // Display the menu
             uint command = WinApi.TrackPopupMenuEx(wMenu, WinApi.TPM_LEFTBUTTON | WinApi.TPM_RETURNCMD,
-                this.PointToScreen(ribbon1.Bounds.Location).X, this.PointToScreen(ribbon1.Bounds.Location).Y + ribbon1.CaptionBarSize, this.Handle, IntPtr.Zero);
+                PointToScreen(ribbon1.Bounds.Location).X, PointToScreen(ribbon1.Bounds.Location).Y + ribbon1.CaptionBarSize, Handle, IntPtr.Zero);
 
             if (command == 0)
                 return;
 
             // Post a message for the menu selection
-            WinApi.PostMessage(this.Handle, WinApi.WM_SYSCOMMAND, new UIntPtr(command), IntPtr.Zero);
+            WinApi.PostMessage(Handle, WinApi.WM_SYSCOMMAND, new UIntPtr(command), IntPtr.Zero);
         }
 
         private void DummyAppButton_DoubleClick(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void ribbonButton37_Click(object sender, EventArgs e)

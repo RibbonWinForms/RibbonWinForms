@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace RibbonDemo2
@@ -20,7 +15,7 @@ namespace RibbonDemo2
                 rb.Style = RibbonButtonStyle.Normal;
                 rb.MinSizeMode = RibbonElementSizeMode.Large;
                 rb.Text = value + "";
-                rb.LargeImage = global::RibbonDemo2.Properties.Resources.newdocument32;
+                rb.LargeImage = Properties.Resources.newdocument32;
                 rb.Click += rbOrbStyle_Click;
                 ribbonPanel_OrbStyle.Items.Add(rb);
             }
@@ -31,7 +26,7 @@ namespace RibbonDemo2
                 rb.Style = RibbonButtonStyle.Normal;
                 rb.MinSizeMode = RibbonElementSizeMode.Large;
                 rb.Text = value + "";
-                rb.LargeImage = global::RibbonDemo2.Properties.Resources.addons32;
+                rb.LargeImage = Properties.Resources.addons32;
                 rb.Click += rbTheme_Click;
                 ribbonPanel_Theme.Items.Add(rb);
             }
@@ -44,16 +39,16 @@ namespace RibbonDemo2
 
         private void rbTheme_Click(object sender, EventArgs e)
         {
-            this.ribbon1.ThemeColor = (RibbonTheme)Enum.Parse(typeof(RibbonTheme), ((RibbonButton)sender).Text);
-            this.ribbon1.Refresh();
-            this.Refresh();
+            ribbon1.ThemeColor = (RibbonTheme)Enum.Parse(typeof(RibbonTheme), ((RibbonButton)sender).Text);
+            ribbon1.Refresh();
+            Refresh();
         }
 
         private void rbOrbStyle_Click(object sender, EventArgs e)
         {
-            this.ribbon1.OrbStyle = (RibbonOrbStyle)Enum.Parse(typeof(RibbonOrbStyle), ((RibbonButton)sender).Text);
-            this.ribbon1.Refresh();
-            this.Refresh();
+            ribbon1.OrbStyle = (RibbonOrbStyle)Enum.Parse(typeof(RibbonOrbStyle), ((RibbonButton)sender).Text);
+            ribbon1.Refresh();
+            Refresh();
         }
 
         private void btForm1_Click(object sender, EventArgs e)
@@ -83,7 +78,7 @@ namespace RibbonDemo2
             }
 
             Form f = (Form)Activator.CreateInstance(t);
-            f.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            f.FormBorderStyle = FormBorderStyle.None;
             f.TopLevel = false;
             f.Parent = panel1;
             f.WindowState = FormWindowState.Maximized;

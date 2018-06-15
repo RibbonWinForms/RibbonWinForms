@@ -10,30 +10,23 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
     public class RibbonButtonCollection : RibbonItemCollection
     {
-        private RibbonButtonList _ownerList;
-
         internal RibbonButtonCollection(RibbonButtonList list)
         {
-            _ownerList = list;
+            OwnerList = list;
         }
 
         /// <summary>
         /// Gets the list that owns the collection (If any)
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RibbonButtonList OwnerList
-        {
-            get { return _ownerList; }
-        }
+        public RibbonButtonList OwnerList { get; }
 
         /// <summary>
         /// Checks for the restrictions that buttons should have on the RibbonButton List
@@ -51,6 +44,7 @@ namespace System.Windows.Forms
                 throw new ApplicationException("The only style supported by the RibbonButtonList is Normal");
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Adds the specified item to the collection
         /// </summary>
@@ -63,11 +57,12 @@ namespace System.Windows.Forms
             item.SetOwnerTab(OwnerTab);
             item.SetOwnerItem(OwnerItem);
 
-            item.Click += new EventHandler(_ownerList.item_Click);
+            item.Click += new EventHandler(OwnerList.item_Click);
 
             base.Add(item);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Adds the specified range of items
         /// </summary>
@@ -89,6 +84,7 @@ namespace System.Windows.Forms
             base.AddRange(items);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Inserts the specified item at the desired index
         /// </summary>

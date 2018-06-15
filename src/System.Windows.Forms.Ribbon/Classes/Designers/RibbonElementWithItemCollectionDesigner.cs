@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel.Design;
 using System.ComponentModel;
 
@@ -58,15 +55,9 @@ namespace System.Windows.Forms
       /// <summary>
       /// Overriden. Passes the verbs to the designer
       /// </summary>
-      public override DesignerVerbCollection Verbs
-      {
-         get
-         {
-            return OnGetVerbs();
-         }
-      }
+      public override DesignerVerbCollection Verbs => OnGetVerbs();
 
-      #endregion
+       #endregion
 
       #region Methods
 
@@ -94,7 +85,7 @@ namespace System.Windows.Forms
             DesignerTransaction transaction = host.CreateTransaction("AddRibbonItem_" + Component.Site.Name);
 
             MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Items"];
-            base.RaiseComponentChanging(member);
+            RaiseComponentChanging(member);
 
             RibbonItem item = host.CreateComponent(t) as RibbonItem;
 
@@ -103,7 +94,7 @@ namespace System.Windows.Forms
             collection.Add(item);
             ribbon.OnRegionsChanged();
 
-            base.RaiseComponentChanged(member, null, null);
+            RaiseComponentChanged(member, null, null);
             transaction.Commit();
          }
       }

@@ -10,9 +10,7 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.ComponentModel;
 
@@ -29,30 +27,28 @@ namespace System.Windows.Forms
         IContainsSelectableRibbonItems, IContainsRibbonComponents
     {
         #region Fields
-        private RibbonItemGroupItemCollection _items; 
-        private bool _drawBackground;
 
         #endregion
 
         #region Ctor
         public RibbonItemGroup()
         {
-            _items = new RibbonItemGroupItemCollection(this);
-            _items.SetOwnerItem(this);
-            _drawBackground = true;
+            Items = new RibbonItemGroupItemCollection(this);
+            Items.SetOwnerItem(this);
+            DrawBackground = true;
         }
 
         public RibbonItemGroup(IEnumerable<RibbonItem> items)
             : this()
         {
-            _items.AddRange(items);
+            Items.AddRange(items);
         }
 
         protected override void Dispose(bool disposing)
         {
            if (disposing && RibbonDesigner.Current == null)
            {
-              foreach (RibbonItem ri in _items)
+              foreach (RibbonItem ri in Items)
                  ri.Dispose();
            }
 
@@ -68,14 +64,8 @@ namespace System.Windows.Forms
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override bool Checked
         {
-            get
-            {
-                return base.Checked;
-            }
-            set
-            {
-                base.Checked = value;
-            }
+            get => base.Checked;
+            set => base.Checked = value;
         }
 
         /// <summary>
@@ -84,11 +74,7 @@ namespace System.Windows.Forms
         [DefaultValue(true)]
         [Category("Appearance")]
         [Description("Background drawing should be avoided when group contains only TextBoxes and ComboBoxes")]
-        public bool DrawBackground
-        {
-            get { return _drawBackground; }
-            set { _drawBackground = value; }
-        }
+        public bool DrawBackground { get; set; }
 
         /// <summary>
         /// Gets the first item of the group
@@ -129,13 +115,7 @@ namespace System.Windows.Forms
         /// Gets the collection of items of this group
         /// </summary>
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Content)]
-        public RibbonItemGroupItemCollection Items
-        {
-            get
-            {
-                return _items;
-            }
-        } 
+        public RibbonItemGroupItemCollection Items { get; }
 
         #endregion
 
@@ -217,7 +197,7 @@ namespace System.Windows.Forms
         }
 
         /// <param name="ownerPanel">RibbonPanel where this item is located</param>
-        internal override void SetOwnerPanel(System.Windows.Forms.RibbonPanel ownerPanel)
+        internal override void SetOwnerPanel(RibbonPanel ownerPanel)
         {
             base.SetOwnerPanel(ownerPanel);
 
@@ -225,7 +205,7 @@ namespace System.Windows.Forms
         }
 
         /// <param name="owner">Ribbon that owns this item</param>
-        internal override void SetOwner(System.Windows.Forms.Ribbon owner)
+        internal override void SetOwner(Ribbon owner)
         {
             base.SetOwner(owner);
 
@@ -233,7 +213,7 @@ namespace System.Windows.Forms
         }
 
         /// <param name="ownerTab">RibbonTab where this item is located</param>
-        internal override void SetOwnerTab(System.Windows.Forms.RibbonTab ownerTab)
+        internal override void SetOwnerTab(RibbonTab ownerTab)
         {
             base.SetOwnerTab(ownerTab);
 
@@ -241,7 +221,7 @@ namespace System.Windows.Forms
         }
 
         /// <param name="ownerItem">RibbonItem where this item is located</param>
-        internal override void SetOwnerItem(System.Windows.Forms.RibbonItem ownerItem)
+        internal override void SetOwnerItem(RibbonItem ownerItem)
         {
             base.SetOwnerItem(ownerItem);
         }

@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Text;
 
 namespace System.Windows.Forms
 {
@@ -10,7 +8,7 @@ namespace System.Windows.Forms
     public class RibbonQuickAccessToolbarItemCollection : RibbonItemCollection
     {
         #region Fields
-        private RibbonQuickAccessToolbar _ownerToolbar; 
+
         #endregion
 
         /// <summary>
@@ -19,19 +17,13 @@ namespace System.Windows.Forms
         /// <param name="ownerGroup"></param>
         internal RibbonQuickAccessToolbarItemCollection(RibbonQuickAccessToolbar toolbar)
         {
-            _ownerToolbar = toolbar;
+            OwnerToolbar = toolbar;
             SetOwner(toolbar.Owner);
         }
         /// <summary>
         /// Gets the group that owns this item collection
         /// </summary>
-        public RibbonQuickAccessToolbar OwnerToolbar
-        {
-            get
-            {
-                return _ownerToolbar;
-            }
-        }
+        public RibbonQuickAccessToolbar OwnerToolbar { get; }
 
         /// <summary>
         /// Adds the specified item to the collection

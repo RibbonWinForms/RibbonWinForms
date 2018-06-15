@@ -10,10 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
 using System.Windows.Forms.Classes.Collections;
 
 namespace System.Windows.Forms

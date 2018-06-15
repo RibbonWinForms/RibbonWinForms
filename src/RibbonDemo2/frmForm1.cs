@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace RibbonDemo2
 {
@@ -28,10 +22,10 @@ namespace RibbonDemo2
                 button1.FlatAppearance.BorderSize = 0;
                 button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
                 button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-                button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                button1.FlatStyle = FlatStyle.Flat;
                 button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-                button1.Margin = new System.Windows.Forms.Padding(0);
-                button1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+                button1.Margin = new Padding(0);
+                button1.Padding = new Padding(10, 0, 0, 0);
                 button1.Size = new System.Drawing.Size(160, 40);
                 button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
                 button1.UseVisualStyleBackColor = false;

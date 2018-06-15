@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
 // Added on 13 Jan 2013
 // Used to handle ribbon theme coloring

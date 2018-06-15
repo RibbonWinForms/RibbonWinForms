@@ -9,7 +9,6 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -22,41 +21,15 @@ namespace System.Windows.Forms
     {
         #region Theme Information
 
-        private string _ThemeName;
-        private string _ThemeAuthor;
-        private string _ThemeAuthorEmail;
-        private string _ThemeAuthorWebsite;
-        private string _ThemeDateCreated;
+        public string ThemeName { get; set; }
 
-        public string ThemeName
-        {
-            get { return _ThemeName; }
-            set { _ThemeName = value; }
-        }
+        public string ThemeAuthor { get; set; }
 
-        public string ThemeAuthor
-        {
-            get { return _ThemeAuthor; }
-            set { _ThemeAuthor = value; }
-        }
+        public string ThemeAuthorEmail { get; set; }
 
-        public string ThemeAuthorEmail
-        {
-            get { return _ThemeAuthorEmail; }
-            set { _ThemeAuthorEmail = value; }
-        }
+        public string ThemeAuthorWebsite { get; set; }
 
-        public string ThemeAuthorWebsite
-        {
-            get { return _ThemeAuthorWebsite; }
-            set { _ThemeAuthorWebsite = value; }
-        }
-
-        public string ThemeDateCreated
-        {
-            get { return _ThemeDateCreated; }
-            set { _ThemeDateCreated = value; }
-        }
+        public string ThemeDateCreated { get; set; }
 
         #endregion
 
@@ -252,7 +225,7 @@ namespace System.Windows.Forms
         public Color ToolTipContentSouth = Color.FromArgb(206, 220, 241);// SystemColors.MenuBar;// FromHex("#E7F2FF");
         public Color ToolTipDarkBorder = Color.DarkGray;// Color.FromArgb(51, FromHex("#15428B"));
         public Color ToolTipLightBorder = Color.FromArgb(102, Color.White);
-        public Color ToolTipText = System.Windows.Forms.RibbonHelpers.WinApi.IsVista ? SystemColors.InactiveCaptionText : FromHexStr("#15428B");  // in XP SystemColors.InactiveCaptionText is hardly readable
+        public Color ToolTipText = RibbonHelpers.WinApi.IsVista ? SystemColors.InactiveCaptionText : FromHexStr("#15428B");  // in XP SystemColors.InactiveCaptionText is hardly readable
 
         public Color ToolStripItemTextPressed = FromHexStr("#444444");
         public Color ToolStripItemTextSelected = FromHexStr("#444444");
@@ -308,16 +281,16 @@ namespace System.Windows.Forms
             {
                 case 6:
                     return Color.FromArgb(
-                        int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber));
+                        int.Parse(hex.Substring(0, 2), Globalization.NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(2, 2), Globalization.NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(4, 2), Globalization.NumberStyles.HexNumber));
                 
                 case 8:
                     return Color.FromArgb(
-                        int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber));
+                        int.Parse(hex.Substring(0, 2), Globalization.NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(2, 2), Globalization.NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(4, 2), Globalization.NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(6, 2), Globalization.NumberStyles.HexNumber));
               
                 default:
                     throw new Exception("Color not valid");
@@ -326,7 +299,7 @@ namespace System.Windows.Forms
 
         public Color FromHex(string hex)
         {
-            return RibbonProfesionalRendererColorTable.FromHexStr(hex);
+            return FromHexStr(hex);
         }
 
         internal static Color ToGray(Color c)

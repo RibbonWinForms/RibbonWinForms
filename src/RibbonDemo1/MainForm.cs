@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 
@@ -31,7 +27,7 @@ namespace RibbonDemo
         private void InitLists()
         {
             Image[] images = new Image[255];
-            RibbonProfessionalRenderer rend = new RibbonProfessionalRenderer(this.ribbon1);
+            RibbonProfessionalRenderer rend = new RibbonProfessionalRenderer(ribbon1);
             BackColor = Theme.ColorTable.RibbonBackground;
             Random r = new Random();
 
@@ -157,12 +153,12 @@ namespace RibbonDemo
         {
             if (quickAccessButton.Visible)
             {
-                dropDownButton.SmallImage = global::RibbonDemo.Properties.Resources.unchecked16;
+                dropDownButton.SmallImage = Properties.Resources.unchecked16;
                 quickAccessButton.Visible = false;
             }
             else
             {
-                dropDownButton.SmallImage = global::RibbonDemo.Properties.Resources.exit16;
+                dropDownButton.SmallImage = Properties.Resources.exit16;
                 quickAccessButton.Visible = true;
             } // if / else
         } // toggleQuickAccessButton

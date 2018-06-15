@@ -5,8 +5,6 @@
 
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Windows.Forms;
-using System;
 using System.Diagnostics;
 using System.ComponentModel;
 
@@ -25,9 +23,8 @@ namespace System.Windows.Forms
 
 		#region Fields
 		private IRibbonElement _RibbonElement = null;
-		private Image _ToolTipImage = null;
 
-		private static Color _BorderColor = Color.Red;
+	    private static Color _BorderColor = Color.Red;
 		private Font _Font = new Font("Segoe UI", 8);
 		private Padding TipPadding = new Padding(5, 5, 5, 5);
 
@@ -49,9 +46,9 @@ namespace System.Windows.Forms
 
 		#region Properties
 
-		private Ribbon Owner { get { return _RibbonElement.Owner; } }
+		private Ribbon Owner => _RibbonElement.Owner;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets a value indicating whether the ToolTip is drawn by the operating
 		/// system or by code that you provide.
 		/// If true, the properties 'ToolTipIcon' and 'ToolTipTitle' will set to their default values
@@ -60,16 +57,13 @@ namespace System.Windows.Forms
 		[CategoryAttribute("Custom Settings"), DescriptionAttribute(@"Gets or sets a value indicating whether the ToolTip is drawn by the operating system or by code that you provide. If true, the properties 'ToolTipIcon' and 'ToolTipTitle' will set to their default values and the image will display in ToolTip otherwise only text will display.")]
 		public new bool OwnerDraw
 		{
-			get
-			{
-				return base.OwnerDraw;
-			}
-			set
+			get => base.OwnerDraw;
+	        set
 			{
 				if (value)
 				{
-					this.ToolTipIcon = ToolTipIcon.None;
-					this.ToolTipTitle = string.Empty;
+					ToolTipIcon = ToolTipIcon.None;
+					ToolTipTitle = string.Empty;
 				}
 				base.OwnerDraw = value;
 			}
@@ -83,17 +77,8 @@ namespace System.Windows.Forms
 		[CategoryAttribute("Custom Settings"), DescriptionAttribute(@"Gets or sets a value that defines the type of icon to be displayed alongside the ToolTip text. Cannot set if the property 'OwnerDraw' is true.")]
 		public new ToolTipIcon ToolTipIcon
 		{
-			get
-			{
-				return base.ToolTipIcon;
-			}
-			set
-			{
-				//if (!OwnerDraw)
-				//{
-				base.ToolTipIcon = value;
-				//}
-			}
+			get => base.ToolTipIcon;
+		    set => base.ToolTipIcon = value;
 		}
 
 		/// <summary>
@@ -103,17 +88,8 @@ namespace System.Windows.Forms
 		[CategoryAttribute("Custom Settings"), DescriptionAttribute(@"Gets or sets a title for the ToolTip window. Cannot set if the property 'OwnerDraw' is true.")]
 		public new string ToolTipTitle
 		{
-			get
-			{
-				return base.ToolTipTitle;
-			}
-			set
-			{
-				//if (!OwnerDraw)
-				//{
-				base.ToolTipTitle = value;
-				//}
-			}
+			get => base.ToolTipTitle;
+		    set => base.ToolTipTitle = value;
 		}
 
 		/// <summary>
@@ -121,19 +97,9 @@ namespace System.Windows.Forms
 		/// Cannot set if the property 'OwnerDraw' is true.
 		/// </summary>
 		[CategoryAttribute("Custom Settings"), DescriptionAttribute(@"Gets or sets an Image for the ToolTip window. Cannot set if the property 'OwnerDraw' is true.")]
-		public Image ToolTipImage
-		{
-			get
-			{
-				return _ToolTipImage;
-			}
-			set
-			{
-				_ToolTipImage = value;
-			}
-		}
+		public Image ToolTipImage { get; set; } = null;
 
-		///// <summary>
+	    ///// <summary>
 		///// Gets or sets the text for the ToolTip window.
 		///// Cannot set if the property 'OwnerDraw' is true.
 		///// </summary>
@@ -159,8 +125,8 @@ namespace System.Windows.Forms
 		[CategoryAttribute("Custom Settings"), DescriptionAttribute(@"Gets or sets the background color for the ToolTip.")]
 		public new Color BackColor
 		{
-			get { return base.BackColor; }
-			set { base.BackColor = value; }
+			get => base.BackColor;
+		    set => base.BackColor = value;
 		}
 
 		/// <summary>
@@ -169,14 +135,8 @@ namespace System.Windows.Forms
 		[CategoryAttribute("Custom Settings"), DescriptionAttribute(@"Gets or sets the foreground color for the ToolTip.")]
 		public new Color ForeColor
 		{
-			get
-			{
-				return base.ForeColor;
-			}
-			set
-			{
-				base.ForeColor = value;
-			}
+			get => base.ForeColor;
+		    set => base.ForeColor = value;
 		}
 
 		/// <summary>
@@ -186,8 +146,8 @@ namespace System.Windows.Forms
 		[CategoryAttribute("Custom Settings"), DescriptionAttribute(@"Gets or sets a value that indicates whether the ToolTip resizes based on its text. true if the ToolTip automatically resizes based on its text; otherwise, false. The default is true.")]
 		public bool AutoSize
 		{
-			get { return _AutoSize; }
-			set
+			get => _AutoSize;
+		    set
 			{
 				_AutoSize = value;
 				if (_AutoSize)
@@ -208,8 +168,8 @@ namespace System.Windows.Forms
 		[CategoryAttribute("Custom Settings"), DescriptionAttribute(@"Gets or sets the size of the ToolTip. Valid only if the Property 'AutoSize' is false.")]
 		public Size Size
 		{
-			get { return _Size; }
-			set
+			get => _Size;
+		    set
 			{
 				if (!_AutoSize)
 				{
@@ -225,8 +185,8 @@ namespace System.Windows.Forms
 		[CategoryAttribute("Custom Settings"), DescriptionAttribute(@"Gets or sets the border color for the ToolTip.")]
 		public Color BorderColor
 		{
-			get { return _BorderColor; }
-			set { _BorderColor = value; }
+			get => _BorderColor;
+		    set => _BorderColor = value;
 		}
 
 		#endregion
@@ -240,12 +200,12 @@ namespace System.Windows.Forms
 		{
 			try
 			{
-				this._RibbonElement = ribbonElement;
-				this.OwnerDraw = true;
-				this.AutoSize = false;
+				_RibbonElement = ribbonElement;
+				OwnerDraw = true;
+				AutoSize = false;
 
 				base.Popup += new PopupEventHandler(ToolTip_Popup);
-				this.Draw += new DrawToolTipEventHandler(ToolTip_Draw);
+				Draw += new DrawToolTipEventHandler(ToolTip_Draw);
 			}
 			catch (Exception ex)
 			{
@@ -279,7 +239,7 @@ namespace System.Windows.Forms
 
                         // ADDED
                         base.Popup -= new PopupEventHandler(ToolTip_Popup);
-                        this.Draw -= new DrawToolTipEventHandler(ToolTip_Draw);
+                        Draw -= new DrawToolTipEventHandler(ToolTip_Draw);
 					}
 				}
 				finally
@@ -307,7 +267,7 @@ namespace System.Windows.Forms
 			{
 				e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 				//Get the tooltip text
-				string TipText = base.GetToolTip(e.AssociatedControl);
+				string TipText = GetToolTip(e.AssociatedControl);
 
 				RibbonToolTipRenderEventArgs eTip = new RibbonToolTipRenderEventArgs(Owner, e.Graphics, e.Bounds, TipText);
 				eTip.Color = Color.Black;
@@ -324,7 +284,7 @@ namespace System.Windows.Forms
 				if (_ImageRectangle.Width > 0 && _ImageRectangle.Height > 0)
 				{
 					//_Owner.Renderer.OnRenderToolTipImage(eTip);
-					e.Graphics.DrawImage(_ToolTipImage, _ImageRectangle);
+					e.Graphics.DrawImage(ToolTipImage, _ImageRectangle);
 				}
 
 				//draw the tooltip text
@@ -364,9 +324,9 @@ namespace System.Windows.Forms
 		/// <param name="e">e</param>
 		void ToolTip_Popup(object sender, PopupEventArgs e)
 		{
-			if (this.Popup != null)
+			if (Popup != null)
 			{
-				this.Popup(sender, e);
+				Popup(sender, e);
 				if (e.Cancel)  // it cancel return ASAP
 					return;
 			}
@@ -396,9 +356,9 @@ namespace System.Windows.Forms
 							fTitle.Dispose();
 						}
 
-						if (_ToolTipImage != null)
+						if (ToolTipImage != null)
 						{
-							_ImageRectangle = new Rectangle(CurLeft, CurTop, _ToolTipImage.Width + 2, _ToolTipImage.Height + 2);
+							_ImageRectangle = new Rectangle(CurLeft, CurTop, ToolTipImage.Width + 2, ToolTipImage.Height + 2);
 
 							CurLeft = _ImageRectangle.Right + 10;
 						}
@@ -407,7 +367,7 @@ namespace System.Windows.Forms
 							CurLeft += 15; //indent the text from the title
 						}
 
-						sSize = g.MeasureString(base.GetToolTip(e.AssociatedControl), _Font, DEFAULT_WIDTH).ToSize();
+						sSize = g.MeasureString(GetToolTip(e.AssociatedControl), _Font, DEFAULT_WIDTH).ToSize();
 						_TextRectangle = Rectangle.FromLTRB(CurLeft, CurTop, sSize.Width + CurLeft + 4, CurTop + sSize.Height);
 						CurLeft = _TextRectangle.Right;
 

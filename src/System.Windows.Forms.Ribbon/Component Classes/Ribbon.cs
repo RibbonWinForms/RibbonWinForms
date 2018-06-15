@@ -10,15 +10,9 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows.Forms.RibbonHelpers;
-using System.Diagnostics;
 
 namespace System.Windows.Forms
 {
@@ -48,14 +42,9 @@ namespace System.Windows.Forms
 
 		#region Fields
 		internal bool ForceOrbMenu;
-		private string _altKey;
-		private Size _lastSizeMeasured;
-		private RibbonTabCollection _tabs;
-		private Padding _tabsMargin;
-		private Padding _tabsPadding;
-		private Padding _orbsPadding;
-		private RibbonContextCollection _contexts;
-		internal bool _minimized = true;//is the ribbon minimized?
+	    private Size _lastSizeMeasured;
+	    private Padding _tabsMargin;
+	    internal bool _minimized = true;//is the ribbon minimized?
 		internal bool _expanded; //is the ribbon currently expanded when in minimize mode
 		internal bool _expanding; //is the ribbon expanding. Flag used to prevent calling methods multiple time while the size changes
 		//private int _minimizedHeight;//height when minimized
@@ -63,23 +52,11 @@ namespace System.Windows.Forms
 		private RibbonRenderer _renderer;
 		private bool _useAlwaysStandardTheme = false;
 		private Theme _theme;
-		private int _tabSpacing;
-		private Padding _tabContentMargin;
-		private Padding _tabContentPadding;
-		private Padding _panelPadding;
-		private Padding _panelMargin;
-		private int _panelSpacing;
-		private Size _panelMoreSize = new Size(7, 7);
-		private Padding _panelMoreMargin;
-		private RibbonTab _activeTab;
-		private Padding _itemMargin;
-		private Padding _itemPadding;
-		private int _itemImageToTextSpacing;
-		private RibbonTab _lastSelectedTab;
-		private RibbonMouseSensor _sensor;
-		private Padding _dropDownMargin;
-		private Padding _tabTextMargin;
-		//private float _tabSum;
+	    private Padding _panelMargin;
+	    private RibbonTab _activeTab;
+	    private RibbonTab _lastSelectedTab;
+
+	    //private float _tabSum;
 		private bool _updatingSuspended;
 		private bool _orbSelected;
 		private bool _orbPressed;
@@ -87,22 +64,14 @@ namespace System.Windows.Forms
 		private Image _orbImage;
 		private string _orbText;
 		private Size _orbTextSize = Size.Empty;
-		private RibbonQuickAccessToolbar _quickAcessToolbar;
-		//private bool _quickAcessVisible;
-		private RibbonOrbDropDown _orbDropDown;
-		private RibbonWindowMode _borderMode;
-		private RibbonWindowMode _actualBorderMode;
-		private RibbonCaptionButton _CloseButton;
-		private RibbonCaptionButton _MaximizeRestoreButton;
-		private RibbonCaptionButton _MinimizeButton;
-		private bool _CaptionButtonsVisible;
-		private GlobalHook _mouseHook;
+
+	    //private bool _quickAcessVisible;
+	    private RibbonWindowMode _borderMode;
+	    private GlobalHook _mouseHook;
 		private GlobalHook _keyboardHook;
 		private Font _RibbonItemFont = new Font("Trebuchet MS", 9);
 		private Font _RibbonTabFont = new Font("Trebuchet MS", 9);
-		private bool _HideSingleTab = true;
-		private LayoutHelper _layoutHelper;
-		private bool _CaptionBarVisible;
+	    private bool _CaptionBarVisible;
 		private bool _enabled;
 
 		internal RibbonItem ActiveTextBox; //tracks the current active textbox so we can hide it when you click off it
@@ -157,37 +126,37 @@ namespace System.Windows.Forms
 
 			Dock = DockStyle.Top;
 
-			_tabs = new RibbonTabCollection(this);
-			_contexts = new RibbonContextCollection(this);
+			Tabs = new RibbonTabCollection(this);
+			Contexts = new RibbonContextCollection(this);
 
-			_orbsPadding = new Padding(8, 5, 8, 3);
-			_tabsPadding = new Padding(8, 5, 8, 3);
+			OrbsPadding = new Padding(8, 5, 8, 3);
+			TabsPadding = new Padding(8, 5, 8, 3);
 			_tabsMargin = new Padding(12, 24 + 2, 20, 0);
-			_tabTextMargin = new Padding(4, 2, 4, 2);
+			TabTextMargin = new Padding(4, 2, 4, 2);
 
-			_tabContentMargin = new Padding(1, 0, 1, 2);
-			_panelPadding = new Padding(3);
+			TabContentMargin = new Padding(1, 0, 1, 2);
+			PanelPadding = new Padding(3);
 			_panelMargin = new Padding(3, 2, 3, 15);
-			_panelMoreMargin = new Padding(0, 0, 1, 1);
-			_panelSpacing = DefaultPanelSpacing;
-			_itemPadding = new Padding(1, 0, 1, 0);
-			_itemMargin = new Padding(4, 2, 4, 2);
-			_itemImageToTextSpacing = 3;
-			_tabSpacing = DefaultTabSpacing;
-			_dropDownMargin = new Padding(2);
+			PanelMoreMargin = new Padding(0, 0, 1, 1);
+			PanelSpacing = DefaultPanelSpacing;
+			ItemPadding = new Padding(1, 0, 1, 0);
+			ItemMargin = new Padding(4, 2, 4, 2);
+			ItemImageToTextSpacing = 3;
+			TabSpacing = DefaultTabSpacing;
+			DropDownMargin = new Padding(2);
 			_renderer = new RibbonProfessionalRenderer(this);
 			_orbVisible = true;
-			_orbDropDown = new RibbonOrbDropDown(this);
-			_quickAcessToolbar = new RibbonQuickAccessToolbar(this);
+			OrbDropDown = new RibbonOrbDropDown(this);
+			QuickAccessToolbar = new RibbonQuickAccessToolbar(this);
 			//_quickAcessVisible = true;
-			_MinimizeButton = new RibbonCaptionButton(RibbonCaptionButton.CaptionButton.Minimize);
-			_MaximizeRestoreButton = new RibbonCaptionButton(RibbonCaptionButton.CaptionButton.Maximize);
-			_CloseButton = new RibbonCaptionButton(RibbonCaptionButton.CaptionButton.Close);
-			_layoutHelper = new LayoutHelper(this);
+			MinimizeButton = new RibbonCaptionButton(RibbonCaptionButton.CaptionButton.Minimize);
+			MaximizeRestoreButton = new RibbonCaptionButton(RibbonCaptionButton.CaptionButton.Maximize);
+			CloseButton = new RibbonCaptionButton(RibbonCaptionButton.CaptionButton.Close);
+			LayoutHelper = new LayoutHelper(this);
 
-			_MinimizeButton.SetOwner(this);
-			_MaximizeRestoreButton.SetOwner(this);
-			_CloseButton.SetOwner(this);
+			MinimizeButton.SetOwner(this);
+			MaximizeRestoreButton.SetOwner(this);
+			CloseButton.SetOwner(this);
 			_CaptionBarVisible = true;
 
 			Font = SystemFonts.CaptionFont;
@@ -201,7 +170,7 @@ namespace System.Windows.Forms
 			RibbonPopupManager.PopupRegistered += OnPopupRegistered;
 			RibbonPopupManager.PopupUnRegistered += OnPopupUnregistered;
 			Control parent = null;
-			this.ParentChanged += (o1, e1) =>
+			ParentChanged += (o1, e1) =>
 			{
 				if (parent != null)
 				{
@@ -209,7 +178,7 @@ namespace System.Windows.Forms
 					parent.KeyDown -= parent_KeyDown;
 				}
 
-				parent = this.Parent;
+				parent = Parent;
 
 				Application.AddMessageFilter(this);
 
@@ -262,7 +231,7 @@ namespace System.Windows.Forms
 			AltPressed = e.Alt;
 
 			//if (reDraw)
-			this.Invalidate();
+			Invalidate();
 		}
 
 		// Function to check if item was targeted by AltKey            
@@ -363,13 +332,13 @@ namespace System.Windows.Forms
 		{
 			if (disposing && RibbonDesigner.Current == null)
 			{
-				foreach (RibbonTab tab in _tabs)
+				foreach (RibbonTab tab in Tabs)
 					tab.Dispose();
-				_orbDropDown.Dispose();
-				_quickAcessToolbar.Dispose();
-				_MinimizeButton.Dispose();
-				_MaximizeRestoreButton.Dispose();
-				_CloseButton.Dispose();
+				OrbDropDown.Dispose();
+				QuickAccessToolbar.Dispose();
+				MinimizeButton.Dispose();
+				MaximizeRestoreButton.Dispose();
+				CloseButton.Dispose();
 
 				RibbonPopupManager.PopupRegistered -= OnPopupRegistered;
 				RibbonPopupManager.PopupUnRegistered -= OnPopupUnregistered;
@@ -413,36 +382,26 @@ namespace System.Windows.Forms
 		/// </summary>
 		[DefaultValue(null)]
 		[Category("Behavior")]
-		public string AltKey
-		{
-			get
-			{
-				return _altKey;
-			}
-			set
-			{
-				_altKey = value;
-			}
-		}
+		public string AltKey { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the tabs expanded state when in minimize mode
 		/// </summary>
 		[DefaultValue(true)]
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool Expanded
 		{
-			get { return _expanded; }
-			set
+			get => _expanded;
+	        set
 			{
 				_expanded = value;
 				if (!IsDesignMode() && Minimized)
 				{
 					_expanding = true;
 					if (_expanded)
-						this.Height = _expandedHeight;
+						Height = _expandedHeight;
 					else
-						this.Height = MinimizedHeight;
+						Height = MinimizedHeight;
 
 					OnExpandedChanged(EventArgs.Empty);
 					if (_expanded)
@@ -461,8 +420,8 @@ namespace System.Windows.Forms
 		[Description("Sets if the Ribbon should be enabled")]
 		public new bool Enabled
 		{
-			get { return _enabled; }
-			set
+			get => _enabled;
+		    set
 			{
 				_enabled = value;
 				Invalidate();
@@ -488,13 +447,13 @@ namespace System.Windows.Forms
 		//[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new Size Size
 		{
-			get { return base.Size; }
-			set
+			get => base.Size;
+		    set
 			{
 				base.Size = value;
 				Height = value.Height;
 				if (!Minimized || (!_expanding && Expanded))
-					_expandedHeight = this.Height;
+					_expandedHeight = Height;
 			}
 		}
 
@@ -580,42 +539,30 @@ namespace System.Windows.Forms
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public bool CaptionButtonsVisible
-		{
-			get { return _CaptionButtonsVisible; }
-		}
+		public bool CaptionButtonsVisible { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the Ribbon's close button
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public RibbonCaptionButton CloseButton
-		{
-			get { return _CloseButton; }
-		}
+		public RibbonCaptionButton CloseButton { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the Ribbon's maximize-restore button
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public RibbonCaptionButton MaximizeRestoreButton
-		{
-			get { return _MaximizeRestoreButton; }
-		}
+		public RibbonCaptionButton MaximizeRestoreButton { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the Ribbon's minimize button
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public RibbonCaptionButton MinimizeButton
-		{
-			get { return _MinimizeButton; }
-		}
+		public RibbonCaptionButton MinimizeButton { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the RibbonFormHelper object if the parent form is IRibbonForm
 		/// </summary>
 		[Browsable(false)]
@@ -638,26 +585,17 @@ namespace System.Windows.Forms
 		/// Gets the Layout Helper
 		/// </summary>
 		[Browsable(false)]
-		public LayoutHelper LayoutHelper
-		{
-			get
-			{
-				return _layoutHelper;
-			}
-		}
+		public LayoutHelper LayoutHelper { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the actual <see cref="RibbonWindowMode"/> that the ribbon has. 
 		/// It's value may vary from <see cref="BorderMode"/>
 		/// because of computer and operative system capabilities.
 		/// </summary>
 		[Browsable(false)]
-		public RibbonWindowMode ActualBorderMode
-		{
-			get { return _actualBorderMode; }
-		}
+		public RibbonWindowMode ActualBorderMode { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the border mode of the ribbon relative to the window where it is contained
 		/// </summary>
 		[DefaultValue(RibbonWindowMode.NonClientAreaGlass)]
@@ -666,8 +604,8 @@ namespace System.Windows.Forms
 		[Description("Specifies how the Ribbon is placed on the window border and the non-client area")]
 		public RibbonWindowMode BorderMode
 		{
-			get { return _borderMode; }
-			set
+			get => _borderMode;
+	        set
 			{
 				_borderMode = value;
 
@@ -693,12 +631,9 @@ namespace System.Windows.Forms
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
 		[Category("Orb")]
 		[Browsable(true)]
-		public RibbonOrbDropDown OrbDropDown
-		{
-			get { return _orbDropDown; }
-		}
+		public RibbonOrbDropDown OrbDropDown { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the height of the Panel Caption area.
 		/// </summary>
 		[DefaultValue(15)]
@@ -706,8 +641,8 @@ namespace System.Windows.Forms
 		[Description("Gets or sets the height of the Panel Caption area")]
 		public int PanelCaptionHeight
 		{
-			get { return _panelMargin.Bottom; }
-			set
+			get => _panelMargin.Bottom;
+	        set
 			{
 				_panelMargin.Bottom = value;
 				UpdateRegions();
@@ -719,19 +654,13 @@ namespace System.Windows.Forms
 		/// Gets  the QuickAcessToolbar
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public RibbonQuickAccessToolbar QuickAccessToolbar
-		{
-			get { return _quickAcessToolbar; }
-		}
+		public RibbonQuickAccessToolbar QuickAccessToolbar { get; }
 
-		[Browsable(false)]
+	    [Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Theme Theme
-		{
-			get { return _theme == null ? Theme.Standard : _theme; }
-		}
+		public Theme Theme => _theme == null ? Theme.Standard : _theme;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the Style of the orb
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -739,60 +668,60 @@ namespace System.Windows.Forms
 		[DefaultValue(RibbonOrbStyle.Office_2007)]
 		public RibbonOrbStyle OrbStyle
 		{
-			get { return Theme.Style; }
-			set
+			get => Theme.Style;
+	        set
 			{
-				EnsureCustomThemeCreated(value, this.ThemeColor);
+				EnsureCustomThemeCreated(value, ThemeColor);
 				Theme.Style = value;
 				if (value == RibbonOrbStyle.Office_2007)
 				{
-					_tabsPadding = new Padding(8, 4, 8, 4);
-					_orbsPadding = new Padding(8, 4, 8, 4);
+					TabsPadding = new Padding(8, 4, 8, 4);
+					OrbsPadding = new Padding(8, 4, 8, 4);
 					_tabsMargin = new Padding(12, CaptionBarHeight + 2, 20, 0);
-					_tabContentMargin = new Padding(1, 0, 2, 2);
-					_tabContentPadding = new Padding(0);
-					_tabSpacing = 6;
-					_panelSpacing = 4;
-					_panelPadding = new Padding(3);
+					TabContentMargin = new Padding(1, 0, 2, 2);
+					TabContentPadding = new Padding(0);
+					TabSpacing = 6;
+					PanelSpacing = 4;
+					PanelPadding = new Padding(3);
 					_panelMargin = new Padding(3, 2, 3, 15);
-					_panelMoreSize = new Size(6, 6);
-					_panelMoreMargin = new Padding(0, 0, 1, 1);
-					_itemMargin = new Padding(4, 2, 4, 2);
-					_itemPadding = new Padding(1, 0, 1, 0);
+					PanelMoreSize = new Size(6, 6);
+					PanelMoreMargin = new Padding(0, 0, 1, 1);
+					ItemMargin = new Padding(4, 2, 4, 2);
+					ItemPadding = new Padding(1, 0, 1, 0);
 					ItemImageToTextSpacing = 4;
 				}
 				else if (value == RibbonOrbStyle.Office_2010)
 				{
 					TabsPadding = new Padding(10, 3, 7, 2);
-					_orbsPadding = new Padding(17, 4, 15, 4);
+					OrbsPadding = new Padding(17, 4, 15, 4);
 					TabsMargin = new Padding(6, CaptionBarHeight + 2, 20, 0);
-					_tabContentMargin = new Padding(0, 0, 0, 2);
-					_tabContentPadding = new Padding(0);
-					_tabSpacing = 3;
-					_panelSpacing = 0;
-					_panelPadding = new Padding(0, 1, 1, 1);
+					TabContentMargin = new Padding(0, 0, 0, 2);
+					TabContentPadding = new Padding(0);
+					TabSpacing = 3;
+					PanelSpacing = 0;
+					PanelPadding = new Padding(0, 1, 1, 1);
 					_panelMargin = new Padding(2, 2, 2, 15);
-					_panelMoreSize = new Size(6, 6);
-					_panelMoreMargin = new Padding(0, 0, 2, 0);
-					_itemMargin = new Padding(3, 2, 0, 2);
-					_itemPadding = new Padding(1, 0, 1, 0);
+					PanelMoreSize = new Size(6, 6);
+					PanelMoreMargin = new Padding(0, 0, 2, 0);
+					ItemMargin = new Padding(3, 2, 0, 2);
+					ItemPadding = new Padding(1, 0, 1, 0);
 					ItemImageToTextSpacing = 11;
 				}
 				else if (value == RibbonOrbStyle.Office_2013)
 				{
-					_tabsPadding = new Padding(8, 4, 8, 1);
-					_orbsPadding = new Padding(15, 3, 15, 3);
+					TabsPadding = new Padding(8, 4, 8, 1);
+					OrbsPadding = new Padding(15, 3, 15, 3);
 					_tabsMargin = new Padding(5, CaptionBarHeight + 2, 20, 0);
-					_tabContentMargin = new Padding(0, 0, 0, 2);
-					_tabContentPadding = new Padding(0);
-					_tabSpacing = 4;
-					_panelSpacing = 0;
-					_panelPadding = new Padding(3);
+					TabContentMargin = new Padding(0, 0, 0, 2);
+					TabContentPadding = new Padding(0);
+					TabSpacing = 4;
+					PanelSpacing = 0;
+					PanelPadding = new Padding(3);
 					_panelMargin = new Padding(3, 2, 3, 15);
-					_panelMoreSize = new Size(6, 6);
-					_panelMoreMargin = new Padding(0, 0, 1, 0);
-					_itemMargin = new Padding(2, 2, 0, 2);
-					_itemPadding = new Padding(1, 0, 1, 0);
+					PanelMoreSize = new Size(6, 6);
+					PanelMoreMargin = new Padding(0, 0, 1, 0);
+					ItemMargin = new Padding(2, 2, 0, 2);
+					ItemPadding = new Padding(1, 0, 1, 0);
 					ItemImageToTextSpacing = 11;
 				}
 
@@ -810,10 +739,10 @@ namespace System.Windows.Forms
 		[DefaultValue(RibbonTheme.Normal)]
 		public RibbonTheme ThemeColor
 		{
-			get { return Theme.RibbonTheme; }
-			set
+			get => Theme.RibbonTheme;
+		    set
 			{
-				EnsureCustomThemeCreated(this.OrbStyle, value);
+				EnsureCustomThemeCreated(OrbStyle, value);
 				Theme.RibbonTheme = value;
 				OnRegionsChanged();
 				Invalidate();
@@ -830,8 +759,8 @@ namespace System.Windows.Forms
 		[Description("If this value is set, you can still link a Ribbon fixed to the Standard Theme.")]
 		public bool UseAlwaysStandardTheme
 		{
-			get { return _useAlwaysStandardTheme; }
-			set
+			get => _useAlwaysStandardTheme;
+		    set
 			{
 				_useAlwaysStandardTheme = value;
 				if (value)
@@ -849,8 +778,8 @@ namespace System.Windows.Forms
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public string OrbText
 		{
-			get { return _orbText; }
-			set
+			get => _orbText;
+		    set
 			{
 				_orbText = value;
 				RecalculateOrbTextSize();
@@ -867,8 +796,8 @@ namespace System.Windows.Forms
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public Image OrbImage
 		{
-			get { return _orbImage; }
-			set { _orbImage = value; OnRegionsChanged(); Invalidate(OrbBounds); }
+			get => _orbImage;
+		    set { _orbImage = value; OnRegionsChanged(); Invalidate(OrbBounds); }
 		}
 
 		/// <summary>
@@ -879,8 +808,8 @@ namespace System.Windows.Forms
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public bool OrbVisible
 		{
-			get { return _orbVisible; }
-			set { _orbVisible = value; OnRegionsChanged(); }
+			get => _orbVisible;
+		    set { _orbVisible = value; OnRegionsChanged(); }
 		}
 
 		/// <summary>
@@ -889,8 +818,8 @@ namespace System.Windows.Forms
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool OrbSelected
 		{
-			get { return _orbSelected; }
-			set { _orbSelected = value; Invalidate(OrbBounds); }
+			get => _orbSelected;
+		    set { _orbSelected = value; Invalidate(OrbBounds); }
 		}
 
 		/// <summary>
@@ -899,20 +828,17 @@ namespace System.Windows.Forms
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool OrbPressed
 		{
-			get { return _orbPressed; }
-			set { _orbPressed = value; Invalidate(OrbBounds); }
+			get => _orbPressed;
+		    set { _orbPressed = value; Invalidate(OrbBounds); }
 		}
 
 		/// <summary>
 		/// Gets the Height of the caption bar
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public int CaptionBarSize
-		{
-			get { return CaptionBarHeight; }
-		}
+		public int CaptionBarSize => CaptionBarHeight;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the bounds of the orb
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -928,7 +854,7 @@ namespace System.Windows.Forms
 					}
 					else if (OrbVisible && RightToLeft == RightToLeft.Yes && CaptionBarVisible)
 					{
-						return new Rectangle(this.Width - 36 - 4, 4, 36, 36);
+						return new Rectangle(Width - 36 - 4, 4, 36, 36);
 					}
 					else if (RightToLeft == RightToLeft.No)
 					{
@@ -936,7 +862,7 @@ namespace System.Windows.Forms
 					}
 					else
 					{
-						return new Rectangle(this.Width - 4, 4, 0, 0);
+						return new Rectangle(Width - 4, 4, 0, 0);
 					}
 				}
 				else if (OrbStyle == RibbonOrbStyle.Office_2010)//Kevin Carbis - office 2010 style orb
@@ -956,7 +882,7 @@ namespace System.Windows.Forms
 					}
 					else if (OrbVisible && RightToLeft == RightToLeft.Yes && CaptionBarVisible)
 					{
-						return new Rectangle(this.Width - contentSize.Width - OrbsPadding.Left - OrbsPadding.Right - 1, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
+						return new Rectangle(Width - contentSize.Width - OrbsPadding.Left - OrbsPadding.Right - 1, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
 					}
 					else if (RightToLeft == RightToLeft.No)
 					{
@@ -964,7 +890,7 @@ namespace System.Windows.Forms
 					}
 					else
 					{
-						return new Rectangle(this.Width - 4, 4, 0, 0);
+						return new Rectangle(Width - 4, 4, 0, 0);
 					}
 				}
 				else  //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
@@ -986,7 +912,7 @@ namespace System.Windows.Forms
 					}
 					else if (OrbVisible && RightToLeft == RightToLeft.Yes && CaptionBarVisible)
 					{
-						return new Rectangle(this.Width - contentSize.Width - OrbsPadding.Left - OrbsPadding.Right - 4, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
+						return new Rectangle(Width - contentSize.Width - OrbsPadding.Left - OrbsPadding.Right - 4, TabsMargin.Top, contentSize.Width + OrbsPadding.Left + OrbsPadding.Right, OrbsPadding.Top + contentSize.Height + OrbsPadding.Bottom);
 					}
 					else if (RightToLeft == RightToLeft.No)
 					{
@@ -994,7 +920,7 @@ namespace System.Windows.Forms
 					}
 					else
 					{
-						return new Rectangle(this.Width - 4, 4, 0, 0);
+						return new Rectangle(Width - 4, 4, 0, 0);
 					}
 				}
 			}
@@ -1067,60 +993,40 @@ namespace System.Windows.Forms
 		/// Gets or sets the internal spacing between the tab and its text
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding TabTextMargin
-		{
-			get { return _tabTextMargin; }
-			set { _tabTextMargin = value; }
-		}
+		public Padding TabTextMargin { get; set; }
 
-		/// <summary> 
+	    /// <summary> 
 		/// Gets or sets the margis of the DropDowns shown by the Ribbon
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding DropDownMargin
-		{
-			get { return _dropDownMargin; }
-			set { _dropDownMargin = value; }
-		}
+		public Padding DropDownMargin { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the external spacing of items on panels
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding ItemPadding
-		{
-			get { return _itemPadding; }
-			set { _itemPadding = value; }
-		}
+		public Padding ItemPadding { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the padding between the image and text on a drop down RibbonItem.
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public int ItemImageToTextSpacing
-		{
-			get { return _itemImageToTextSpacing; }
-			set { _itemImageToTextSpacing = value; }
-		}
+		public int ItemImageToTextSpacing { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the internal spacing of items
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding ItemMargin
-		{
-			get { return _itemMargin; }
-			set { _itemMargin = value; }
-		}
+		public Padding ItemMargin { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the tab that is currently active
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public RibbonTab ActiveTab
 		{
-			get { return _activeTab; }
-			set
+			get => _activeTab;
+	        set
 			{
 				RibbonTab NewTab = _activeTab;
 				foreach (RibbonTab tab in Tabs)
@@ -1155,98 +1061,69 @@ namespace System.Windows.Forms
 		/// </summary>
 		[DefaultValue(DefaultPanelSpacing)]
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public int PanelSpacing
-		{
-			get { return _panelSpacing; }
-			set { _panelSpacing = value; }
-		}
+		public int PanelSpacing { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the size of the panel More glyph
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Size PanelMoreSize
-		{
-			get { return _panelMoreSize; }
-			set { _panelMoreSize = value; }
-		}
+		public Size PanelMoreSize { get; set; } = new Size(7, 7);
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the external spacing of panels inside of tabs
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding PanelPadding
-		{
-			get { return _panelPadding; }
-			set { _panelPadding = value; }
-		}
+		public Padding PanelPadding { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the internal spacing of panels inside of tabs
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Padding PanelMargin
 		{
-			get { return _panelMargin; }
-			set { _panelMargin = value; }
-		}
+			get => _panelMargin;
+	        set => _panelMargin = value;
+	    }
 
 		/// <summary>
 		/// Gets or sets the external spacing of the More glyph
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding PanelMoreMargin
-		{
-			get { return _panelMoreMargin; }
-			set { _panelMoreMargin = value; }
-		}
+		public Padding PanelMoreMargin { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the spacing between tabs
 		/// </summary>
 		[Browsable(false)]
 		[DefaultValue(DefaultTabSpacing)]
-		public int TabSpacing
-		{
-			get { return _tabSpacing; }
-			set { _tabSpacing = value; }
-		}
+		public int TabSpacing { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the collection of RibbonTab tabs
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public RibbonTabCollection Tabs
-		{
-			get
-			{
-				return _tabs;
-			}
-		}
+		public RibbonTabCollection Tabs { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets a value indicating if the Ribbon supports being minimized
 		/// </summary>
 		[Category("Appearance")]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public bool Minimized
 		{
-			get
-			{
-				return _minimized;
-			}
-			set
+			get => _minimized;
+	        set
 			{
 				_minimized = value;
 				if (!IsDesignMode())
 				{
 					if (_minimized)
 					{
-						this.Height = MinimizedHeight;
+						Height = MinimizedHeight;
 					}
 					else
 					{
-						this.Height = _expandedHeight;
+						Height = _expandedHeight;
 					}
 					Expanded = !Minimized;
 					UpdateRegions();
@@ -1259,25 +1136,16 @@ namespace System.Windows.Forms
 		/// Gets the collection of Contexts of this Ribbon
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public RibbonContextCollection Contexts
-		{
-			get
-			{
-				return _contexts;
-			}
-		}
+		public RibbonContextCollection Contexts { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the Renderer for this Ribbon control
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public RibbonRenderer Renderer
 		{
-			get
-			{
-				return _renderer;
-			}
-			set
+			get => _renderer;
+	        set
 			{
 				if (value == null) throw new ApplicationException("Null renderer!");
 				_renderer = value;
@@ -1289,34 +1157,23 @@ namespace System.Windows.Forms
 		/// Gets or sets the internal spacing of the tab content pane
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding TabContentMargin
-		{
-			get { return _tabContentMargin; }
-			set { _tabContentMargin = value; }
-		}
+		public Padding TabContentMargin { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the external spacing of the tabs content pane
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding TabContentPadding
-		{
-			get { return _tabContentPadding; }
-			set { _tabContentPadding = value; }
-		}
+		public Padding TabContentPadding { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets a value indicating the external spacing of tabs
 		/// </summary>
 		//[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		[Browsable(false)]
 		public Padding TabsMargin
 		{
-			get
-			{
-				return _tabsMargin;
-			}
-			set
+			get => _tabsMargin;
+	        set
 			{
 				_tabsMargin = value;
 				UpdateRegions();
@@ -1328,45 +1185,22 @@ namespace System.Windows.Forms
 		/// Gets a value indicating the internal spacing of tabs
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding TabsPadding
-		{
-			get
-			{
-				return _tabsPadding;
-			}
-			set
-			{
-				_tabsPadding = value;
-			}
-		}
+		public Padding TabsPadding { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets a value indicating the internal spacing of the orb
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Padding OrbsPadding
-		{
-			get
-			{
-				return _orbsPadding;
-			}
-			set
-			{
-				_orbsPadding = value;
-			}
-		}
+		public Padding OrbsPadding { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Overriden. The maximum size is fixed
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public override Size MaximumSize
 		{
-			get
-			{
-				return new System.Drawing.Size(0, 200); //115 was the old one
-			}
-			set
+			get => new Size(0, 200);
+	        set
 			{
 				//not supported
 			}
@@ -1378,11 +1212,8 @@ namespace System.Windows.Forms
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public override Size MinimumSize
 		{
-			get
-			{
-				return new System.Drawing.Size(0, 27); //115);
-			}
-			set
+			get => new Size(0, 27);
+		    set
 			{
 				//not supported
 			}
@@ -1395,36 +1226,21 @@ namespace System.Windows.Forms
 		[DefaultValue(DockStyle.Top)]
 		public override DockStyle Dock
 		{
-			get
-			{
-				return base.Dock;
-			}
-			set
-			{
-				base.Dock = value;
-			}
+			get => base.Dock;
+		    set => base.Dock = value;
 		}
 
 		/// <summary>
 		/// Gets or sets the current panel sensor for this ribbon
 		/// </summary>
 		[Browsable(false)]
-		public RibbonMouseSensor Sensor
-		{
-			get
-			{
-				return _sensor;
-			}
-		}
+		public RibbonMouseSensor Sensor { get; private set; }
 
-		[DefaultValue(RightToLeft.No)]
+	    [DefaultValue(RightToLeft.No)]
 		public override RightToLeft RightToLeft
 		{
-			get
-			{
-				return base.RightToLeft;
-			}
-			set
+			get => base.RightToLeft;
+	        set
 			{
 				base.RightToLeft = value;
 				OnRegionsChanged();
@@ -1438,8 +1254,8 @@ namespace System.Windows.Forms
 		[DefaultValue(true)]
 		public bool CaptionBarVisible
 		{
-			get { return _CaptionBarVisible; }
-			set
+			get => _CaptionBarVisible;
+		    set
 			{
 				_CaptionBarVisible = value;
 
@@ -1465,12 +1281,12 @@ namespace System.Windows.Forms
 		{
 			try
 			{
-				if (this.IsDisposed == false)
+				if (IsDisposed == false)
 				{
 					if (InvokeRequired)
 					{
 						HandlerCallbackMethode del = new HandlerCallbackMethode(Refresh);
-						this.Invoke(del);
+						Invoke(del);
 					}
 					else
 					{
@@ -1484,8 +1300,9 @@ namespace System.Windows.Forms
 		}
 
 		#region cr
-		private string cr { get { return "Professional Ribbon\n\n2009 Jos?Manuel Menéndez Poo\nwww.menendezpoo.com"; } }
-		#endregion
+		private string cr => "Professional Ribbon\n\n2009 Jos?Manuel Menéndez Poo\nwww.menendezpoo.com";
+
+	    #endregion
 
 		///// <summary>
 		///// Gets or sets the Font associated with Ribbon Items.
@@ -1507,8 +1324,8 @@ namespace System.Windows.Forms
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public Font RibbonTabFont
 		{
-			get { return _RibbonTabFont; }
-			set { _RibbonTabFont = value; RecalculateOrbTextSize(); }
+			get => _RibbonTabFont;
+		    set { _RibbonTabFont = value; RecalculateOrbTextSize(); }
 		}
 
 		/// <summary>
@@ -1517,13 +1334,9 @@ namespace System.Windows.Forms
 		[Category("Appearance")]
 		[Description("Specifies if a Tab is invisible in case it is the only one and the text is set to string.Empty.")]
 		[DefaultValue(true)]
-		public bool HideSingleTabIfTextEmpty
-		{
-			get { return _HideSingleTab; }
-			set { this._HideSingleTab = value; }
-		}
+		public bool HideSingleTabIfTextEmpty { get; set; } = true;
 
-		#endregion
+	    #endregion
 
 		#region Handler Methods
 
@@ -1539,7 +1352,7 @@ namespace System.Windows.Forms
 			{
 				handled = RibbonPopupManager.FeedHookClick(e);
 			}
-			if (RectangleToScreen(this.Bounds).Contains(e.Location))
+			if (RectangleToScreen(Bounds).Contains(e.Location))
 			{
 				//they clicked inside the ribbon
 				handled = true;
@@ -1673,7 +1486,7 @@ namespace System.Windows.Forms
 
 			if (Sensor != null) Sensor.Dispose();
 
-			_sensor = new RibbonMouseSensor(this, this, ActiveTab);
+			Sensor = new RibbonMouseSensor(this, this, ActiveTab);
 
 			if (CaptionButtonsVisible)
 			{
@@ -1687,9 +1500,9 @@ namespace System.Windows.Forms
 		/// <param name="borderMode">Actual border mode accquired</param>
 		private void SetActualBorderMode(RibbonWindowMode borderMode)
 		{
-			bool trigger = _actualBorderMode != borderMode;
+			bool trigger = ActualBorderMode != borderMode;
 
-			_actualBorderMode = borderMode;
+			ActualBorderMode = borderMode;
 
 			if (trigger)
 				OnActualBorderModeChanged(EventArgs.Empty);
@@ -1705,9 +1518,9 @@ namespace System.Windows.Forms
 		/// <param name="visible">Value to set to the caption buttons</param>
 		private void SetCaptionButtonsVisible(bool visible)
 		{
-			bool trigger = _CaptionButtonsVisible != visible;
+			bool trigger = CaptionButtonsVisible != visible;
 
-			_CaptionButtonsVisible = visible;
+			CaptionButtonsVisible = visible;
 
 			if (trigger)
 				OnCaptionButtonsVisibleChanged(EventArgs.Empty);
@@ -1871,9 +1684,9 @@ namespace System.Windows.Forms
 				if (OrbStyle == RibbonOrbStyle.Office_2007)
 					QuickAccessToolbar.SetBounds(new Rectangle(new Point(OrbBounds.Left - QuickAccessToolbar.Margin.Right - QuickAccessToolbar.LastMeasuredSize.Width, OrbBounds.Top - 2), QuickAccessToolbar.LastMeasuredSize));
 				else if (OrbStyle == RibbonOrbStyle.Office_2010) //2010 - no need to offset for the orb
-					QuickAccessToolbar.SetBounds(new Rectangle(new Point(this.ClientRectangle.Right - QuickAccessToolbar.Margin.Right - QuickAccessToolbar.LastMeasuredSize.Width, 0), QuickAccessToolbar.LastMeasuredSize));
+					QuickAccessToolbar.SetBounds(new Rectangle(new Point(ClientRectangle.Right - QuickAccessToolbar.Margin.Right - QuickAccessToolbar.LastMeasuredSize.Width, 0), QuickAccessToolbar.LastMeasuredSize));
 				else if (OrbStyle == RibbonOrbStyle.Office_2013)  //Michael Spradlin - 05/03/2013 Office 2013 Style Changes: no need to offset for the orb
-					QuickAccessToolbar.SetBounds(new Rectangle(new Point(this.ClientRectangle.Right - QuickAccessToolbar.Margin.Right - QuickAccessToolbar.LastMeasuredSize.Width, 0), QuickAccessToolbar.LastMeasuredSize));
+					QuickAccessToolbar.SetBounds(new Rectangle(new Point(ClientRectangle.Right - QuickAccessToolbar.Margin.Right - QuickAccessToolbar.LastMeasuredSize.Width, 0), QuickAccessToolbar.LastMeasuredSize));
 
 				#endregion
 
@@ -1935,11 +1748,11 @@ namespace System.Windows.Forms
 						   TabsPadding.Left + tabSize.Width + TabsPadding.Right,
 						   TabsPadding.Top + tabSize.Height + TabsPadding.Bottom);
 
-					bounds = LayoutHelper.CalcNewPosition(curXPos, bounds, Forms.LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
+					bounds = LayoutHelper.CalcNewPosition(curXPos, bounds, LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
 
 					tab.SetTabBounds(bounds);
 
-					curXPos = LayoutHelper.CalcNewPosition(bounds, curXPos, Forms.LayoutHelper.RTLLayoutPosition.Far, 0);
+					curXPos = LayoutHelper.CalcNewPosition(bounds, curXPos, LayoutHelper.RTLLayoutPosition.Far, 0);
 
 					maxWidth = Math.Max(bounds.Width, maxWidth);
 					tabsBottom = Math.Max(bounds.Bottom, tabsBottom);
@@ -1982,13 +1795,13 @@ namespace System.Windows.Forms
 					Rectangle contextHeaderBounds = new Rectangle(contextBounds.Left, contextBounds.Top,
 						contextBounds.Width, CaptionBarHeight);
 
-					contextBounds = LayoutHelper.CalcNewPosition(curXPos, contextBounds, Forms.LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
-					contextHeaderBounds = LayoutHelper.CalcNewPosition(curXPos, contextHeaderBounds, Forms.LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
+					contextBounds = LayoutHelper.CalcNewPosition(curXPos, contextBounds, LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
+					contextHeaderBounds = LayoutHelper.CalcNewPosition(curXPos, contextHeaderBounds, LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
 
 					context.SetBounds(contextBounds);
 					context.SetHeaderBounds(contextHeaderBounds);
 
-					curXPos = LayoutHelper.CalcNewPosition(contextBounds, curXPos, Forms.LayoutHelper.RTLLayoutPosition.Far, 0);
+					curXPos = LayoutHelper.CalcNewPosition(contextBounds, curXPos, LayoutHelper.RTLLayoutPosition.Far, 0);
 
 					maxWidth = Math.Max(contextBounds.Width, maxWidth);
 					tabsBottom = Math.Max(contextBounds.Bottom, tabsBottom);
@@ -2034,11 +1847,11 @@ namespace System.Windows.Forms
 							   TabsPadding.Left + tabSize.Width + TabsPadding.Right,
 							   TabsPadding.Top + tabSize.Height + TabsPadding.Bottom);
 
-						bounds = LayoutHelper.CalcNewPosition(curXPos, bounds, Forms.LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
+						bounds = LayoutHelper.CalcNewPosition(curXPos, bounds, LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
 
 						tab.SetTabBounds(bounds);
 
-						curXPos = LayoutHelper.CalcNewPosition(bounds, curXPos, Forms.LayoutHelper.RTLLayoutPosition.Far, 0);
+						curXPos = LayoutHelper.CalcNewPosition(bounds, curXPos, LayoutHelper.RTLLayoutPosition.Far, 0);
 					}
 				}
 
@@ -2065,13 +1878,13 @@ namespace System.Windows.Forms
 						Rectangle contextHeaderBounds = new Rectangle(contextBounds.Left, contextBounds.Top,
 							contextBounds.Width, CaptionBarHeight);
 
-						contextBounds = LayoutHelper.CalcNewPosition(curXPos, contextBounds, Forms.LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
-						contextHeaderBounds = LayoutHelper.CalcNewPosition(curXPos, contextHeaderBounds, Forms.LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
+						contextBounds = LayoutHelper.CalcNewPosition(curXPos, contextBounds, LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
+						contextHeaderBounds = LayoutHelper.CalcNewPosition(curXPos, contextHeaderBounds, LayoutHelper.RTLLayoutPosition.Far, TabSpacing);
 
 						context.SetBounds(contextBounds);
 						context.SetHeaderBounds(contextHeaderBounds);
 
-						curXPos = LayoutHelper.CalcNewPosition(contextBounds, curXPos, Forms.LayoutHelper.RTLLayoutPosition.Far, 0);
+						curXPos = LayoutHelper.CalcNewPosition(contextBounds, curXPos, LayoutHelper.RTLLayoutPosition.Far, 0);
 					}
 				}
 			}
@@ -2142,12 +1955,12 @@ namespace System.Windows.Forms
 					 tab.TabBounds.Bottom);
 
 				g.SetClip(clip);
-				System.Drawing.Drawing2D.SmoothingMode sm = g.SmoothingMode;
-				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+				Drawing.Drawing2D.SmoothingMode sm = g.SmoothingMode;
+				g.SmoothingMode = Drawing.Drawing2D.SmoothingMode.AntiAlias;
+				g.TextRenderingHint = Drawing.Text.TextRenderingHint.AntiAlias;
 				tab.OnPaint(this, new RibbonElementPaintEventArgs(tab.TabBounds, g, RibbonElementSizeMode.None));
 				g.SmoothingMode = sm;
-				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+				g.TextRenderingHint = Drawing.Text.TextRenderingHint.SystemDefault;
 			}
 		}
 
@@ -2306,8 +2119,8 @@ namespace System.Windows.Forms
 			{
 				if (WinApi.IsWindows && Environment.OSVersion.Platform == PlatformID.Win32NT)
 				{
-					g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-					g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+					g.SmoothingMode = Drawing.Drawing2D.SmoothingMode.AntiAlias;
+					g.TextRenderingHint = Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 				}
 
 				//Caption Background
@@ -2408,7 +2221,7 @@ namespace System.Windows.Forms
 			{
 				try
 				{
-					using (Graphics g = this.CreateGraphics())
+					using (Graphics g = CreateGraphics())
 					{
 						_orbTextSize = Size.Ceiling(g.MeasureString(OrbText, RibbonTabFont));
 					}
@@ -2484,7 +2297,7 @@ namespace System.Windows.Forms
 				{
 					if (tab.Bounds.Contains(e.Location))
 					{
-						this.Minimized = !this.Minimized;
+						Minimized = !Minimized;
 						break;
 					}
 				}
@@ -2500,7 +2313,7 @@ namespace System.Windows.Forms
 		/// Overriden. Raises the Paint event and draws all the Ribbon content
 		/// </summary>
 		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"></see> that contains the event data.</param>
-		protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
+		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (_updatingSuspended) return;
 
@@ -2514,7 +2327,7 @@ namespace System.Windows.Forms
 		/// Overriden. Raises the Click event and tunnels the message to child elements
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
-		protected override void OnClick(System.EventArgs e)
+		protected override void OnClick(EventArgs e)
 		{
 			base.OnClick(e);
 		}
@@ -2523,7 +2336,7 @@ namespace System.Windows.Forms
 		/// Overriden. Riases the MouseEnter event and tunnels the message to child elements
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
-		protected override void OnMouseEnter(System.EventArgs e)
+		protected override void OnMouseEnter(EventArgs e)
 		{
 			base.OnMouseEnter(e);
 		}
@@ -2532,7 +2345,7 @@ namespace System.Windows.Forms
 		/// Overriden. Raises the MouseLeave  event and tunnels the message to child elements
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
-		protected override void OnMouseLeave(System.EventArgs e)
+		protected override void OnMouseLeave(EventArgs e)
 		{
 			base.OnMouseLeave(e);
 			//Console.WriteLine("Ribbon Mouse Leave");
@@ -2549,7 +2362,7 @@ namespace System.Windows.Forms
 		/// Overriden. Raises the MouseMove event and tunnels the message to child elements
 		/// </summary>
 		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"></see> that contains the event data.</param>
-		protected override void OnMouseMove(System.Windows.Forms.MouseEventArgs e)
+		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			//Console.WriteLine("Ribbon: " + e.Location.ToString());
 
@@ -2663,7 +2476,7 @@ namespace System.Windows.Forms
 		/// Overriden. Raises the MouseUp event and tunnels the message to child elements
 		/// </summary>
 		/// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"></see> that contains the event data.</param>
-		protected override void OnMouseUp(System.Windows.Forms.MouseEventArgs e)
+		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			base.OnMouseUp(e);
 		}
@@ -2671,7 +2484,7 @@ namespace System.Windows.Forms
 		/// <summary>
 		/// Overriden. Raises the MouseDown event and tunnels the message to child elements
 		/// </summary>
-		protected override void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
+		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			//Kevin Carbis - this fixes the focus problem with textboxes when a different item is clicked
 			//and the edit box is still visible. This will now close the edit box for the textbox that previously
@@ -2748,7 +2561,7 @@ namespace System.Windows.Forms
 		/// Overriden. Raises the OnSizeChanged event and performs layout calculations
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
-		protected override void OnSizeChanged(System.EventArgs e)
+		protected override void OnSizeChanged(EventArgs e)
 		{
 			UpdateRegions();
 

@@ -10,9 +10,7 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.ComponentModel;
 
@@ -37,42 +35,25 @@ namespace System.Windows.Forms
       #endregion
 
       #region Fields
-      private RibbonButtonCollection _buttons;
-      private int _itemsInLargeMode;
+
+       private int _itemsInLargeMode;
       private int _itemsInMediumMode;
       private Size _ItemsInDropwDownMode;
-      private Rectangle _buttonUpBounds;
-      private Rectangle _buttonDownBounds;
-      private Rectangle _buttonDropDownBounds;
-      private Rectangle _contentBounds;
+       private Rectangle _contentBounds;
       private int _controlButtonsWidth;
       private RibbonElementSizeMode _buttonsSizeMode;
       private int _jumpDownSize;
       private int _jumpUpSize;
       private int _offset;
-      private bool _buttonDownSelected;
-      private bool _buttonDownPressed;
-      private bool _buttonUpSelected;
-      private bool _buttonUpPressed;
-      private bool _buttonDropDownSelected;
-      private bool _buttonDropDownPressed;
-      private bool _buttonUpEnabled;
-      private bool _buttonDownEnabled;
-      private RibbonDropDown _dropDown;
+       private RibbonDropDown _dropDown;
       private bool _dropDownVisible;
-      private RibbonItemCollection _dropDownItems;
-      private Rectangle _thumbBounds;
-      private bool _thumbSelected;
-      private bool _thumbPressed;
-      private int _scrollValue;
+       private Rectangle _thumbBounds;
+       private int _scrollValue;
       private Rectangle fullContentBounds;
-      private ListScrollType _scrollType;
-      private bool _scrollBarEnabled;
-      private int _thumbOffset;
+       private int _thumbOffset;
       private bool _avoidNextThumbMeasure;
-      private bool _flowToBottom;
 
-      private RibbonItem _selectedItem;
+       private RibbonItem _selectedItem;
 
       public event RibbonItemEventHandler ButtonItemClicked;
       public event RibbonItemEventHandler DropDownItemClicked;
@@ -84,16 +65,16 @@ namespace System.Windows.Forms
 
       public RibbonButtonList()
       {
-         _buttons = new RibbonButtonCollection(this);
-         _dropDownItems = new RibbonItemCollection();
-         _dropDownItems.SetOwnerItem(this);
+         Buttons = new RibbonButtonCollection(this);
+         DropDownItems = new RibbonItemCollection();
+         DropDownItems.SetOwnerItem(this);
 
          _controlButtonsWidth = 16;
          _itemsInLargeMode = 7;
          _itemsInMediumMode = 3;
          _ItemsInDropwDownMode = new Size(7, 5);
          _buttonsSizeMode = RibbonElementSizeMode.Large;
-         _scrollType = ListScrollType.UpDownButtons;
+         ScrollType = ListScrollType.UpDownButtons;
 
       }
 
@@ -109,7 +90,7 @@ namespace System.Windows.Forms
          {
             List<RibbonButton> items = new List<RibbonButton>(buttons);
 
-            _buttons.AddRange(items.ToArray());
+            Buttons.AddRange(items.ToArray());
 
             //add the handlers
             foreach (RibbonItem item in buttons)
@@ -120,7 +101,7 @@ namespace System.Windows.Forms
 
          if (dropDownItems != null)
          {
-            _dropDownItems.AddRange(dropDownItems);
+            DropDownItems.AddRange(dropDownItems);
 
             //add the handlers
             foreach (RibbonItem item in dropDownItems)
@@ -153,46 +134,27 @@ namespace System.Windows.Forms
 
       [Category("Layout")]
       [Description("If activated, buttons will flow to bottom inside the list")]
-      public bool FlowToBottom
-      {
-         get { return _flowToBottom; }
-         set { _flowToBottom = value; }
-      }
+      public bool FlowToBottom { get; set; }
 
 
-      [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public Rectangle ScrollBarBounds
-      {
-         get
-         {
-            return Rectangle.FromLTRB(ButtonUpBounds.Left, ButtonUpBounds.Top, ButtonDownBounds.Right, ButtonDownBounds.Bottom);
-         }
-      }
+       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+      public Rectangle ScrollBarBounds => Rectangle.FromLTRB(ButtonUpBounds.Left, ButtonUpBounds.Top, ButtonDownBounds.Right, ButtonDownBounds.Bottom);
 
-      [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ScrollBarEnabled
-      {
-         get { return _scrollBarEnabled; }
-      }
+       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+      public bool ScrollBarEnabled { get; private set; }
 
-      [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public ListScrollType ScrollType
-      {
-         get { return _scrollType; }
-      }
+       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+      public ListScrollType ScrollType { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets the percent of scrolled content
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
       public double ScrolledPercent
       {
-         get
-         {
-            return ((double)ContentBounds.Top - (double)fullContentBounds.Top) /
+         get => ((double)ContentBounds.Top - (double)fullContentBounds.Top) /
                 ((double)fullContentBounds.Height - (double)ContentBounds.Height);
-         }
-         set
+           set
          {
             _avoidNextThumbMeasure = true;
             ScrollTo(-Convert.ToInt32((double)(fullContentBounds.Height - ContentBounds.Height) * value));
@@ -235,8 +197,8 @@ namespace System.Windows.Forms
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
       public int ScrollValue
       {
-         get { return _scrollValue; }
-         set
+         get => _scrollValue;
+          set
          {
             if (value > ScrollMaximum || value < ScrollMinimum)
             {
@@ -267,185 +229,125 @@ namespace System.Windows.Forms
       /// Gets if the scrollbar thumb is currently selected
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ThumbSelected
-      {
-         get { return _thumbSelected; }
-      }
+      public bool ThumbSelected { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets if the scrollbar thumb is currently pressed
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ThumbPressed
-      {
-         get { return _thumbPressed; }
-      }
+      public bool ThumbPressed { get; private set; }
 
 
-      /// <summary>
+       /// <summary>
       /// Gets the bounds of the scrollbar thumb
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public Rectangle ThumbBounds
-      {
-         get
-         {
-            return _thumbBounds;
-         }
-      }
+      public Rectangle ThumbBounds => _thumbBounds;
 
 
-      /// <summary>
+       /// <summary>
       /// Gets if the DropDown button is present on thelist
       /// </summary>
     [Browsable(false)]
-       public bool ButtonDropDownPresent
-      {
-         get
-         {
-            return ButtonDropDownBounds.Height > 0;
-         }
-      }
+       public bool ButtonDropDownPresent => ButtonDropDownBounds.Height > 0;
 
-      /// <summary>
+       /// <summary>
       /// Gets the collection of items shown on the dropdown pop-up when Style allows it
       /// </summary>
       [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-      public RibbonItemCollection DropDownItems
-      {
-         get
-         {
-            return _dropDownItems;
-         }
-      }
+      public RibbonItemCollection DropDownItems { get; }
 
-      /// <summary>
+       /// <summary>
       /// Gets or sets the size that the buttons on the list should be
       /// </summary>
       [Category("Appearance")]
       public RibbonElementSizeMode ButtonsSizeMode
       {
-         get { return _buttonsSizeMode; }
-         set { _buttonsSizeMode = value; if (Owner != null) Owner.OnRegionsChanged(); }
+         get => _buttonsSizeMode;
+           set { _buttonsSizeMode = value; if (Owner != null) Owner.OnRegionsChanged(); }
       }
 
       /// <summary>
       /// Gets a value indicating if the button that scrolls up the content is currently enabled
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ButtonUpEnabled
-      {
-         get { return _buttonUpEnabled; }
-      }
+      public bool ButtonUpEnabled { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a value indicating if the button that scrolls down the content is currently enabled
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ButtonDownEnabled
-      {
-         get { return _buttonDownEnabled; }
-      }
+      public bool ButtonDownEnabled { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a value indicating if the DropDown button is currently selected
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ButtonDropDownSelected
-      {
-         get { return _buttonDropDownSelected; }
-      }
+      public bool ButtonDropDownSelected { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a value indicating if the DropDown button is currently pressed
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ButtonDropDownPressed
-      {
-         get { return _buttonDropDownPressed; }
-      }
+      public bool ButtonDropDownPressed { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a vaule indicating if the button that scrolls down the content is currently selected
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ButtonDownSelected
-      {
-         get { return _buttonDownSelected; }
-      }
+      public bool ButtonDownSelected { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a vaule indicating if the button that scrolls down the content is currently pressed
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ButtonDownPressed
-      {
-         get { return _buttonDownPressed; }
-      }
+      public bool ButtonDownPressed { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a vaule indicating if the button that scrolls up the content is currently selected
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ButtonUpSelected
-      {
-         get { return _buttonUpSelected; }
-      }
+      public bool ButtonUpSelected { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a vaule indicating if the button that scrolls up the content is currently pressed
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool ButtonUpPressed
-      {
-         get { return _buttonUpPressed; }
-      }
+      public bool ButtonUpPressed { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets the bounds of the content where items are shown
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public override Rectangle ContentBounds
-      {
-         get { return _contentBounds; }
-      }
+      public override Rectangle ContentBounds => _contentBounds;
 
-      /// <summary>
+       /// <summary>
       /// Gets the bounds of the button that scrolls the items up
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public Rectangle ButtonUpBounds
-      {
-         get { return _buttonUpBounds; }
-      }
+      public Rectangle ButtonUpBounds { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets the bounds of the button that scrolls the items down
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public Rectangle ButtonDownBounds
-      {
-         get { return _buttonDownBounds; }
-      }
+      public Rectangle ButtonDownBounds { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets the bounds of the button that scrolls
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public Rectangle ButtonDropDownBounds
-      {
-         get { return _buttonDropDownBounds; }
-      }
+      public Rectangle ButtonDropDownBounds { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets or sets the with of the buttons that allow to navigate thru the list
       /// </summary>
       [DefaultValue(16)]
       [Browsable(false)]
       public int ControlButtonsWidth
       {
-         get { return _controlButtonsWidth; }
-         set { _controlButtonsWidth = value; if (Owner != null) Owner.OnRegionsChanged(); }
+         get => _controlButtonsWidth;
+           set { _controlButtonsWidth = value; if (Owner != null) Owner.OnRegionsChanged(); }
       }
 
       /// <summary>
@@ -456,8 +358,8 @@ namespace System.Windows.Forms
       [Category("Appearance")]
       public int ItemsWideInLargeMode
       {
-         get { return _itemsInLargeMode; }
-         set { _itemsInLargeMode = value; if (Owner != null) Owner.OnRegionsChanged(); }
+         get => _itemsInLargeMode;
+          set { _itemsInLargeMode = value; if (Owner != null) Owner.OnRegionsChanged(); }
       }
 
       /// <summary>
@@ -468,8 +370,8 @@ namespace System.Windows.Forms
       [Category("Appearance")]
       public int ItemsWideInMediumMode
       {
-         get { return _itemsInMediumMode; }
-         set { _itemsInMediumMode = value; if (Owner != null) Owner.OnRegionsChanged(); }
+         get => _itemsInMediumMode;
+          set { _itemsInMediumMode = value; if (Owner != null) Owner.OnRegionsChanged(); }
       }
 
       /// <summary>
@@ -479,23 +381,17 @@ namespace System.Windows.Forms
       [Category("Appearance")]
       public Size ItemsSizeInDropwDownMode
       {
-         get { return _ItemsInDropwDownMode; }
-         set { _ItemsInDropwDownMode = value; if (Owner != null) Owner.OnRegionsChanged(); }
+         get => _ItemsInDropwDownMode;
+          set { _ItemsInDropwDownMode = value; if (Owner != null) Owner.OnRegionsChanged(); }
       }
 
       /// <summary>
       /// Gets the collection of buttons of the list
       /// </summary>
       [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-      public RibbonButtonCollection Buttons
-      {
-         get
-         {
-            return _buttons;
-         }
-      }
+      public RibbonButtonCollection Buttons { get; }
 
-      #endregion
+       #endregion
 
       #region Methods
 
@@ -635,11 +531,11 @@ namespace System.Windows.Forms
 
          if (Canvas is RibbonDropDown)
          {
-            _scrollType = ListScrollType.Scrollbar;
+            ScrollType = ListScrollType.Scrollbar;
          }
          else
          {
-            _scrollType = ListScrollType.UpDownButtons;
+            ScrollType = ListScrollType.UpDownButtons;
          }
       }
 
@@ -657,24 +553,24 @@ namespace System.Windows.Forms
       {
          base.SetOwner(owner);
 
-         _buttons.SetOwner(owner);
-         _dropDownItems.SetOwner(owner);
+         Buttons.SetOwner(owner);
+         DropDownItems.SetOwner(owner);
       }
 
       internal override void SetOwnerPanel(RibbonPanel ownerPanel)
       {
          base.SetOwnerPanel(ownerPanel);
 
-         _buttons.SetOwnerPanel(ownerPanel);
-         _dropDownItems.SetOwnerPanel(ownerPanel);
+         Buttons.SetOwnerPanel(ownerPanel);
+         DropDownItems.SetOwnerPanel(ownerPanel);
       }
 
       internal override void SetOwnerTab(RibbonTab ownerTab)
       {
          base.SetOwnerTab(ownerTab);
 
-         _buttons.SetOwnerTab(ownerTab);
-         _dropDownItems.SetOwnerTab(OwnerTab);
+         Buttons.SetOwnerTab(ownerTab);
+         DropDownItems.SetOwnerTab(OwnerTab);
       }
 
       internal override void SetOwnerItem(RibbonItem ownerItem)
@@ -684,9 +580,9 @@ namespace System.Windows.Forms
 
       internal override void ClearOwner()
       {
-         List<RibbonItem> oldItems = new List<RibbonItem>(_buttons.Count + _dropDownItems.Count);
-         oldItems.AddRange(_buttons);
-         oldItems.AddRange(_dropDownItems);
+         List<RibbonItem> oldItems = new List<RibbonItem>(Buttons.Count + DropDownItems.Count);
+         oldItems.AddRange(Buttons);
+         oldItems.AddRange(DropDownItems);
 
          base.ClearOwner();
 
@@ -716,7 +612,7 @@ namespace System.Windows.Forms
          }
       }
 
-      public override void SetBounds(System.Drawing.Rectangle bounds)
+      public override void SetBounds(Rectangle bounds)
       {
          base.SetBounds(bounds);
 
@@ -729,19 +625,19 @@ namespace System.Windows.Forms
             int buttonHeight = bounds.Height / cbtns;
             int buttonWidth = _controlButtonsWidth;
 
-            _buttonUpBounds = Rectangle.FromLTRB(bounds.Right - buttonWidth,
+            ButtonUpBounds = Rectangle.FromLTRB(bounds.Right - buttonWidth,
                 bounds.Top, bounds.Right, bounds.Top + buttonHeight);
 
-            _buttonDownBounds = Rectangle.FromLTRB(_buttonUpBounds.Left, _buttonUpBounds.Bottom,
-                bounds.Right, _buttonUpBounds.Bottom + buttonHeight);
+            ButtonDownBounds = Rectangle.FromLTRB(ButtonUpBounds.Left, ButtonUpBounds.Bottom,
+                bounds.Right, ButtonUpBounds.Bottom + buttonHeight);
 
             if (cbtns == 2)
             {
-               _buttonDropDownBounds = Rectangle.Empty;
+               ButtonDropDownBounds = Rectangle.Empty;
             }
             else
             {
-               _buttonDropDownBounds = Rectangle.FromLTRB(_buttonDownBounds.Left, _buttonDownBounds.Bottom,
+               ButtonDropDownBounds = Rectangle.FromLTRB(ButtonDownBounds.Left, ButtonDownBounds.Bottom,
                bounds.Right, bounds.Bottom + 1);
             }
 
@@ -756,28 +652,28 @@ namespace System.Windows.Forms
             int bwidth = ThumbBounds.Width;
             int bheight = ThumbBounds.Width;
 
-            _buttonUpBounds = Rectangle.FromLTRB(bounds.Right - bwidth,
+            ButtonUpBounds = Rectangle.FromLTRB(bounds.Right - bwidth,
                 bounds.Top + 1, bounds.Right, bounds.Top + bheight + 1);
 
-            _buttonDownBounds = Rectangle.FromLTRB(_buttonUpBounds.Left, bounds.Bottom - bheight,
+            ButtonDownBounds = Rectangle.FromLTRB(ButtonUpBounds.Left, bounds.Bottom - bheight,
                 bounds.Right, bounds.Bottom);
 
-            _buttonDropDownBounds = Rectangle.Empty;
+            ButtonDropDownBounds = Rectangle.Empty;
 
-            _thumbBounds.X = _buttonUpBounds.Left;
+            _thumbBounds.X = ButtonUpBounds.Left;
 
             #endregion
          }
 
-         _contentBounds = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, _buttonUpBounds.Left - 1, bounds.Bottom - 1);
+         _contentBounds = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, ButtonUpBounds.Left - 1, bounds.Bottom - 1);
 
          #endregion
 
          #region Assign buttons regions
 
-         _buttonUpEnabled = _offset < 0;
-         if (!_buttonUpEnabled) _offset = 0;
-         _buttonDownEnabled = false;
+         ButtonUpEnabled = _offset < 0;
+         if (!ButtonUpEnabled) _offset = 0;
+         ButtonDownEnabled = false;
 
          int curLeft = ContentBounds.Left + 1;
          int curTop = ContentBounds.Top + 1 + _offset;
@@ -803,7 +699,7 @@ namespace System.Windows.Forms
             curLeft = button.Bounds.Right + 1;
             maxBottom = Math.Max(maxBottom, button.Bounds.Bottom);
 
-            if (button.Bounds.Bottom > ContentBounds.Bottom) _buttonDownEnabled = true;
+            if (button.Bounds.Bottom > ContentBounds.Bottom) ButtonDownEnabled = true;
 
             _jumpDownSize = button.Bounds.Height;
             _jumpUpSize = button.Bounds.Height;
@@ -840,13 +736,13 @@ namespace System.Windows.Forms
 
             fullContentBounds = Rectangle.FromLTRB(ContentBounds.Left, iniTop, ContentBounds.Right, maxBottom);
 
-            _scrollBarEnabled = true;
+            ScrollBarEnabled = true;
 
             UpdateThumbPos();
          }
          else
          {
-            _scrollBarEnabled = false;
+            ScrollBarEnabled = false;
          }
 
          #endregion
@@ -924,7 +820,7 @@ namespace System.Windows.Forms
          foreach (RibbonButton button in Buttons)
          {
             Size s = button.MeasureSize(this,
-                new RibbonElementMeasureSizeEventArgs(e.Graphics, this.ButtonsSizeMode));
+                new RibbonElementMeasureSizeEventArgs(e.Graphics, ButtonsSizeMode));
 
             if (sumWidth)
                widthSum += s.Width + 1;
@@ -942,7 +838,7 @@ namespace System.Windows.Forms
 
          if (ScrollBarRenderer.IsSupported)
          {
-            _thumbBounds = new Rectangle(Point.Empty, ScrollBarRenderer.GetSizeBoxSize(e.Graphics, System.Windows.Forms.VisualStyles.ScrollBarState.Normal));
+            _thumbBounds = new Rectangle(Point.Empty, ScrollBarRenderer.GetSizeBoxSize(e.Graphics, VisualStyles.ScrollBarState.Normal));
          }
          else
          {
@@ -985,20 +881,20 @@ namespace System.Windows.Forms
             ScrollOffset(1);
          }
 
-         bool upCache = _buttonUpSelected;
-         bool downCache = _buttonDownSelected;
-         bool dropCache = _buttonDropDownSelected;
-         bool thumbCache = _thumbSelected;
+         bool upCache = ButtonUpSelected;
+         bool downCache = ButtonDownSelected;
+         bool dropCache = ButtonDropDownSelected;
+         bool thumbCache = ThumbSelected;
 
-         _buttonUpSelected = _buttonUpBounds.Contains(e.Location);
-         _buttonDownSelected = _buttonDownBounds.Contains(e.Location);
-         _buttonDropDownSelected = _buttonDropDownBounds.Contains(e.Location);
-         _thumbSelected = _thumbBounds.Contains(e.Location) && ScrollType == ListScrollType.Scrollbar && ScrollBarEnabled;
+         ButtonUpSelected = ButtonUpBounds.Contains(e.Location);
+         ButtonDownSelected = ButtonDownBounds.Contains(e.Location);
+         ButtonDropDownSelected = ButtonDropDownBounds.Contains(e.Location);
+         ThumbSelected = _thumbBounds.Contains(e.Location) && ScrollType == ListScrollType.Scrollbar && ScrollBarEnabled;
 
-         if ((upCache != _buttonUpSelected)
-             || (downCache != _buttonDownSelected)
-             || (dropCache != _buttonDropDownSelected)
-             || (thumbCache != _thumbSelected))
+         if ((upCache != ButtonUpSelected)
+             || (downCache != ButtonDownSelected)
+             || (dropCache != ButtonDropDownSelected)
+             || (thumbCache != ThumbSelected))
          {
             RedrawControlButtons();
          }
@@ -1025,11 +921,11 @@ namespace System.Windows.Forms
       {
          base.OnMouseLeave(e);
 
-         bool mustRedraw = _buttonUpSelected || _buttonDownSelected || _buttonDropDownSelected;
+         bool mustRedraw = ButtonUpSelected || ButtonDownSelected || ButtonDropDownSelected;
 
-         _buttonUpSelected = false;
-         _buttonDownSelected = false;
-         _buttonDropDownSelected = false;
+         ButtonUpSelected = false;
+         ButtonDownSelected = false;
+         ButtonDropDownSelected = false;
 
          if (mustRedraw)
             RedrawControlButtons();
@@ -1046,25 +942,25 @@ namespace System.Windows.Forms
 
          if (ButtonDownSelected && ButtonDownEnabled)
          {
-            _buttonDownPressed = true;
+            ButtonDownPressed = true;
             ScrollDown();
          }
 
          if (ButtonUpSelected && ButtonUpEnabled)
          {
-            _buttonUpPressed = true;
+            ButtonUpPressed = true;
             ScrollUp();
          }
 
          if (ButtonDropDownSelected)
          {
-            _buttonDropDownPressed = true;
+            ButtonDropDownPressed = true;
             ShowDropDown();
          }
 
          if (ThumbSelected)
          {
-            _thumbPressed = true;
+            ThumbPressed = true;
             _thumbOffset = e.Y - _thumbBounds.Y;
          }
 
@@ -1093,10 +989,10 @@ namespace System.Windows.Forms
       {
          base.OnMouseUp(e);
 
-         _buttonDownPressed = false;
-         _buttonUpPressed = false;
-         _buttonDropDownPressed = false;
-         _thumbPressed = false;
+         ButtonDownPressed = false;
+         ButtonUpPressed = false;
+         ButtonDropDownPressed = false;
+         ThumbPressed = false;
       }
 
       public override void OnClick(EventArgs e)

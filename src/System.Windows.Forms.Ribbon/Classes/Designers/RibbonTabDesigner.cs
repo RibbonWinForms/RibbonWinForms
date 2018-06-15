@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel.Design;
 using System.ComponentModel;
 using System.Windows.Forms.Design.Behavior;
@@ -24,22 +21,13 @@ namespace System.Windows.Forms
    {
       Adorner panelAdorner;
 
-      public override DesignerVerbCollection Verbs
-      {
-         get
-         {
-            return new DesignerVerbCollection(new DesignerVerb[] { 
-                    new DesignerVerb("Add Panel", new EventHandler(AddPanel))
-                });
-         }
-      }
+      public override DesignerVerbCollection Verbs => new DesignerVerbCollection(new DesignerVerb[] { 
+          new DesignerVerb("Add Panel", new EventHandler(AddPanel))
+      });
 
-      public RibbonTab Tab
-      {
-         get { return Component as RibbonTab; }
-      }
+       public RibbonTab Tab => Component as RibbonTab;
 
-      public void AddPanel(object sender, EventArgs e)
+       public void AddPanel(object sender, EventArgs e)
       {
          IDesignerHost host = GetService(typeof(IDesignerHost)) as IDesignerHost;
 
@@ -49,7 +37,7 @@ namespace System.Windows.Forms
 
             DesignerTransaction transaction = host.CreateTransaction("AddPanel" + Component.Site.Name);
             MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Panels"];
-            base.RaiseComponentChanging(member);
+            RaiseComponentChanging(member);
 
             RibbonPanel panel = host.CreateComponent(typeof(RibbonPanel)) as RibbonPanel;
 
@@ -78,7 +66,7 @@ namespace System.Windows.Forms
                Tab.Owner.OnRegionsChanged();
             }
 
-            base.RaiseComponentChanged(member, null, null);
+            RaiseComponentChanged(member, null, null);
             transaction.Commit();
          }
       }

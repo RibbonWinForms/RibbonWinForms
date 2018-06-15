@@ -10,33 +10,16 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-
 namespace System.Windows.Forms
 {
    public class RibbonItemEventArgs : EventArgs
    {
-      private RibbonItem _item;
-
-      public RibbonItemEventArgs( RibbonItem item)
+       public RibbonItemEventArgs( RibbonItem item)
          : base()
       {
          Item = item;
       }
 
-      public RibbonItem Item
-      {
-         get
-         {
-            return _item;
-         }
-         set
-         {
-            _item = value;
-         }
-      }
+      public RibbonItem Item { get; set; }
    }
 }

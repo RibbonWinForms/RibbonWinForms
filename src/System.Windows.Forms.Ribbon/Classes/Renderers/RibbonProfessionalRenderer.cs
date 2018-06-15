@@ -10,12 +10,9 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms.RibbonHelpers;
 using System.Windows.Forms.VisualStyles;
@@ -67,15 +64,9 @@ namespace System.Windows.Forms
         /// <summary>
         /// Either specifiy a custom theme otherwise the standard theme is used.
         /// </summary>
-        public Theme Theme
-        {
-            get { return _ownerRibbon == null ? Theme.Standard : _ownerRibbon.Theme; }
-        }
+        public Theme Theme => _ownerRibbon == null ? Theme.Standard : _ownerRibbon.Theme;
 
-        public RibbonProfesionalRendererColorTable ColorTable
-        {
-            get { return Theme.RendererColorTable; }
-        }
+        public RibbonProfesionalRendererColorTable ColorTable => Theme.RendererColorTable;
 
         #endregion
 
@@ -4703,13 +4694,13 @@ namespace System.Windows.Forms
             if (e.Ribbon.AltPressed)
             {
 
-                sf.HotkeyPrefix = Drawing.Text.HotkeyPrefix.Show;
+                sf.HotkeyPrefix = HotkeyPrefix.Show;
 
             }
             else
             {
 
-                sf.HotkeyPrefix = Drawing.Text.HotkeyPrefix.Hide;
+                sf.HotkeyPrefix = HotkeyPrefix.Hide;
             }
 
             Rectangle r = Rectangle.FromLTRB(e.Tab.TabBounds.Left + e.Ribbon.TabTextMargin.Left, e.Tab.TabBounds.Top + e.Ribbon.TabTextMargin.Top, e.Tab.TabBounds.Right - e.Ribbon.TabTextMargin.Right, e.Tab.TabBounds.Bottom - e.Ribbon.TabTextMargin.Bottom);
@@ -5536,7 +5527,7 @@ namespace System.Windows.Forms
             {
                 using (Brush b = new SolidBrush(ColorTable.ToolTipText))
                 {
-                    e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                    e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                     e.Graphics.DrawString(e.Text, e.Font, b, e.ClipRectangle, e.Format);
                 }
             }
@@ -5544,7 +5535,7 @@ namespace System.Windows.Forms
             {
                 using (Brush b = new SolidBrush(ColorTable.ToolTipText_2013))
                 {
-                    e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                    e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                     e.Graphics.DrawString(e.Text, e.Font, b, e.ClipRectangle, e.Format);
                 }
             }

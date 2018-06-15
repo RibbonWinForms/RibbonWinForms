@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace RibbonDemo
@@ -13,9 +8,9 @@ namespace RibbonDemo
         public FormClassResult(string text)
         {
             InitializeComponent();
-            this.Height = Screen.PrimaryScreen.WorkingArea.Height;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.textBox1.Text = text;
+            Height = Screen.PrimaryScreen.WorkingArea.Height;
+            StartPosition = FormStartPosition.CenterScreen;
+            textBox1.Text = text;
         }
 
         private void FormClassResult_Load(object sender, EventArgs e)

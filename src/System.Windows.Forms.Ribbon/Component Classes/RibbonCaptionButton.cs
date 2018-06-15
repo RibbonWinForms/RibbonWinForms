@@ -9,9 +9,6 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms.RibbonHelpers;
 
@@ -84,8 +81,8 @@ namespace System.Windows.Forms
       #endregion
 
       #region Fields
-      private CaptionButton _captionButtonType;
-      #endregion
+
+       #endregion
 
       #region Ctor
       /// <summary>
@@ -102,11 +99,9 @@ namespace System.Windows.Forms
       /// <summary>
       /// Gets the type of caption button this is
       /// </summary>
-      public CaptionButton CaptionButtonType
-      {
-         get { return _captionButtonType; }
-      }
-      #endregion
+      public CaptionButton CaptionButtonType { get; private set; }
+
+       #endregion
 
       #region Methods
 
@@ -153,7 +148,7 @@ namespace System.Windows.Forms
       internal void SetCaptionButtonType(CaptionButton buttonType)
       {
          Text = GetCharFor(buttonType);
-         _captionButtonType = buttonType;
+         CaptionButtonType = buttonType;
       }
 
       internal override Rectangle OnGetTextBounds(RibbonElementSizeMode sMode, Rectangle bounds)

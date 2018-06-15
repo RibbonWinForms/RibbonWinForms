@@ -10,12 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel.Design;
-using System.ComponentModel;
-
 namespace System.Windows.Forms
 {
     internal class RibbonPanelDesigner

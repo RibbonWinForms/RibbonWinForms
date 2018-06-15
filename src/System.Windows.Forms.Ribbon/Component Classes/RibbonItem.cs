@@ -10,12 +10,8 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing;
-using System.ComponentModel.Design;
 
 namespace System.Windows.Forms
 {
@@ -27,21 +23,14 @@ namespace System.Windows.Forms
 		private Image _image;
 		private bool _checked;
 		private bool _selected;
-		private Ribbon _owner;
-		private Rectangle _bounds;
-		private bool _pressed;
+	    private bool _pressed;
 		private bool _enabled;
 		private object _tag;
 		private string _value;
 		private string _altKey;
-		private RibbonTab _ownerTab;
-		private RibbonPanel _ownerPanel;
-		private RibbonItem _ownerItem;
-		private RibbonElementSizeMode _maxSize;
+	    private RibbonElementSizeMode _maxSize;
 		private RibbonElementSizeMode _minSize;
-		private Size _lastMeasureSize;
-		private RibbonElementSizeMode _sizeMode;
-		private Control _canvas;
+	    private Control _canvas;
 		private bool _visible;
 		private RibbonItemTextAlignment _textAlignment;
 		private bool _flashEnabled = false;
@@ -71,15 +60,15 @@ namespace System.Windows.Forms
 
 		public virtual event EventHandler Click;
 
-		public virtual event System.Windows.Forms.MouseEventHandler MouseUp;
+		public virtual event MouseEventHandler MouseUp;
 
-		public virtual event System.Windows.Forms.MouseEventHandler MouseMove;
+		public virtual event MouseEventHandler MouseMove;
 
-		public virtual event System.Windows.Forms.MouseEventHandler MouseDown;
+		public virtual event MouseEventHandler MouseDown;
 
-		public virtual event System.Windows.Forms.MouseEventHandler MouseEnter;
+		public virtual event MouseEventHandler MouseEnter;
 
-		public virtual event System.Windows.Forms.MouseEventHandler MouseLeave;
+		public virtual event MouseEventHandler MouseLeave;
 
 		public virtual event EventHandler CanvasChanged;
 		public virtual event EventHandler OwnerChanged;
@@ -156,9 +145,9 @@ namespace System.Windows.Forms
       {
          get
          {
-            if (base.Site != null)
+            if (Site != null)
             {
-               _Name = base.Site.Name;
+               _Name = Site.Name;
             }
             return _Name;
          }
@@ -215,7 +204,7 @@ namespace System.Windows.Forms
       [Category("Flash")]
       public bool FlashEnabled
       {
-          get { return _flashEnabled; }
+          get => _flashEnabled;
           set 
           {
               if (_flashEnabled != value)
@@ -245,7 +234,7 @@ namespace System.Windows.Forms
       [Category("Flash")]
       public int FlashIntervall
       {
-          get { return _flashIntervall; }
+          get => _flashIntervall;
           set
           {
               if (_flashIntervall != value)
@@ -259,7 +248,7 @@ namespace System.Windows.Forms
       [Category("Flash")]
       public Image FlashImage
       {
-          get { return _flashImage; }
+          get => _flashImage;
           set
           {
               if (_flashImage != value)
@@ -273,7 +262,7 @@ namespace System.Windows.Forms
       [Browsable(false)]
       public bool ShowFlashImage
       {
-          get { return _showFlashImage; }
+          get => _showFlashImage;
           set
           {
               if (_showFlashImage != value)
@@ -288,11 +277,8 @@ namespace System.Windows.Forms
       [Localizable(true)]
 		public virtual string Text
 		{
-			get
-			{
-                return _text;
-			}
-			set
+			get => _text;
+		    set
 			{
                 if (_text != value)
                 {
@@ -310,11 +296,8 @@ namespace System.Windows.Forms
         [Category("Appearance")]
         public virtual Image Image
 		{
-			get
-			{
-				return _image;
-			}
-			set
+			get => _image;
+		    set
 			{
 				_image = value;
 
@@ -359,11 +342,8 @@ namespace System.Windows.Forms
         [Description("Indicates whether the component is in the checked state.")]
         public virtual bool Checked
 		{
-			get
-			{
-				return _checked;
-			}
-			set
+			get => _checked;
+		    set
 			{
                 if (_checked != value)
                 {
@@ -382,8 +362,8 @@ namespace System.Windows.Forms
                                 }
                             }
                         }
-                        else if ((_ownerPanel != null) && (_checkedGroup != null))
-                            foreach (RibbonItem itm in _ownerPanel.Items)
+                        else if ((OwnerPanel != null) && (_checkedGroup != null))
+                            foreach (RibbonItem itm in OwnerPanel.Items)
                             {
                                 if (itm.CheckedGroup == _checkedGroup && itm.Checked == true && itm != this)
                                 {
@@ -407,11 +387,8 @@ namespace System.Windows.Forms
         [Description("Determins the other Ribbon Items that belong to this checked group.  When one button is checked the other items in this group will be unchecked automatically.  This only applies to Items that are within the same Parent")]
 		public virtual string CheckedGroup
 		{
-			get
-			{
-				return _checkedGroup;
-			}
-			set
+			get => _checkedGroup;
+		    set
 			{
                 if ( _checkedGroup != value )
     				_checkedGroup = value;
@@ -422,60 +399,33 @@ namespace System.Windows.Forms
 		/// Gets the item's current SizeMode
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public RibbonElementSizeMode SizeMode
-		{
-			get { return _sizeMode; }
-		}
+		public RibbonElementSizeMode SizeMode { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets a value indicating whether the item is selected (moused over)
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public virtual bool Selected
-		{
-			get
-			{
-				return _selected;
-			}
-		}
+		public virtual bool Selected => _selected;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets a value indicating whether the state of the item is pressed
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public virtual bool Pressed
-		{
-			get
-			{
-				return _pressed;
-			}
-		}
+		public virtual bool Pressed => _pressed;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the Ribbon owner of this item
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Ribbon Owner
-		{
-			get
-			{
-				return _owner;
-			}
-		}
+		public Ribbon Owner { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the bounds of the element relative to the Ribbon control
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Rectangle Bounds
-		{
-			get
-			{
-				return _bounds;
-			}
-		}
+		public Rectangle Bounds { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets a value indicating if the item is currently enabled
 		/// </summary>
 		[DefaultValue(true)]
@@ -520,11 +470,8 @@ namespace System.Windows.Forms
 		[DefaultValue("")]
 		public string ToolTipTitle
 		{
-			get
-			{
-				return _TT.ToolTipTitle;
-			}
-			set
+			get => _TT.ToolTipTitle;
+		    set
 			{
                 if ( _TT.ToolTipTitle != value )
     				_TT.ToolTipTitle = value;
@@ -538,11 +485,8 @@ namespace System.Windows.Forms
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ToolTipIcon ToolTipIcon
 		{
-			get
-			{
-				return _TT.ToolTipIcon;
-			}
-			set
+			get => _TT.ToolTipIcon;
+		    set
 			{
                 if ( _TT.ToolTipIcon != value )
 	    			_TT.ToolTipIcon = value;
@@ -556,11 +500,8 @@ namespace System.Windows.Forms
 		[Localizable(true)]
 		public string ToolTip
 		{
-			get
-			{
-                return _tooltip;
-			}
-			set
+			get => _tooltip;
+		    set
 			{
                 if ( _tooltip != value )
 				_tooltip = value;
@@ -574,11 +515,8 @@ namespace System.Windows.Forms
 		[Localizable(true)]
 		public Image ToolTipImage
 		{
-			get
-			{
-				return _TT.ToolTipImage;
-			}
-			set
+			get => _TT.ToolTipImage;
+		    set
 			{
                 if ( _TT.ToolTipImage != value )
     				_TT.ToolTipImage = value;
@@ -594,11 +532,8 @@ namespace System.Windows.Forms
         [TypeConverter(typeof(StringConverter))]
       public object Tag
 		{
-			get
-			{
-				return _tag;
-			}
-			set
+			get => _tag;
+		    set
 			{
                 if ( _tag != value )
     				_tag = value;
@@ -613,11 +548,8 @@ namespace System.Windows.Forms
         [DescriptionAttribute("A string field for associating custom data for this control")]
 		public string Value
 		{
-			get
-			{
-				return _value;
-			}
-			set
+			get => _value;
+		    set
 			{
                 if ( _value != value )
     				_value = value;
@@ -631,11 +563,8 @@ namespace System.Windows.Forms
         [Category("Behavior")]
         public string AltKey
 		{
-			get
-			{
-				return _altKey;
-			}
-			set
+			get => _altKey;
+		    set
 			{
                 if ( _altKey != value )
     				_altKey = value;
@@ -646,36 +575,21 @@ namespace System.Windows.Forms
 		/// Gets the RibbonTab that contains this item
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public RibbonTab OwnerTab
-		{
-			get
-			{
-				return _ownerTab;
-			}
-		}
+		public RibbonTab OwnerTab { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the RibbonPanel where this item is located
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public RibbonPanel OwnerPanel
-		{
-			get
-			{
-				return _ownerPanel;
-			}
-		}
+		public RibbonPanel OwnerPanel { get; private set; }
 
-        /// <summary>
+	    /// <summary>
         /// Gets the RibbonItem that owns the item (If any)
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RibbonItem OwnerItem
-        {
-            get { return _ownerItem; }
-        }
+        public RibbonItem OwnerItem { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the maximum size mode of the element
 		/// </summary>
 		[DefaultValue(RibbonElementSizeMode.None)]
@@ -683,11 +597,8 @@ namespace System.Windows.Forms
         [Description("Sets the maximum size mode of the element.")]
         public RibbonElementSizeMode MaxSizeMode
 		{
-			get
-			{
-				return _maxSize;
-			}
-			set
+			get => _maxSize;
+	        set
 			{
                 if (_maxSize != value)
                 {
@@ -706,11 +617,8 @@ namespace System.Windows.Forms
         [Description("Sets the minimum size mode of the element.")]
         public RibbonElementSizeMode MinSizeMode
 		{
-			get
-			{
-				return _minSize;
-			}
-			set
+			get => _minSize;
+		    set
 			{
                 if (_minSize != value)
                 {
@@ -725,22 +633,17 @@ namespace System.Windows.Forms
 		/// Gets the last result of  MeasureSize
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Size LastMeasuredSize
-		{
-			get
-			{
-				return _lastMeasureSize;
-			}
-		}
-		/// <summary>
+		public Size LastMeasuredSize { get; private set; }
+
+	    /// <summary>
 		/// Sets the alignment of the label text if it exists
 		/// </summary>
 		[DefaultValue(RibbonItemTextAlignment.Left)]
         [Category("Appearance")]
         public RibbonItemTextAlignment TextAlignment
 		{
-			get { return _textAlignment; }
-			set 
+			get => _textAlignment;
+	        set 
             {
                 if (_textAlignment != value)
                 {
@@ -805,7 +708,7 @@ namespace System.Windows.Forms
         /// <param name="item">RibbonItem where this item is located</param>
         internal virtual void SetOwnerItem(RibbonItem item)
         {
-            _ownerItem = item;
+            OwnerItem = item;
         }
 
 		/// <summary>
@@ -814,7 +717,7 @@ namespace System.Windows.Forms
 		/// <param name="owner">Ribbon that owns this item</param>
 		internal virtual void SetOwner(Ribbon owner)
 		{
-			_owner = owner;
+			Owner = owner;
 			OnOwnerChanged(EventArgs.Empty);
 		}
 
@@ -824,7 +727,7 @@ namespace System.Windows.Forms
 		/// <param name="ownerPanel">RibbonPanel where this item is located</param>
 		internal virtual void SetOwnerPanel(RibbonPanel ownerPanel)
 		{
-			_ownerPanel = ownerPanel;
+			OwnerPanel = ownerPanel;
 		}
 
 		/// <summary>
@@ -853,7 +756,7 @@ namespace System.Windows.Forms
 		/// <param name="ownerTab">RibbonTab where this item is located</param>
 		internal virtual void SetOwnerTab(RibbonTab ownerTab)
 		{
-			_ownerTab = ownerTab;
+			OwnerTab = ownerTab;
 		}
 
 		/// <summary>
@@ -861,10 +764,10 @@ namespace System.Windows.Forms
 		/// </summary>
 		internal virtual void ClearOwner()
 		{
-			_ownerItem = null;
-			_ownerPanel = null;
-			_ownerTab = null;
-			_owner = null;
+			OwnerItem = null;
+			OwnerPanel = null;
+			OwnerTab = null;
+			Owner = null;
 			OnOwnerChanged(EventArgs.Empty);
 		}
 
@@ -899,7 +802,7 @@ namespace System.Windows.Forms
 		/// <param name="size">Size to set to the property</param>
 		protected void SetLastMeasuredSize(Size size)
 		{
-			_lastMeasureSize = size;
+			LastMeasuredSize = size;
 		}
 
 		/// <summary>
@@ -908,7 +811,7 @@ namespace System.Windows.Forms
 		/// <param name="sizeMode"></param>
 		internal virtual void SetSizeMode(RibbonElementSizeMode sizeMode)
 		{
-			_sizeMode = GetNearestSize(sizeMode);
+			SizeMode = GetNearestSize(sizeMode);
 		}
 
 		/// <summary>
@@ -1027,14 +930,14 @@ namespace System.Windows.Forms
 
          //Kevin - found cases where mousing into buttons doesn't set the selection. This arose with the office 2010 style
          if (!Selected)
-         { SetSelected(true); Owner.Invalidate(this.Bounds); }
+         { SetSelected(true); Owner.Invalidate(Bounds); }
 
-         if (!_TT.Active && !string.IsNullOrEmpty(this.ToolTip))  // ToolTip should be working without title as well - to get Office 2007 Look & Feel
+         if (!_TT.Active && !string.IsNullOrEmpty(ToolTip))  // ToolTip should be working without title as well - to get Office 2007 Look & Feel
          {
             DeactivateToolTip(_lastActiveToolTip);
-            if (this.ToolTip != _TT.GetToolTip(this.Canvas))
+            if (ToolTip != _TT.GetToolTip(Canvas))
             {
-               _TT.SetToolTip(this.Canvas, this.ToolTip);
+               _TT.SetToolTip(Canvas, ToolTip);
             }
             _TT.Active = true;
             _lastActiveToolTip = null;
@@ -1122,8 +1025,8 @@ namespace System.Windows.Forms
          if (ToolTipPopUp != null)
          {
             ToolTipPopUp(sender, new RibbonElementPopupEventArgs(this, e));
-            if (this.ToolTip != _TT.GetToolTip(this.Canvas))
-               _TT.SetToolTip(this.Canvas, this.ToolTip);
+            if (ToolTip != _TT.GetToolTip(Canvas))
+               _TT.SetToolTip(Canvas, ToolTip);
          }
       }
 
@@ -1143,7 +1046,7 @@ namespace System.Windows.Forms
 
 		public virtual void SetBounds(Rectangle bounds)
 		{
-			_bounds = bounds;
+			Bounds = bounds;
 		}
 
 		public abstract Size MeasureSize(object sender, RibbonElementMeasureSizeEventArgs e);

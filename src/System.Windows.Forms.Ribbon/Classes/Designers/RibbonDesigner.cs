@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel.Design;
 using System.Windows.Forms.Design;
 using System.ComponentModel;
@@ -63,8 +60,8 @@ namespace System.Windows.Forms
       /// </summary>
       public IRibbonElement SelectedElement
       {
-         get { return _selectedElement; }
-         set
+         get => _selectedElement;
+          set
          {
             if (Ribbon == null) return;
             _selectedElement = value;
@@ -86,12 +83,9 @@ namespace System.Windows.Forms
       /// <summary>
       /// Gets the Ribbon of the designer
       /// </summary>
-      public Ribbon Ribbon
-      {
-         get { return Control as Ribbon; }
-      }
+      public Ribbon Ribbon => Control as Ribbon;
 
-      #endregion
+       #endregion
 
       #region Methods
 
@@ -104,7 +98,7 @@ namespace System.Windows.Forms
             DesignerTransaction transaction = host.CreateTransaction("AddRibbonItem_" + Component.Site.Name);
 
             MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Items"];
-            base.RaiseComponentChanging(member);
+            RaiseComponentChanging(member);
 
             RibbonItem item = host.CreateComponent(t) as RibbonItem;
 
@@ -113,7 +107,7 @@ namespace System.Windows.Forms
             collection.Add(item);
             ribbon.OnRegionsChanged();
 
-            base.RaiseComponentChanged(member, null, null);
+            RaiseComponentChanged(member, null, null);
             transaction.Commit();
          }
       }
@@ -417,7 +411,7 @@ namespace System.Windows.Forms
 
           using (Pen p = new Pen(Color.Black))
           {
-              p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+              p.DashStyle = Drawing.Drawing2D.DashStyle.Dot;
 
               ISelectionService host = GetService(typeof(ISelectionService)) as ISelectionService;
 

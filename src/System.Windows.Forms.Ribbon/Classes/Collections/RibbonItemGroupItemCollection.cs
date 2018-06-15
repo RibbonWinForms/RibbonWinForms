@@ -10,9 +10,7 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace System.Windows.Forms
 {
@@ -21,23 +19,15 @@ namespace System.Windows.Forms
     /// </summary>
     public class RibbonItemGroupItemCollection : RibbonItemCollection
     {
-        private RibbonItemGroup _ownerGroup;
-
         /// <param name="ownerGroup">Group that this collection belongs to</param>
         internal RibbonItemGroupItemCollection(RibbonItemGroup ownerGroup)
         {
-            _ownerGroup = ownerGroup;
+            OwnerGroup = ownerGroup;
         }
         /// <summary>
         /// Gets the group that owns this item collection
         /// </summary>
-        public RibbonItemGroup OwnerGroup
-        {
-            get
-            {
-                return _ownerGroup;
-            }
-        }
+        public RibbonItemGroup OwnerGroup { get; }
 
         /// <summary>
         /// Adds the specified item to the collection

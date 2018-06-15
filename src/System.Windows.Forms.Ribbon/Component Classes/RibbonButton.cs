@@ -25,24 +25,12 @@ namespace System.Windows.Forms
 
         private const int arrowWidth = 5;
         private RibbonButtonStyle _style = RibbonButtonStyle.Normal;
-        private Rectangle _dropDownBounds;
-        private Rectangle _buttonFaceBounds;
-        private RibbonItemCollection _dropDownItems;
-        private bool _dropDownPressed;
-        private bool _dropDownSelected;
         private Image _smallImage;
         private Image _flashSmallImage;
         private Size _dropDownArrowSize;
         private Padding _dropDownMargin;
-        private bool _dropDownVisible;
-        private RibbonDropDown _dropDown;
-        private Rectangle _imageBounds;
-        private Rectangle _textBounds;
-        private bool _dropDownResizable;
-        private bool _checkOnClick;
         private Point _lastMousePos;
         private RibbonArrowDirection _DropDownArrowDirection = RibbonArrowDirection.Down;
-        private bool _iconsBar;
 
         //Kevin - Tracks the selected item when it has dropdownitems assigned
         private RibbonItem _selectedItem;
@@ -85,13 +73,13 @@ namespace System.Windows.Forms
         /// <param name="text">Text of the button</param>
         public RibbonButton()
         {
-            _dropDownItems = new RibbonItemCollection();
-            _dropDownItems.SetOwnerItem(this);
+            DropDownItems = new RibbonItemCollection();
+            DropDownItems.SetOwnerItem(this);
             _dropDownArrowSize = new Size(5, 3);
             _dropDownMargin = new Padding(6);
             Image = CreateImage(32);
             SmallImage = CreateImage(16);
-            _iconsBar = true;
+            DrawDropDownIconsBar = true;
         }
 
         public RibbonButton(string text)
@@ -138,7 +126,7 @@ namespace System.Windows.Forms
                 }
                 else
                 {
-                    if (_dropDownItems.Contains(_selectedItem))
+                    if (DropDownItems.Contains(_selectedItem))
                     {
                         return _selectedItem;
                     }
@@ -154,13 +142,13 @@ namespace System.Windows.Forms
             {
                 if (value.GetType().BaseType == typeof(RibbonItem))
                 {
-                    if (_dropDownItems.Contains(value))
+                    if (DropDownItems.Contains(value))
                     {
                         _selectedItem = value;
                     }
                     else
                     {
-                        _dropDownItems.Add(value);
+                        DropDownItems.Add(value);
                         _selectedItem = value;
                     }
                 }
@@ -200,22 +188,15 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets the DropDown of the button
         /// </summary>
-        internal RibbonDropDown DropDown
-        {
-            get { return _dropDown; }
-        }
-  
+        internal RibbonDropDown DropDown { get; private set; }
+
         /// <summary>
         /// Gets or sets if the icon bar on a drop down should be drawn
         /// </summary>
         [Category("Drop Down")]
         [DefaultValue(true)]
         [Description("Gets or sets if the icon bar on a drop down should be drawn")]
-        public bool DrawDropDownIconsBar
-        {
-            get { return _iconsBar; }
-            set { _iconsBar = value; }
-        }
+        public bool DrawDropDownIconsBar { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating if the <see cref="Checked"/> property should be toggled
@@ -224,11 +205,7 @@ namespace System.Windows.Forms
         [DefaultValue(false)]
         [Category("Behavior")]
         [Description("Toggles the Checked property of the button when clicked")]
-        public bool CheckOnClick
-        {
-            get { return _checkOnClick; }
-            set { _checkOnClick = value; }
-        }
+        public bool CheckOnClick { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating if the DropDown should be resizable
@@ -236,39 +213,26 @@ namespace System.Windows.Forms
         [Category("Drop Down")]
         [DefaultValue(false)]
         [Description("Makes the DropDown resizable with a grip on the corner")]
-        public bool DropDownResizable
-        {
-            get { return _dropDownResizable; }
-            set { _dropDownResizable = value; }
-        }
+        public bool DropDownResizable { get; set; }
 
         /// <summary>
         /// Gets the bounds where the <see cref="Image"/> or <see cref="SmallImage"/> will be drawn.
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle ImageBounds
-        {
-            get { return _imageBounds; }
-        }
+        public Rectangle ImageBounds { get; private set; }
 
         /// <summary>
         /// Gets the bounds where the <see cref="Text"/> of the button will be drawn
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle TextBounds
-        {
-            get { return _textBounds; }
-        }
+        public Rectangle TextBounds { get; private set; }
 
 
         /// <summary>
         /// Gets if the DropDown is currently visible
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool DropDownVisible
-        {
-            get { return _dropDownVisible; }
-        }
+        public bool DropDownVisible { get; private set; }
 
         /// <summary>
         /// Gets or sets the size of the dropdown arrow
@@ -277,7 +241,7 @@ namespace System.Windows.Forms
         [DefaultValue(typeof(Size), "5, 3")]
         public Size DropDownArrowSize
         {
-            get { return _dropDownArrowSize; }
+            get => _dropDownArrowSize;
             set { _dropDownArrowSize = value; NotifyOwnerRegionsChanged(); }
         }
 
@@ -288,7 +252,7 @@ namespace System.Windows.Forms
         [DefaultValue(RibbonArrowDirection.Down)]
         public RibbonArrowDirection DropDownArrowDirection
         {
-            get { return _DropDownArrowDirection; }
+            get => _DropDownArrowDirection;
             set { _DropDownArrowDirection = value; NotifyOwnerRegionsChanged(); }
         }
 
@@ -301,10 +265,7 @@ namespace System.Windows.Forms
         [Description("Indicates the visual style of the button.")]
         public RibbonButtonStyle Style
         {
-            get
-            {
-                return _style;
-            }
+            get => _style;
             set
             {
                 _style = value;
@@ -324,13 +285,7 @@ namespace System.Windows.Forms
         /// </summary>
         [Category("Drop Down")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public RibbonItemCollection DropDownItems
-        {
-            get
-            {
-                return _dropDownItems;
-            }
-        }
+        public RibbonItemCollection DropDownItems { get; }
 
         /// <summary>
         /// Gets the bounds of the button face
@@ -338,13 +293,7 @@ namespace System.Windows.Forms
         /// <remarks>When Style is different from SplitDropDown and SplitBottomDropDown, ButtonFaceBounds is the same area than DropDownBounds</remarks>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Rectangle ButtonFaceBounds
-        {
-            get
-            {
-                return _buttonFaceBounds;
-            }
-        }
+        public Rectangle ButtonFaceBounds { get; private set; }
 
         /// <summary>
         /// Gets the bounds of the dropdown button
@@ -352,37 +301,19 @@ namespace System.Windows.Forms
         /// <remarks>When Style is different from SplitDropDown and SplitBottomDropDown, ButtonFaceBounds is the same area than DropDownBounds</remarks>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Rectangle DropDownBounds
-        {
-            get
-            {
-                return _dropDownBounds;
-            }
-        }
+        public Rectangle DropDownBounds { get; private set; }
 
         /// <summary>
         /// Gets if the dropdown part of the button is selected
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool DropDownSelected
-        {
-            get
-            {
-                return _dropDownSelected;
-            }
-        }
+        public bool DropDownSelected { get; private set; }
 
         /// <summary>
         /// Gets if the dropdown part of the button is pressed
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool DropDownPressed
-        {
-            get
-            {
-                return _dropDownPressed;
-            }
-        }
+        public bool DropDownPressed { get; private set; }
 
         /// <summary>
         /// Gets or sets the image of the button when in large size mode.
@@ -392,14 +323,8 @@ namespace System.Windows.Forms
         [Description("sets the image of the button when in large size mode.")]
         public virtual Image LargeImage
         {
-            get
-            {
-                return base.Image;
-            }
-            set
-            {
-                base.Image = value;
-            }
+            get => base.Image;
+            set => base.Image = value;
         }
 
         /// <summary>
@@ -409,14 +334,8 @@ namespace System.Windows.Forms
         [Category("Appearance")]
         public override Image Image
         {
-            get
-            {
-                return base.Image;
-            }
-            set
-            {
-                base.Image = value;
-            }
+            get => base.Image;
+            set => base.Image = value;
         }
 
         /// <summary>
@@ -427,10 +346,7 @@ namespace System.Windows.Forms
         [Description("sets the image of the button when in compact, medium or dropdown size modes.")]
         public virtual Image SmallImage
         {
-            get
-            {
-                return _smallImage;
-            }
+            get => _smallImage;
             set
             {
                 if (_smallImage != value)
@@ -446,10 +362,7 @@ namespace System.Windows.Forms
         [DefaultValue(null)]
         public virtual Image FlashSmallImage
         {
-            get
-            {
-                return _flashSmallImage;
-            }
+            get => _flashSmallImage;
             set
             {
                 if (_flashSmallImage != value)
@@ -467,7 +380,7 @@ namespace System.Windows.Forms
         [Description("Sets the minimum size for this Item.  Only applies when in Large Size Mode.")]
         public Size MinimumSize
         {
-            get { return _MinimumSize; }
+            get => _MinimumSize;
             set { _MinimumSize = value; NotifyOwnerRegionsChanged(); }
 
         }
@@ -480,7 +393,7 @@ namespace System.Windows.Forms
         [Description("Sets the maximum size for this Item.  Only applies when in Large Size Mode.")]
         public Size MaximumSize
         {
-            get { return _MaximumSize; }
+            get => _MaximumSize;
             set { _MaximumSize = value; NotifyOwnerRegionsChanged(); }
 
         }
@@ -528,7 +441,7 @@ namespace System.Windows.Forms
         /// </summary>
         protected virtual void CreateDropDown()
         {
-            _dropDown = new RibbonDropDown(this, DropDownItems, Owner);
+            DropDown = new RibbonDropDown(this, DropDownItems, Owner);
         }
 
         internal override void SetPressed(bool pressed)
@@ -540,21 +453,21 @@ namespace System.Windows.Forms
         {
             base.SetOwner(owner);
 
-            if (_dropDownItems != null) _dropDownItems.SetOwner(owner);
+            if (DropDownItems != null) DropDownItems.SetOwner(owner);
         }
 
         internal override void SetOwnerPanel(RibbonPanel ownerPanel)
         {
             base.SetOwnerPanel(ownerPanel);
 
-            if (_dropDownItems != null) _dropDownItems.SetOwnerPanel(ownerPanel);
+            if (DropDownItems != null) DropDownItems.SetOwnerPanel(ownerPanel);
         }
 
         internal override void SetOwnerTab(RibbonTab ownerTab)
         {
             base.SetOwnerTab(ownerTab);
 
-            if (_dropDownItems != null) _dropDownItems.SetOwnerTab(ownerTab);
+            if (DropDownItems != null) DropDownItems.SetOwnerTab(ownerTab);
         }
 
         internal override void SetOwnerItem(RibbonItem ownerItem)
@@ -564,7 +477,7 @@ namespace System.Windows.Forms
 
         internal override void ClearOwner()
         {
-           List<RibbonItem> oldItems = _dropDownItems == null ? null : new List<RibbonItem>(_dropDownItems);
+           List<RibbonItem> oldItems = DropDownItems == null ? null : new List<RibbonItem>(DropDownItems);
 
            base.ClearOwner();
 
@@ -604,7 +517,7 @@ namespace System.Windows.Forms
             {
                 StringFormat sf = StringFormatFactory.NearCenter();
 
-                if (this.Owner.AltPressed || this.Owner.OrbDropDown.MenuItems.Contains(this))
+                if (Owner.AltPressed || Owner.OrbDropDown.MenuItems.Contains(this))
                 {
                     
                     sf.HotkeyPrefix = Drawing.Text.HotkeyPrefix.Show;
@@ -632,12 +545,12 @@ namespace System.Windows.Forms
                 {
                     var newText = Text;
 
-                    if (!String.IsNullOrEmpty(this.AltKey) && this.Text.Contains(AltKey))
+                    if (!String.IsNullOrEmpty(AltKey) && Text.Contains(AltKey))
                     {
 
-                        var regex = new Regex(Regex.Escape(this.AltKey), RegexOptions.IgnoreCase);
+                        var regex = new Regex(Regex.Escape(AltKey), RegexOptions.IgnoreCase);
 
-                        newText = regex.Replace(this.Text.Replace("&", ""), "&" + this.AltKey, 1).Replace("&&", "&");
+                        newText = regex.Replace(Text.Replace("&", ""), "&" + AltKey, 1).Replace("&&", "&");
                     }
 
                     Owner.Renderer.OnRenderRibbonItemText(
@@ -685,20 +598,20 @@ namespace System.Windows.Forms
         /// Sets the bounds of the button
         /// </summary>
         /// <param name="bounds"></param>
-        public override void SetBounds(System.Drawing.Rectangle bounds)
+        public override void SetBounds(Rectangle bounds)
         {
             base.SetBounds(bounds);
 
             RibbonElementSizeMode sMode = GetNearestSize(SizeMode);
 
-            _imageBounds = OnGetImageBounds(sMode, bounds);
+            ImageBounds = OnGetImageBounds(sMode, bounds);
 
-            _textBounds = OnGetTextBounds(sMode, bounds);
+            TextBounds = OnGetTextBounds(sMode, bounds);
 
             if (Style == RibbonButtonStyle.SplitDropDown)
             {
-                _dropDownBounds = OnGetDropDownBounds(sMode, bounds);
-                _buttonFaceBounds = OnGetButtonFaceBounds(sMode, bounds);
+                DropDownBounds = OnGetDropDownBounds(sMode, bounds);
+                ButtonFaceBounds = OnGetButtonFaceBounds(sMode, bounds);
             }
         }
 
@@ -768,8 +681,8 @@ namespace System.Windows.Forms
         /// </remarks>
         internal virtual Rectangle OnGetTextBounds(RibbonElementSizeMode sMode, Rectangle bounds)
         {
-            int imgw = _imageBounds.Width;
-            int imgh = _imageBounds.Height;
+            int imgw = ImageBounds.Width;
+            int imgh = ImageBounds.Height;
 
             if (sMode == RibbonElementSizeMode.Large)
             {
@@ -859,13 +772,13 @@ namespace System.Windows.Forms
                 case RibbonElementSizeMode.Large:
                 case RibbonElementSizeMode.Overflow:
                     return Rectangle.FromLTRB(bounds.Left,
-                        bounds.Top, bounds.Right, _dropDownBounds.Top);
+                        bounds.Top, bounds.Right, DropDownBounds.Top);
 
                 case RibbonElementSizeMode.DropDown:
                 case RibbonElementSizeMode.Medium:
                 case RibbonElementSizeMode.Compact:
                     return Rectangle.FromLTRB(bounds.Left, bounds.Top,
-                        _dropDownBounds.Left, bounds.Bottom);
+                        DropDownBounds.Left, bounds.Bottom);
 
             }
 
@@ -1017,7 +930,7 @@ namespace System.Windows.Forms
         /// <param name="pressed">Value that indicates if the dropdown button is pressed</param>
         internal void SetDropDownPressed(bool pressed)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -1048,7 +961,7 @@ namespace System.Windows.Forms
             }
             else
             {
-                _dropDownPressed = true;
+                DropDownPressed = true;
             }
             OnDropDownShowing(EventArgs.Empty);
             if (DropDownItems.Count == 0)
@@ -1158,12 +1071,12 @@ namespace System.Windows.Forms
         {
             SetPressed(false);
 
-            _dropDownPressed = false;
+            DropDownPressed = false;
 
             SetDropDownVisible(false);
 
             SetSelected(false);
-            _dropDownSelected = false;
+            DropDownSelected = false;
 
             RedrawItem();
         }
@@ -1193,7 +1106,7 @@ namespace System.Windows.Forms
             {
                 RibbonPopupManager.Dismiss(DropDown, RibbonPopupManager.DismissReason.NewPopup);
                 RemoveHandlers();
-                _dropDown = null;
+                DropDown = null;
             }
 
             SetDropDownVisible(false);
@@ -1214,7 +1127,7 @@ namespace System.Windows.Forms
         /// <param name="visible"></param>
         internal void SetDropDownVisible(bool visible)
         {
-            _dropDownVisible = visible;
+            DropDownVisible = visible;
         }
 
         /// <summary>
@@ -1288,13 +1201,13 @@ namespace System.Windows.Forms
             {
                 if (DropDownVisible == false)
                 {
-                    _dropDownPressed = true;
+                    DropDownPressed = true;
                     ShowDropDown();
                 }
                 else
                 {
                     //Hack: Workaround to close DropDown if it stays open....
-                    _dropDownPressed = false;
+                    DropDownPressed = false;
                     CloseDropDown();
                 }
             }
@@ -1314,21 +1227,21 @@ namespace System.Windows.Forms
             //Detect mouse on dropdwon
             if (Style == RibbonButtonStyle.SplitDropDown)
             {
-                bool lastState = _dropDownSelected;
+                bool lastState = DropDownSelected;
 
                 if (DropDownBounds.Contains(e.X, e.Y))
                 {
-                    _dropDownSelected = true;
+                    DropDownSelected = true;
                 }
                 else
                 {
-                    _dropDownSelected = false;
+                    DropDownSelected = false;
                 }
 
-                if (lastState != _dropDownSelected)
+                if (lastState != DropDownSelected)
                     RedrawItem();
 
-                lastState = _dropDownSelected;
+                lastState = DropDownSelected;
             }
 
             _lastMousePos = new Point(e.X, e.Y);
@@ -1340,7 +1253,7 @@ namespace System.Windows.Forms
         {
             base.OnMouseLeave(e);
 
-            _dropDownSelected = false;
+            DropDownSelected = false;
 
         }
 

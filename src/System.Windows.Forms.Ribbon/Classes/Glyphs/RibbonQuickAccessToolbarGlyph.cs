@@ -45,7 +45,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public override Cursor GetHitTest(System.Drawing.Point p)
+        public override Cursor GetHitTest(Point p)
         {
             if (Bounds.Contains(p))
             {

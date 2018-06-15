@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Text;
 using System.Windows.Forms.Design.Behavior;
 
 namespace System.Windows.Forms
@@ -53,7 +50,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public override Cursor GetHitTest(System.Drawing.Point p)
+        public override Cursor GetHitTest(Point p)
         {
             if (Bounds.Contains(p))
             {

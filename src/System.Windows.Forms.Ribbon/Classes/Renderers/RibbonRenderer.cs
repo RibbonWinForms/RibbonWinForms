@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -165,7 +162,7 @@ namespace System.Windows.Forms
       /// Renders a RibbonTab
       /// </summary>
       /// <param name="e">Event data and paint tools</param>
-      public virtual void OnRenderRibbonTab(System.Windows.Forms.RibbonTabRenderEventArgs e)
+      public virtual void OnRenderRibbonTab(RibbonTabRenderEventArgs e)
       {
 
       }
@@ -174,7 +171,7 @@ namespace System.Windows.Forms
       /// Renders a RibbonContext
       /// </summary>
       /// <param name="e">Event data and paint tools</param>
-      public virtual void OnRenderRibbonContext(System.Windows.Forms.RibbonContextRenderEventArgs e)
+      public virtual void OnRenderRibbonContext(RibbonContextRenderEventArgs e)
       {
 
       }
@@ -191,7 +188,7 @@ namespace System.Windows.Forms
       /// Renders the background of the content of the specified tab
       /// </summary>
       /// <param name="e">Event data and paint tools</param>
-      public virtual void OnRenderRibbonTabContentBackground(System.Windows.Forms.RibbonTabRenderEventArgs e)
+      public virtual void OnRenderRibbonTabContentBackground(RibbonTabRenderEventArgs e)
       {
 
       }

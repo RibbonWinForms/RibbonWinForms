@@ -9,11 +9,6 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-
 namespace System.Windows.Forms
 {
     public class RibbonProfesionalRendererColorTableBlue

@@ -9,9 +9,7 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -23,16 +21,7 @@ namespace System.Windows.Forms
    {
       #region Fields
 
-      private RibbonItemCollection _dropDownItems;
-      private Rectangle _dropDownBounds;
-      private bool _dropDownSelected;
-      private bool _dropDownPressed;
-      private bool _dropDownVisible;
-      private RibbonDropDown _dropDown;
-      private bool _dropDownResizable;
-      private int _dropDownMaxHeight;
-      private bool _iconsBar;
-      // Steve
+       // Steve
       private RibbonItem _selectedItem;
 
       private Set<RibbonItem> _assignedHandlers = new Set<RibbonItem>();
@@ -55,12 +44,12 @@ namespace System.Windows.Forms
 
       public RibbonComboBox()
       {
-         _dropDownItems = new RibbonItemCollection();
-         _dropDownItems.SetOwnerItem(this);
-         _dropDownVisible = false;
+         DropDownItems = new RibbonItemCollection();
+         DropDownItems.SetOwnerItem(this);
+         DropDownVisible = false;
          AllowTextEdit = true;
-         _iconsBar = true;
-         _dropDownMaxHeight = 0;
+         DrawIconsBar = true;
+         DropDownMaxHeight = 0;
          _disableTextboxCursor = true;
       }
 
@@ -83,36 +72,25 @@ namespace System.Windows.Forms
       [DefaultValue(0)]
       [Category("Behavior")]
       [Description("Gets or sets the maximum height for the dropdown window.  0 = Autosize.  If the size is smaller than the contents then scrollbars will be shown.")]
-      public int DropDownMaxHeight
-      {
-         get { return _dropDownMaxHeight; }
-         set { _dropDownMaxHeight = value; }
-      }
+      public int DropDownMaxHeight { get; set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets or sets a value indicating if the DropDown portion of the combo box is currently shown.
       /// </summary>
       [Browsable(false)]
       [DefaultValue(false)]
       [Description("Indicates if the dropdown window is currently visible")]
-      public bool DropDownVisible
-      {
-         get { return _dropDownVisible; }
-      }
+      public bool DropDownVisible { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets or sets a value indicating if the DropDown should be resizable
       /// </summary>
       [DefaultValue(false)]
       [Category("Drop Down")]
       [Description("Makes the DropDown resizable with a grip on the corner")]
-      public bool DropDownResizable
-      {
-         get { return _dropDownResizable; }
-         set { _dropDownResizable = value; }
-      }
+      public bool DropDownResizable { get; set; }
 
-      /// <summary>
+       /// <summary>
       /// Overriden.
       /// </summary>
       [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -133,12 +111,9 @@ namespace System.Windows.Forms
       /// </summary>
       [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
       [Category("Drop Down")]
-      public RibbonItemCollection DropDownItems
-      {
-         get { return _dropDownItems; }
-      }
+      public RibbonItemCollection DropDownItems { get; }
 
-      // Steve
+       // Steve
       /// <summary>
       /// Gets the selected of item on the dropdown
       /// </summary>
@@ -162,7 +137,7 @@ namespace System.Windows.Forms
             }
             else
             {
-               if (_dropDownItems.Contains(_selectedItem))
+               if (DropDownItems.Contains(_selectedItem))
                {
                   return _selectedItem;
                }
@@ -178,7 +153,7 @@ namespace System.Windows.Forms
          {
             if (value.GetType().BaseType == typeof(RibbonItem))
             {
-               if (_dropDownItems.Contains(value))
+               if (DropDownItems.Contains(value))
                {
                   _selectedItem = value;
                   TextBoxText = _selectedItem.Text;
@@ -232,11 +207,9 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets the DropDown of the button
         /// </summary>
-        internal RibbonDropDown DropDown
-        {
-            get { return _dropDown; }
-        }
-      #endregion
+        internal RibbonDropDown DropDown { get; private set; }
+
+       #endregion
 
       #region Methods
 
@@ -257,7 +230,7 @@ namespace System.Windows.Forms
         /// </summary>
       protected virtual void CreateDropDown()
         {
-            _dropDown = new RibbonDropDown(this, DropDownItems, Owner);
+            DropDown = new RibbonDropDown(this, DropDownItems, Owner);
         }
     
        /// <summary>
@@ -266,18 +239,14 @@ namespace System.Windows.Forms
       [Category("Drop Down")]
       [DisplayName("DrawDropDownIconsBar")]
       [DefaultValue(true)]
-      public bool DrawIconsBar
-      {
-         get { return _iconsBar; }
-         set { _iconsBar = value; }
-      }
+      public bool DrawIconsBar { get; set; }
 
-      /// <summary>
+       /// <summary>
       /// Shows the DropDown
       /// </summary>
       public virtual void ShowDropDown()
       {
-         if (!_dropDownVisible)
+         if (!DropDownVisible)
          {
             AssignHandlers();
             OnDropDownShowing(EventArgs.Empty);
@@ -290,25 +259,25 @@ namespace System.Windows.Forms
 
             CreateDropDown();
 
-            DropDown.DropDownMaxHeight = _dropDownMaxHeight;
+            DropDown.DropDownMaxHeight = DropDownMaxHeight;
             DropDown.ShowSizingGrip = DropDownResizable;
-            DropDown.DrawIconsBar = _iconsBar;
+            DropDown.DrawIconsBar = DrawIconsBar;
             DropDown.Closed += new EventHandler(DropDown_Closed);
 
             Point location = OnGetDropDownMenuLocation();
             DropDown.Show(location);
-            _dropDownVisible = true;
+            DropDownVisible = true;
          }
       }
 
       private void DropDown_Closed(object sender, EventArgs e)
       {
-         _dropDownVisible = false;
+         DropDownVisible = false;
 
          //Steve - when popup closed, un-highlight the dropdown arrow and redraw
-         _dropDownPressed = false;
+         DropDownButtonPressed = false;
          //Kevin - Unselect it as well
-         _dropDownSelected = false;
+         DropDownButtonSelected = false;
 
          SetSelected(false);
 
@@ -368,7 +337,7 @@ namespace System.Windows.Forms
       {
          base.SetBounds(bounds);
 
-         _dropDownBounds = Rectangle.FromLTRB(
+         DropDownButtonBounds = Rectangle.FromLTRB(
              bounds.Right - 15,
              bounds.Top,
              bounds.Right + 1,
@@ -395,17 +364,17 @@ namespace System.Windows.Forms
          {
              Owner.Cursor = Cursors.Default;
 
-             mustRedraw = !_dropDownSelected;
+             mustRedraw = !DropDownButtonSelected;
 
-             _dropDownSelected = true;
+             DropDownButtonSelected = true;
          }
          else if (TextBoxBounds.Contains(e.X, e.Y))
          {
              Owner.Cursor = AllowTextEdit ? Cursors.IBeam : Cursors.Default;
 
-             mustRedraw = _dropDownSelected;
+             mustRedraw = DropDownButtonSelected;
 
-             _dropDownSelected = false;
+             DropDownButtonSelected = false;
          }
          else
          {
@@ -424,7 +393,7 @@ namespace System.Windows.Forms
          // Steve - if allowtextedit is false, allow the textbox to bring up the popup
          if (DropDownButtonBounds.Contains(e.X, e.Y) || (TextBoxBounds.Contains(e.X, e.Y) != AllowTextEdit))
          {
-                _dropDownPressed = true;
+                DropDownButtonPressed = true;
 
                 ShowDropDown();
          }
@@ -450,7 +419,7 @@ namespace System.Windows.Forms
 
          base.OnMouseLeave(e);
 
-         _dropDownSelected = false;
+         DropDownButtonSelected = false;
 
       }
 
@@ -491,57 +460,45 @@ namespace System.Windows.Forms
       /// Gets or sets the bounds of the DropDown button
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public Rectangle DropDownButtonBounds
-      {
-         get { return _dropDownBounds; }
-      }
+      public Rectangle DropDownButtonBounds { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a value indicating if the DropDown is currently visible
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool DropDownButtonVisible
-      {
-         get { return _dropDownVisible; }
-      }
+      public bool DropDownButtonVisible => DropDownVisible;
 
-      /// <summary>
+       /// <summary>
       /// Gets a value indicating if the DropDown button is currently selected
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool DropDownButtonSelected
-      {
-         get { return _dropDownSelected; }
-      }
+      public bool DropDownButtonSelected { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a value indicating if the DropDown button is currently pressed
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool DropDownButtonPressed
-      {
-         get { return _dropDownPressed; }
-      }
+      public bool DropDownButtonPressed { get; private set; }
 
-      internal override void SetOwner(Ribbon owner)
+       internal override void SetOwner(Ribbon owner)
       {
          base.SetOwner(owner);
 
-         _dropDownItems.SetOwner(owner);
+         DropDownItems.SetOwner(owner);
       }
 
       internal override void SetOwnerPanel(RibbonPanel ownerPanel)
       {
          base.SetOwnerPanel(ownerPanel);
 
-         _dropDownItems.SetOwnerPanel(ownerPanel);
+         DropDownItems.SetOwnerPanel(ownerPanel);
       }
 
       internal override void SetOwnerTab(RibbonTab ownerTab)
       {
          base.SetOwnerTab(ownerTab);
 
-         _dropDownItems.SetOwnerTab(OwnerTab);
+         DropDownItems.SetOwnerTab(OwnerTab);
       }
 
       internal override void SetOwnerItem(RibbonItem ownerItem)
@@ -551,7 +508,7 @@ namespace System.Windows.Forms
 
       internal override void ClearOwner()
       {
-         List<RibbonItem> oldItems = new List<RibbonItem>(_dropDownItems);
+         List<RibbonItem> oldItems = new List<RibbonItem>(DropDownItems);
 
          base.ClearOwner();
 

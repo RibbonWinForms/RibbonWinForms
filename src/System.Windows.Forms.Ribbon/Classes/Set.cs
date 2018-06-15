@@ -3,7 +3,6 @@
  * HashSet implementation for .net 2.0.
 */
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -44,17 +43,11 @@ namespace System.Windows.Forms
 			_items.Keys.CopyTo(array, arrayIndex);
 		}
 
-		public int Count
-		{
-			get { return _items.Count; }
-		}
+		public int Count => _items.Count;
 
-		public bool IsReadOnly
-		{
-			get { return false; }
-		}
+	    public bool IsReadOnly => false;
 
-		public bool Remove(T item)
+	    public bool Remove(T item)
 		{
 			if (item == null)
 				return false;
@@ -83,7 +76,7 @@ namespace System.Windows.Forms
 
 		public T[] ToArray()
 		{
-			T[] array = new T[this._items.Count];
+			T[] array = new T[_items.Count];
 			CopyTo(array, 0);
 			return array;
 		}

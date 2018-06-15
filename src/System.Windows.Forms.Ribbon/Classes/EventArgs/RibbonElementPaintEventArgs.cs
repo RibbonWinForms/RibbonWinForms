@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -23,68 +20,41 @@ namespace System.Windows.Forms
     public class RibbonElementPaintEventArgs
         : EventArgs
     {
-        private System.Drawing.Rectangle _clip;
-        private Graphics _graphics;
-        private RibbonElementSizeMode _mode;
-        private Control _control;
-
         /// <param name="clip">Rectangle clip</param>
         /// <param name="graphics">Device to draw</param>
         /// <param name="mode">Size mode to draw</param>
         internal RibbonElementPaintEventArgs(Rectangle clip, Graphics graphics, RibbonElementSizeMode mode)
         {
-            _clip = clip;
-            _graphics = graphics;
-            _mode = mode;
+            Clip = clip;
+            Graphics = graphics;
+            Mode = mode;
         }
 
         internal RibbonElementPaintEventArgs(Rectangle clip, Graphics graphics, RibbonElementSizeMode mode, Control control)
             : this(clip, graphics, mode)
         {
-            _control = control;
+            Control = control;
         }
 
         /// <summary>
         /// Area that element should occupy
         /// </summary>
-        public Rectangle Clip
-        {
-            get
-            {
-                return _clip;
-            }
-        }
+        public Rectangle Clip { get; }
 
         /// <summary>
         /// Gets the Device where to draw
         /// </summary>
-        public System.Drawing.Graphics Graphics
-        {
-            get
-            {
-                return _graphics;
-            }
-        }
+        public Graphics Graphics { get; }
 
         /// <summary>
         /// Gets the mode to draw the element
         /// </summary>
-        public RibbonElementSizeMode Mode
-        {
-            get
-            {
-                return _mode;
-            }
-        }
+        public RibbonElementSizeMode Mode { get; }
 
 
         /// <summary>
         /// Gets the control where element is being painted
         /// </summary>
-        public Control Control
-        {
-            get { return _control; }
-        }
-
+        public Control Control { get; }
     }
 }

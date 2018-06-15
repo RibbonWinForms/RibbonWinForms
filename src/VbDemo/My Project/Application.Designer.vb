@@ -11,30 +11,32 @@
 Option Strict On
 Option Explicit On
 
+Imports System.ComponentModel
+Imports Microsoft.VisualBasic.ApplicationServices
 
 Namespace My
-    
+
     'NOTE: This file is auto-generated; do not modify it directly.  To make changes,
     ' or if you encounter build errors in this file, go to the Project Designer
     ' (go to Project Properties or double-click the My Project node in
     ' Solution Explorer), and make changes on the Application tab.
     '
     Partial Friend Class MyApplication
-        
-        <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
+
+        <DebuggerStepThrough()>
         Public Sub New()
-            MyBase.New(Global.Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.Windows)
-            Me.IsSingleInstance = false
-            Me.EnableVisualStyles = true
-            Me.SaveMySettingsOnExit = true
-            Me.ShutDownStyle = Global.Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses
+            MyBase.New(AuthenticationMode.Windows)
+            Me.IsSingleInstance = False
+            Me.EnableVisualStyles = True
+            Me.SaveMySettingsOnExit = True
+            Me.ShutdownStyle = ShutdownMode.AfterMainFormCloses
         End Sub
-        
-      <Global.System.Diagnostics.DebuggerStepThroughAttribute()> _
-      Protected Overrides Sub OnCreateMainForm()
-         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DemoForm))
-         Dim image As Image = CType(resources.GetObject("ribbonOrbMenuItem1.Image"), Image)
-         Me.MainForm = Global.VbDemo.DemoForm
-      End Sub
+
+        <DebuggerStepThrough()>
+        Protected Overrides Sub OnCreateMainForm()
+            Dim resources As ComponentResourceManager = New ComponentResourceManager(GetType(DemoForm))
+            Dim image As Image = CType(resources.GetObject("ribbonOrbMenuItem1.Image"), Image)
+            Me.MainForm = VbDemo.DemoForm
+        End Sub
     End Class
 End Namespace

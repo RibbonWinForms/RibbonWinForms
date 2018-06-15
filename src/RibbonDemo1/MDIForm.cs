@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-
-using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace RibbonDemo
 {
@@ -25,15 +18,15 @@ namespace RibbonDemo
         private void ribbonButton1_Click(object sender, EventArgs e)
         {
             //if (this.ActiveMdiChild != null)
-            while (this.ActiveMdiChild != null)
+            while (ActiveMdiChild != null)
             {
-                this.ActiveMdiChild.Close();
+                ActiveMdiChild.Close();
             }
         }
 
         private void ribbonButton2_Click(object sender, EventArgs e)
         {
-            foreach (Form f in this.MdiChildren)
+            foreach (Form f in MdiChildren)
             {
                 if (f.GetType() == typeof(MDIChild1))
                 {
@@ -48,7 +41,7 @@ namespace RibbonDemo
 
         private void ribbonButton3_Click(object sender, EventArgs e)
         {
-            foreach (Form f in this.MdiChildren)
+            foreach (Form f in MdiChildren)
             {
                 if (f.GetType() == typeof(MDIChild2))
                 {

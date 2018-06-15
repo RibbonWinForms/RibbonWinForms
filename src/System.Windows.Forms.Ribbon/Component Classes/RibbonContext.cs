@@ -10,9 +10,7 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -30,13 +28,11 @@ namespace System.Windows.Forms
         #region Fields
         
         private string _text;
-        private System.Drawing.Color _glowColor;
-        private Ribbon _owner;
+        private Color _glowColor;
+
         private bool _visible = false;
         //private ContextualTabCollection _tabs;
         public event EventHandler OwnerChanged;
-        private Rectangle _bounds;
-        private Rectangle _headerBounds;
 
         #endregion
 
@@ -64,10 +60,7 @@ namespace System.Windows.Forms
         [Category("Appearance")]
         public string Text
         {
-            get
-            {
-                return _text;
-            }
+            get => _text;
             set
             {
                 _text = value;
@@ -79,12 +72,9 @@ namespace System.Windows.Forms
         /// Gets or sets the color of the glow that indicates a context
         /// </summary>
         [Category("Appearance")]
-        public System.Drawing.Color GlowColor
+        public Color GlowColor
         {
-            get
-            {
-                return _glowColor;
-            }
+            get => _glowColor;
             set
             {
                 _glowColor = value;
@@ -132,20 +122,14 @@ namespace System.Windows.Forms
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle Bounds
-        {
-            get { return _bounds; }
-        }
+        public Rectangle Bounds { get; private set; }
 
         /// <summary>
         /// Gets the bounds of the context header (the portion above the tab).
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle HeaderBounds
-        {
-            get { return _headerBounds; }
-        }
+        public Rectangle HeaderBounds { get; private set; }
 
         /// <summary>
         /// An enumerable list of RibbonTabs assigned to the context.
@@ -194,13 +178,7 @@ namespace System.Windows.Forms
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Ribbon Owner
-        {
-            get
-            {
-                return _owner;
-            }
-        }
+        public Ribbon Owner { get; private set; }
 
         #endregion
 
@@ -212,7 +190,7 @@ namespace System.Windows.Forms
         /// <exception cref="NotSupportedException">Always</exception>
         public void SetBounds(Rectangle bounds)
         {
-            _bounds = bounds;
+            Bounds = bounds;
 
             //OnBoundsChanged(EventArgs.Empty);
         }
@@ -223,7 +201,7 @@ namespace System.Windows.Forms
         /// <exception cref="NotSupportedException">Always</exception>
         public void SetHeaderBounds(Rectangle bounds)
         {
-            _headerBounds = bounds;
+            HeaderBounds = bounds;
 
             //OnBoundsChanged(EventArgs.Empty);
         }
@@ -233,7 +211,7 @@ namespace System.Windows.Forms
         /// </summary>
         internal void SetOwner(Ribbon owner)
         {
-            _owner = owner;
+            Owner = owner;
             //_tabs.SetOwner(owner);
         }
 
@@ -242,7 +220,7 @@ namespace System.Windows.Forms
         /// </summary>
         internal virtual void ClearOwner()
         {
-            _owner = null;
+            Owner = null;
             OnOwnerChanged(EventArgs.Empty);
         }
           

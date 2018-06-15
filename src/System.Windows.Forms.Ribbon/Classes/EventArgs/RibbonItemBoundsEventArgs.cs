@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -28,17 +25,10 @@ namespace System.Windows.Forms
 
         #region Properties
 
-        private Rectangle _bounds;
-
         /// <summary>
         /// Gets or sets the suggested bounds
         /// </summary>
-        public Rectangle Bounds
-        {
-            get { return _bounds; }
-            set { _bounds = value; }
-        }
-
+        public Rectangle Bounds { get; set; }
 
         #endregion
     }

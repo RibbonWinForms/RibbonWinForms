@@ -9,9 +9,6 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
@@ -50,10 +47,6 @@ namespace System.Windows.Forms
 
         #region Fields
         private FormWindowState _lastState;
-        private Form _form;
-        private Padding _margins;
-        private bool _marginsChecked;
-        private int _capionHeight;
         private bool _frameExtended;
         private Ribbon _ribbon;
         private Size _storeSize;
@@ -67,15 +60,15 @@ namespace System.Windows.Forms
         /// <param name="f"></param>
         public RibbonFormHelper(Form f)
         {
-            _form = f;
-            _form.Load += new EventHandler(Form_Load);
-            _form.ResizeEnd += new EventHandler(_form_ResizeEnd);
-            _form.Layout += new LayoutEventHandler(_form_Layout);
+            Form = f;
+            Form.Load += new EventHandler(Form_Load);
+            Form.ResizeEnd += new EventHandler(_form_ResizeEnd);
+            Form.Layout += new LayoutEventHandler(_form_Layout);
         }
 
         void _form_Layout(object sender, LayoutEventArgs e)
         {
-            if (_lastState == _form.WindowState)
+            if (_lastState == Form.WindowState)
             {
                 return;
             }
@@ -83,14 +76,14 @@ namespace System.Windows.Forms
             // in case the RibbonForm is started in WindowState.Maximized and the WindowState changes to normal
             // the size of the RibbonForm is set to the values of _storeSize - which has not been set yet!
             if (_storeSize.IsEmpty)
-               _storeSize = _form.Size;
+               _storeSize = Form.Size;
 
             if (WinApi.IsGlassEnabled)
                 Form.Invalidate();
             else  // on XP systems Invalidate is not sufficient in case the Form contains a control with DockStyle.Fill
                 Form.Refresh();
 
-            _lastState = _form.WindowState;
+            _lastState = Form.WindowState;
         }
 
         void _form_ResizeEnd(object sender, EventArgs e)
@@ -108,51 +101,34 @@ namespace System.Windows.Forms
         /// </summary>
         public Ribbon Ribbon
         {
-            get { return _ribbon; }
+            get => _ribbon;
             set { _ribbon = value; UpdateRibbonConditions(); }
         }
 
         /// <summary>
         /// Gets or sets the height of the caption bar relative to the form
         /// </summary>
-        public int CaptionHeight
-        {
-            get { return _capionHeight; }
-            set { _capionHeight = value; }
-        }
+        public int CaptionHeight { get; set; }
 
         /// <summary>
         /// Gets the form this class is helping
         /// </summary>   
-        public Form Form
-        {
-            get { return _form; }
-        }
+        public Form Form { get; }
 
         /// <summary>
         /// Gets the margins of the non-client area
         /// </summary>
-        public Padding Margins
-        {
-            get { return _margins; }
-        }
+        public Padding Margins { get; private set; }
 
         /// <summary>
         /// Gets or sets if the margins are already checked by WndProc
         /// </summary>
-        private bool MarginsChecked
-        {
-            get { return _marginsChecked; }
-            set { _marginsChecked = value; }
-        }
+        private bool MarginsChecked { get; set; }
 
         /// <summary>
         /// Gets if the <see cref="Form"/> is currently in Designer mode
         /// </summary>
-        private bool DesignMode
-        {
-            get { return Form != null && Form.Site != null && Form.Site.DesignMode; }
-        }
+        private bool DesignMode => Form != null && Form.Site != null && Form.Site.DesignMode;
 
         #endregion
 
@@ -442,7 +418,7 @@ namespace System.Windows.Forms
         /// <param name="p"></param>
         private void SetMargins(Padding p)
         {
-            _margins = p;
+            Margins = p;
 
             Padding formPadding = p;
             formPadding.Top = p.Bottom - 1;
