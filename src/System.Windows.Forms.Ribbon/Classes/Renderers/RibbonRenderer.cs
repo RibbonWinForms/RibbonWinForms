@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -38,13 +35,13 @@ namespace System.Windows.Forms
             if (_disabledImageColorMatrix == null)
             {
                float[][] numArray = new float[5][];
-               numArray[0] = new float[] { 0.2125f, 0.2125f, 0.2125f, 0f, 0f };
-               numArray[1] = new float[] { 0.2577f, 0.2577f, 0.2577f, 0f, 0f };
-               numArray[2] = new float[] { 0.0361f, 0.0361f, 0.0361f, 0f, 0f };
+               numArray[0] = new[] { 0.2125f, 0.2125f, 0.2125f, 0f, 0f };
+               numArray[1] = new[] { 0.2577f, 0.2577f, 0.2577f, 0f, 0f };
+               numArray[2] = new[] { 0.0361f, 0.0361f, 0.0361f, 0f, 0f };
                float[] numArray3 = new float[5];
                numArray3[3] = 1f;
                numArray[3] = numArray3;
-               numArray[4] = new float[] { 0.38f, 0.38f, 0.38f, 0f, 1f };
+               numArray[4] = new[] { 0.38f, 0.38f, 0.38f, 0f, 1f };
                float[][] numArray2 = new float[5][];
                float[] numArray4 = new float[5];
                numArray4[0] = 1f;
@@ -165,7 +162,7 @@ namespace System.Windows.Forms
       /// Renders a RibbonTab
       /// </summary>
       /// <param name="e">Event data and paint tools</param>
-      public virtual void OnRenderRibbonTab(System.Windows.Forms.RibbonTabRenderEventArgs e)
+      public virtual void OnRenderRibbonTab(RibbonTabRenderEventArgs e)
       {
 
       }
@@ -174,7 +171,7 @@ namespace System.Windows.Forms
       /// Renders a RibbonContext
       /// </summary>
       /// <param name="e">Event data and paint tools</param>
-      public virtual void OnRenderRibbonContext(System.Windows.Forms.RibbonContextRenderEventArgs e)
+      public virtual void OnRenderRibbonContext(RibbonContextRenderEventArgs e)
       {
 
       }
@@ -191,7 +188,7 @@ namespace System.Windows.Forms
       /// Renders the background of the content of the specified tab
       /// </summary>
       /// <param name="e">Event data and paint tools</param>
-      public virtual void OnRenderRibbonTabContentBackground(System.Windows.Forms.RibbonTabRenderEventArgs e)
+      public virtual void OnRenderRibbonTabContentBackground(RibbonTabRenderEventArgs e)
       {
 
       }

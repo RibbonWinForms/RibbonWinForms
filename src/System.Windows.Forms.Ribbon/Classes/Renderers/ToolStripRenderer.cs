@@ -1,15 +1,6 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Forms.VisualStyles;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace System.Windows.Forms
 {
@@ -136,30 +127,28 @@ namespace System.Windows.Forms
             {
                 return Corners.All;
             }
-            else
+
+            ToolStrip g = item.Owner;
+            int iLast = item.Owner.Items.Count - 1;
+            Corners c = Corners.None;
+            if (item.Owner.Items.IndexOf(item) == 0)
             {
-                ToolStrip g = item.Owner as ToolStrip;
-                int iLast = item.Owner.Items.Count - 1;
-                Corners c = Corners.None;
-                if (item.Owner.Items.IndexOf(item) == 0)
-                {
-                    c |= Corners.West;
-                }
-
-                if (item.Owner.Items.IndexOf(item) == iLast)
-                {
-                    c |= Corners.East;
-                }
-
-                return c;
+                c |= Corners.West;
             }
+
+            if (item.Owner.Items.IndexOf(item) == iLast)
+            {
+                c |= Corners.East;
+            }
+
+            return c;
         }
 
         #region "Gripper"
 
         private static Bitmap titleBarGripBmp;
         //MS 07/27/2009 WHO WOULD HAVE EVER THOUGHT THAT THIS CHARACTER STRING WOULD ACTUALLY DRAW A GRIPPER TOOL BAR
-        private static string titleBarGripEnc = "Qk16AQAAAAAAADYAAAAoAAAAIwAAAAMAAAABABgAAAAAAAAAAADEDgAAxA4AAAAAAAAAAAAAuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5ANj+RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5ANj+RzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMANj+";
+        private static readonly string titleBarGripEnc = "Qk16AQAAAAAAADYAAAAoAAAAIwAAAAMAAAABABgAAAAAAAAAAADEDgAAxA4AAAAAAAAAAAAAuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5uGMyuGMy+/n5+/n5ANj+RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5wm8/RzIomHRh+/n5ANj+RzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMzHtMRzIoRzIozHtMANj+";
 
         private void DrawTitleBar(Graphics g, Rectangle rect)
         {
@@ -189,7 +178,7 @@ namespace System.Windows.Forms
 
         // This utility method cretes a bitmap from 
         // a Base64-encoded string. 
-        static internal Bitmap DeserializeFromBase64(string data)
+        internal static Bitmap DeserializeFromBase64(string data)
         {
             // Decode the string and create a memory stream 
             // on the decoded string data.
@@ -236,7 +225,7 @@ namespace System.Windows.Forms
             }
         }
 
-        protected override void OnRenderMenuItemBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderMenuItemBackground(e);
 
@@ -246,7 +235,7 @@ namespace System.Windows.Forms
         }
 
         //RENDER DROP DOWN BUTTON SELECTED, CHECKED, OR UNSELECTED
-        protected override void OnRenderDropDownButtonBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderDropDownButtonBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderDropDownButtonBackground(e);
 
@@ -256,7 +245,7 @@ namespace System.Windows.Forms
         }
 
         //RENDER BUTTON SELECTED, CHECKED, OR UNSELECTED
-        protected override void OnRenderButtonBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderButtonBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderButtonBackground(e);
 
@@ -265,7 +254,7 @@ namespace System.Windows.Forms
             drawText(e, e.Graphics);
         }
 
-        protected override void OnRenderItemBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderItemBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderItemBackground(e);
 
@@ -274,7 +263,7 @@ namespace System.Windows.Forms
             drawText(e, e.Graphics);
         }
 
-        protected override void OnRenderLabelBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        protected override void OnRenderLabelBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderLabelBackground(e);
 
@@ -283,7 +272,7 @@ namespace System.Windows.Forms
             drawText(e, e.Graphics);
         }
 
-        private void RenderBackground(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        private void RenderBackground(ToolStripItemRenderEventArgs e)
         {
             //IF ITEM IS SELECTED OR CHECKED
             if (e.Item.Selected | ((ToolStripButton)e.Item).Checked)
@@ -304,7 +293,7 @@ namespace System.Windows.Forms
             }
         }
 
-        private void RenderItemBackgroundSelected(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        private void RenderItemBackgroundSelected(ToolStripItemRenderEventArgs e)
         {
             if (e.Item.Bounds.Height <= 0 || e.Item.Bounds.Width <= 0) return;
 
@@ -330,7 +319,7 @@ namespace System.Windows.Forms
                 Rectangle rect = new Rectangle(2, 2, e.Item.Width - 2, e.Item.Height - 2);
 
                 Rectangle innerR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, e.Item.Height - 2);
-                Rectangle glossyR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, 1 + Convert.ToInt32((double)e.Item.Bounds.Height * .36));
+                Rectangle glossyR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, 1 + Convert.ToInt32(e.Item.Bounds.Height * .36));
 
                 using (SolidBrush brus = new SolidBrush(Theme.Standard.RendererColorTable.ButtonSelectedBgOut))
                 {
@@ -360,11 +349,13 @@ namespace System.Windows.Forms
                         gradient.WrapMode = WrapMode.Clamp;
                         gradient.CenterPoint = new PointF(Convert.ToSingle(1 + e.Item.Width / 2), Convert.ToSingle(e.Item.Bounds.Height));
                         gradient.CenterColor = Theme.Standard.RendererColorTable.ButtonSelectedBgCenter;
-                        gradient.SurroundColors = new Color[] { Theme.Standard.RendererColorTable.ButtonSelectedBgOut };
+                        gradient.SurroundColors = new[] { Theme.Standard.RendererColorTable.ButtonSelectedBgOut };
 
-                        Blend blend = new Blend(3);
-                        blend.Factors = new float[] { 0f, 0.8f, 0f };
-                        blend.Positions = new float[] { 0f, 0.30f, 1f };
+                        Blend blend = new Blend(3)
+                        {
+                            Factors = new[] { 0f, 0.8f, 0f },
+                            Positions = new[] { 0f, 0.30f, 1f }
+                        };
 
 
                         Region lastClip = e.Graphics.Clip;
@@ -390,7 +381,7 @@ namespace System.Windows.Forms
             }
         }
 
-        private void RenderItemBackgroundPressed(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        private void RenderItemBackgroundPressed(ToolStripItemRenderEventArgs e)
         {
            if (Theme.Standard.Style == RibbonOrbStyle.Office_2013)
             {
@@ -413,7 +404,7 @@ namespace System.Windows.Forms
                 Rectangle rect = new Rectangle(2, 2, e.Item.Width - 2, e.Item.Height - 2);
 
                 Rectangle innerR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, e.Item.Height - 2);
-                Rectangle glossyR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, 1 + Convert.ToInt32((double)e.Item.Bounds.Height * .36));
+                Rectangle glossyR = Rectangle.FromLTRB(1, 1, e.Item.Width - 2, 1 + Convert.ToInt32(e.Item.Bounds.Height * .36));
 
                 using (SolidBrush brus = new SolidBrush(Theme.Standard.RendererColorTable.ButtonPressedBgOut))
                 {
@@ -443,11 +434,13 @@ namespace System.Windows.Forms
                         gradient.WrapMode = WrapMode.Clamp;
                         gradient.CenterPoint = new PointF(Convert.ToSingle(1 + e.Item.Width / 2), Convert.ToSingle(e.Item.Bounds.Height));
                         gradient.CenterColor = Theme.Standard.RendererColorTable.ButtonPressedBgCenter;
-                        gradient.SurroundColors = new Color[] { Theme.Standard.RendererColorTable.ButtonPressedBgOut };
+                        gradient.SurroundColors = new[] { Theme.Standard.RendererColorTable.ButtonPressedBgOut };
 
-                        Blend blend = new Blend(3);
-                        blend.Factors = new float[] { 0f, 0.8f, 0f };
-                        blend.Positions = new float[] { 0f, 0.30f, 1f };
+                        Blend blend = new Blend(3)
+                        {
+                            Factors = new[] { 0f, 0.8f, 0f },
+                            Positions = new[] { 0f, 0.30f, 1f }
+                        };
 
 
                         Region lastClip = e.Graphics.Clip;
@@ -473,7 +466,7 @@ namespace System.Windows.Forms
             }
         }
 
-        private void RenderItemBackgroundDefault(System.Windows.Forms.ToolStripItemRenderEventArgs e)
+        private void RenderItemBackgroundDefault(ToolStripItemRenderEventArgs e)
         {
            if (Theme.Standard.Style == RibbonOrbStyle.Office_2013)
             {
@@ -495,7 +488,7 @@ namespace System.Windows.Forms
             }
         }
 
-        private void drawText(System.Windows.Forms.ToolStripItemRenderEventArgs e, Graphics graphics)
+        private void drawText(ToolStripItemRenderEventArgs e, Graphics graphics)
         {
             try
             {
@@ -505,7 +498,7 @@ namespace System.Windows.Forms
                 {
                     if (e.Item.Text != string.Empty)
                     {
-                        if (e.Item.Enabled == true)
+                        if (e.Item.Enabled)
                         {
                             if (e.Item is ToolStripButton)
                             {
@@ -540,7 +533,7 @@ namespace System.Windows.Forms
                 {
                     if (e.Item.Text != string.Empty)
                     {
-                        if (e.Item.Enabled == true)
+                        if (e.Item.Enabled)
                         {
                             if (e.Item is ToolStripButton)
                             {
@@ -602,8 +595,8 @@ namespace System.Windows.Forms
                                 }
                             }
 
-                            e.Item.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                            e.Item.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+                            e.Item.ImageAlign = ContentAlignment.MiddleLeft;
+                            e.Item.TextAlign = ContentAlignment.MiddleRight;
                             break;
                         case ToolStripItemDisplayStyle.None:
                             break;

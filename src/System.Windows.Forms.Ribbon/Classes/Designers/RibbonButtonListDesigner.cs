@@ -10,10 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace System.Windows.Forms
 {
     internal class RibbonButtonListDesigner
@@ -23,9 +19,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonButtonList)
+                if (Component is RibbonButtonList list)
                 {
-                    return (Component as RibbonButtonList).Owner;
+                    return list.Owner;
                 }
                 return null;
             }
@@ -35,9 +31,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonButtonList)
+                if (Component is RibbonButtonList list)
                 {
-                    return (Component as RibbonButtonList).Buttons;
+                    return list.Buttons;
                 }
                 return null;
             }

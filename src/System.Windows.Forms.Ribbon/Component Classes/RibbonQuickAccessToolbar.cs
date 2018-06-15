@@ -9,12 +9,9 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
 using System.ComponentModel;
-using System.Drawing.Drawing2D;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {
@@ -25,12 +22,7 @@ namespace System.Windows.Forms
         IContainsSelectableRibbonItems, IContainsRibbonComponents
     {
         #region Fields
-        private RibbonQuickAccessToolbarItemCollection _items;
-        private bool _menuButtonVisible;
-        private Padding _margin;
-        private Padding _padding;
-        private RibbonMouseSensor _sensor;
-        private RibbonButton _dropDownButton;
+        private readonly RibbonQuickAccessToolbarItemCollection _items;
         private bool _DropDownButtonVisible;
         #endregion
 
@@ -38,19 +30,19 @@ namespace System.Windows.Forms
 
         internal RibbonQuickAccessToolbar(Ribbon ownerRibbon)
         {
-            if (ownerRibbon == null) throw new ArgumentNullException("ownerRibbon");
+            if (ownerRibbon == null) throw new ArgumentNullException(nameof(ownerRibbon));
 
             SetOwner(ownerRibbon);
 
-            _dropDownButton = new RibbonButton();
-            _dropDownButton.SetOwner(ownerRibbon);
-            _dropDownButton.SmallImage = CreateDropDownButtonImage();
-            _dropDownButton.Style = RibbonButtonStyle.DropDown;
+            DropDownButton = new RibbonButton();
+            DropDownButton.SetOwner(ownerRibbon);
+            DropDownButton.SmallImage = CreateDropDownButtonImage();
+            DropDownButton.Style = RibbonButtonStyle.DropDown;
 
-            _margin = new Padding(9);
-            _padding = new Padding(3, 0, 0, 0);
+            Margin = new Padding(9);
+            Padding = new Padding(3, 0, 0, 0);
             _items = new RibbonQuickAccessToolbarItemCollection(this);
-            _sensor = new RibbonMouseSensor(ownerRibbon, ownerRibbon, Items);
+            Sensor = new RibbonMouseSensor(ownerRibbon, ownerRibbon, Items);
             _DropDownButtonVisible = true;
         }
 
@@ -60,8 +52,8 @@ namespace System.Windows.Forms
             {
                 foreach (RibbonItem item in _items)
                     item.Dispose();
-                _dropDownButton.Dispose();
-                _sensor.Dispose();
+                DropDownButton.Dispose();
+                Sensor.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -98,7 +90,7 @@ namespace System.Windows.Forms
                 {
 
                     g.DrawLine(p, x, y, x + 4, y);
-                    g.FillPolygon(b, new Point[] { 
+                    g.FillPolygon(b, new[] { 
                             new Point(x, y + 3),
                             new Point(x + 5, y + 3),
                             new Point(x + 2, y + 6)
@@ -115,8 +107,8 @@ namespace System.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string Name
         {
-           get { return base.Name; }
-           set { base.Name = value; }
+           get => base.Name;
+            set => base.Name = value;
         }
 
         [Description("Shows or hides the dropdown button of the toolbar")]
@@ -124,7 +116,7 @@ namespace System.Windows.Forms
         [DefaultValue(true)]
         public bool DropDownButtonVisible
         {
-            get { return _DropDownButtonVisible; }
+            get => _DropDownButtonVisible;
             set { _DropDownButtonVisible = value; Owner.OnRegionsChanged(); }
         }
 
@@ -133,63 +125,41 @@ namespace System.Windows.Forms
         /// Gets the bounds of the toolbar including the graphic adornments
         /// </summary>
         [Browsable(false)]
-        internal Rectangle SuperBounds
-        {
-            get { return Rectangle.FromLTRB(Bounds.Left - Padding.Horizontal, Bounds.Top, DropDownButton.Bounds.Right, Bounds.Bottom); }
-        }
+        internal Rectangle SuperBounds => Rectangle.FromLTRB(Bounds.Left - Padding.Horizontal, Bounds.Top, DropDownButton.Bounds.Right, Bounds.Bottom);
 
         /// <summary>
         /// Gets the dropdown button
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RibbonButton DropDownButton
-        {
-            get { return _dropDownButton; }
-        }
+        public RibbonButton DropDownButton { get; }
 
         [Description("The drop down items of the dropdown button of the toolbar")]
         [Category("Drop Down")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public RibbonItemCollection DropDownButtonItems
-        {
-            get { return _dropDownButton.DropDownItems; }
-        }
+        public RibbonItemCollection DropDownButtonItems => DropDownButton.DropDownItems;
 
         /// <summary>
         /// Gets or sets the padding (internal) of the toolbar
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Padding Padding
-        {
-            get { return _padding; }
-        }
+        public Padding Padding { get; }
 
         /// <summary>
         /// Gets or sets the margin (external) of the toolbar
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Padding Margin
-        {
-            get { return _margin; }
-        }
+        public Padding Margin { get; }
 
         /// <summary>
         /// Gets or sets a value indicating if the button that shows the menu of the 
         /// QuickAccess toolbar should be visible
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool MenuButtonVisible
-        {
-            get { return _menuButtonVisible; }
-            set { _menuButtonVisible = value; }
-        }
+        public bool MenuButtonVisible { get; set; }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RibbonMouseSensor Sensor
-        {
-            get { return _sensor; }
-        }
+        public RibbonMouseSensor Sensor { get; }
 
         /// <summary>
         /// Gets the Items of the QuickAccess toolbar.
@@ -304,7 +274,7 @@ namespace System.Windows.Forms
 
         #region IContainsRibbonComponents Members
 
-        public IEnumerable<System.ComponentModel.Component> GetAllChildComponents()
+        public IEnumerable<Component> GetAllChildComponents()
         {
             return Items.ToArray();
         }
@@ -318,7 +288,7 @@ namespace System.Windows.Forms
             return Items;
         }
 
-        public System.Drawing.Rectangle GetContentBounds()
+        public Rectangle GetContentBounds()
         {
             return Bounds;
         }

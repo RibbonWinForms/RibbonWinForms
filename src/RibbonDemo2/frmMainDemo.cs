@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using RibbonDemo2.Properties;
 
 namespace RibbonDemo2
 {
@@ -16,22 +12,26 @@ namespace RibbonDemo2
 
             foreach (object value in Enum.GetValues(typeof(RibbonOrbStyle)))
             {
-                RibbonButton rb = new RibbonButton();
-                rb.Style = RibbonButtonStyle.Normal;
-                rb.MinSizeMode = RibbonElementSizeMode.Large;
-                rb.Text = value + "";
-                rb.LargeImage = global::RibbonDemo2.Properties.Resources.newdocument32;
+                RibbonButton rb = new RibbonButton
+                {
+                    Style = RibbonButtonStyle.Normal,
+                    MinSizeMode = RibbonElementSizeMode.Large,
+                    Text = value + "",
+                    LargeImage = Resources.newdocument32
+                };
                 rb.Click += rbOrbStyle_Click;
                 ribbonPanel_OrbStyle.Items.Add(rb);
             }
 
             foreach (object value in Enum.GetValues(typeof(RibbonTheme)))
             {
-                RibbonButton rb = new RibbonButton();
-                rb.Style = RibbonButtonStyle.Normal;
-                rb.MinSizeMode = RibbonElementSizeMode.Large;
-                rb.Text = value + "";
-                rb.LargeImage = global::RibbonDemo2.Properties.Resources.addons32;
+                RibbonButton rb = new RibbonButton
+                {
+                    Style = RibbonButtonStyle.Normal,
+                    MinSizeMode = RibbonElementSizeMode.Large,
+                    Text = value + "",
+                    LargeImage = Resources.addons32
+                };
                 rb.Click += rbTheme_Click;
                 ribbonPanel_Theme.Items.Add(rb);
             }
@@ -44,16 +44,16 @@ namespace RibbonDemo2
 
         private void rbTheme_Click(object sender, EventArgs e)
         {
-            this.ribbon1.ThemeColor = (RibbonTheme)Enum.Parse(typeof(RibbonTheme), ((RibbonButton)sender).Text);
-            this.ribbon1.Refresh();
-            this.Refresh();
+            ribbon1.ThemeColor = (RibbonTheme)Enum.Parse(typeof(RibbonTheme), ((RibbonButton)sender).Text);
+            ribbon1.Refresh();
+            Refresh();
         }
 
         private void rbOrbStyle_Click(object sender, EventArgs e)
         {
-            this.ribbon1.OrbStyle = (RibbonOrbStyle)Enum.Parse(typeof(RibbonOrbStyle), ((RibbonButton)sender).Text);
-            this.ribbon1.Refresh();
-            this.Refresh();
+            ribbon1.OrbStyle = (RibbonOrbStyle)Enum.Parse(typeof(RibbonOrbStyle), ((RibbonButton)sender).Text);
+            ribbon1.Refresh();
+            Refresh();
         }
 
         private void btForm1_Click(object sender, EventArgs e)
@@ -71,19 +71,19 @@ namespace RibbonDemo2
             OpenForm(typeof(frmForm3));
         }
 
-        void OpenForm(Type t)
+        private void OpenForm(Type t)
         {
             foreach(var c in panel1.Controls)
             {
-                if (c is Form)
+                if (c is Form form)
                 {
-                    ((Form)c).Close();
-                    ((Form)c).Dispose();
+                    form.Close();
+                    form.Dispose();
                 }
             }
 
             Form f = (Form)Activator.CreateInstance(t);
-            f.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            f.FormBorderStyle = FormBorderStyle.None;
             f.TopLevel = false;
             f.Parent = panel1;
             f.WindowState = FormWindowState.Maximized;

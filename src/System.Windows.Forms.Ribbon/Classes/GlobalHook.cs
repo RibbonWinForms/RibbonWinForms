@@ -10,13 +10,9 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Reflection;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace System.Windows.Forms.RibbonHelpers
 {
@@ -45,8 +41,7 @@ namespace System.Windows.Forms.RibbonHelpers
 
         #region Fields
         private HookProcCallBack _HookProc;
-        private int _hHook;
-        private HookTypes _hookType;
+
         #endregion
 
         #region Events
@@ -119,7 +114,7 @@ namespace System.Windows.Forms.RibbonHelpers
         /// <param name="hookType"></param>
         public GlobalHook(HookTypes hookType)
         {
-            _hookType = hookType;
+            HookType = hookType;
             InstallHook();
         }
 
@@ -138,18 +133,12 @@ namespace System.Windows.Forms.RibbonHelpers
         /// <summary>
         /// Gets the type of this hook
         /// </summary>
-        public HookTypes HookType
-        {
-            get { return _hookType; }
-        }
+        public HookTypes HookType { get; }
 
         /// <summary>
         /// Gets the handle of the hook
         /// </summary>
-        public int Handle
-        {
-            get { return _hHook; }
-        }
+        public int Handle { get; private set; }
 
         #endregion
 
@@ -280,17 +269,15 @@ namespace System.Windows.Forms.RibbonHelpers
             {
                 return WinApi.CallNextHookEx(Handle, code, wParam, lParam);
             }
-            else
+
+            switch (HookType)
             {
-                switch (HookType)
-                {
-                    case HookTypes.Mouse:       
-                        return MouseProc(code, wParam, lParam);
-                    case HookTypes.Keyboard:    
-                        return KeyboardProc(code, wParam, lParam);
-                    default:
-                        throw new Exception("HookType not supported");
-                }
+                case HookTypes.Mouse:       
+                    return MouseProc(code, wParam, lParam);
+                case HookTypes.Keyboard:    
+                    return KeyboardProc(code, wParam, lParam);
+                default:
+                    throw new Exception("HookType not supported");
             }
         }
 
@@ -449,12 +436,12 @@ namespace System.Windows.Forms.RibbonHelpers
             #endregion
 
             /// Delegate to recieve message
-            _HookProc = new HookProcCallBack(HookProc);
+            _HookProc = HookProc;
 
             /// Hook
             /// Ed Obeda suggestion for .net 4.0
             //_hHook = WinApi.SetWindowsHookEx(htype, _HookProc, Marshal.GetHINSTANCE(Assembly.GetExecutingAssembly().GetModules()[0]), 0);
-            _hHook = WinApi.SetWindowsHookEx(htype, _HookProc, System.Diagnostics.Process.GetCurrentProcess().MainModule.BaseAddress, 0);
+            Handle = WinApi.SetWindowsHookEx(htype, _HookProc, Process.GetCurrentProcess().MainModule.BaseAddress, 0);
             
             /// Error check
             if (Handle == 0) throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -483,7 +470,7 @@ namespace System.Windows.Forms.RibbonHelpers
                             throw ex;
                     }
 
-                    _hHook = 0;
+                    Handle = 0;
                 }
                 catch (Exception)
                 {

@@ -10,11 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel.Design;
-
 namespace System.Windows.Forms
 {
     internal class RibbonItemGroupDesigner
@@ -24,9 +19,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonItemGroup)
+                if (Component is RibbonItemGroup @group)
                 {
-                    return (Component as RibbonItemGroup).Owner;
+                    return @group.Owner;
                 }
                 return null;
             }
@@ -36,9 +31,9 @@ namespace System.Windows.Forms
         {
             get 
             {
-                if (Component is RibbonItemGroup)
+                if (Component is RibbonItemGroup @group)
                 {
-                    return (Component as RibbonItemGroup).Items;
+                    return @group.Items;
                 }
                 return null;
             }

@@ -21,9 +21,8 @@ namespace System.Windows.Forms
 		 : RibbonButton
 	{
 		#region Fields
-		private string _description;
-		private Rectangle _descBounds;
-		#endregion
+
+	    #endregion
 
 		#region Ctor
 
@@ -70,37 +69,24 @@ namespace System.Windows.Forms
 		/// <summary>
 		/// Gets or sets the bounds of the description
 		/// </summary>
-		public Rectangle DescriptionBounds
-		{
-			get { return _descBounds; }
-			set { _descBounds = value; }
-		}
+		public Rectangle DescriptionBounds { get; set; }
 
-        /// <summary>
+	    /// <summary>
         /// This property is not relevant for this class
         /// </summary>
         [Browsable(false)]
         public override Image LargeImage
         {
-            get
-            {
-                return base.Image;
-            }
-            set
-            {
-                base.Image = value;
-            }
-        }
+            get => base.Image;
+	        set => base.Image = value;
+	    }
 
         [DefaultValue(null)]
         [Browsable(true)]
         [Category("Appearance")]
         public override Image Image
         {
-            get
-            {
-                return base.Image;
-            }
+            get => base.Image;
             set
             {
                 base.Image = value;
@@ -115,28 +101,17 @@ namespace System.Windows.Forms
         [Browsable(false)]
         public override Image SmallImage
         {
-            get
-            {
-                return base.SmallImage;
-            }
-            set
-            {
-                base.SmallImage = value;
-            }
+            get => base.SmallImage;
+            set => base.SmallImage = value;
         }
 
         /// <summary>
         /// Gets or sets the description of the button
         /// </summary>
         [DefaultValue(null)]  
-		public string Description
-		{
-			get { return _description; }
-			set { _description = value; }
-		}
+		public string Description { get; set; }
 
-
-		#endregion
+	    #endregion
 
 		#region Methods
 

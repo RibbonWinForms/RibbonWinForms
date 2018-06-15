@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -37,59 +34,28 @@ namespace System.Windows.Forms
 
         #region Props
 
-        private object _relatedObject;
+        public object RelatedObject { get; set; }
 
-        public object RelatedObject
-        {
-            get { return _relatedObject; }
-            set { _relatedObject = value; }
-        }
-
-
-        private Ribbon _owner;
 
         /// <summary>
         /// Gets or sets the Ribbon that raised the event
         /// </summary>
-        public Ribbon Owner
-        {
-            get { return _owner; }
-            set { _owner = value; }
-        }
-
-        private Graphics _Graphics;
+        public Ribbon Owner { get; set; }
 
         /// <summary>
         /// Gets or sets the graphics to paint
         /// </summary>
-        public Graphics Graphics
-        {
-            get { return _Graphics; }
-            set { _Graphics = value; }
-        }
-
-        private Rectangle _bounds;
+        public Graphics Graphics { get; set; }
 
         /// <summary>
         /// Gets or sets the bounds that should be painted
         /// </summary>
-        public Rectangle Bounds
-        {
-            get { return _bounds; }
-            set { _bounds = value; }
-        }
-
-        private Control _canvas;
+        public Rectangle Bounds { get; set; }
 
         /// <summary>
         /// Gets or sets the control where to be painted
         /// </summary>
-        public Control Canvas
-        {
-            get { return _canvas; }
-            set { _canvas = value; }
-        }
-
+        public Control Canvas { get; set; }
 
         #endregion
     }

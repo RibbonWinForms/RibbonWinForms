@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Text;
 using System.Windows.Forms.Design.Behavior;
 
 namespace System.Windows.Forms
@@ -10,10 +7,10 @@ namespace System.Windows.Forms
     public class RibbonPanelGlyph
         : Glyph
     {
-        BehaviorService _behaviorService;
-        RibbonTab _tab;
-        RibbonTabDesigner _componentDesigner;
-        Size size;
+        private readonly BehaviorService _behaviorService;
+        private readonly RibbonTab _tab;
+        private RibbonTabDesigner _componentDesigner;
+        private readonly Size size;
 
         public RibbonPanelGlyph(BehaviorService behaviorService, RibbonTabDesigner designer, RibbonTab tab)
             : base(new RibbonPanelGlyphBehavior(designer, tab))
@@ -53,7 +50,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public override Cursor GetHitTest(System.Drawing.Point p)
+        public override Cursor GetHitTest(Point p)
         {
             if (Bounds.Contains(p))
             {
@@ -84,17 +81,15 @@ namespace System.Windows.Forms
     public class RibbonPanelGlyphBehavior
         : Behavior
     {
-        RibbonTab _tab;
-        RibbonTabDesigner _designer;
+        private RibbonTab _tab;
+        private readonly RibbonTabDesigner _designer;
 
         public RibbonPanelGlyphBehavior(RibbonTabDesigner designer, RibbonTab tab)
         {
             _designer = designer;
             _tab = tab;
         }
-
-
-
+        
         public override bool OnMouseUp(Glyph g, MouseButtons button)
         {
             _designer.AddPanel(this, EventArgs.Empty);

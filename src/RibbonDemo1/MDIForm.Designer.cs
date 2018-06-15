@@ -1,11 +1,14 @@
-﻿namespace RibbonDemo
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace RibbonDemo
 {
    partial class MDIForm
    {
       /// <summary>
       /// Required designer variable.
       /// </summary>
-      private System.ComponentModel.IContainer components = null;
+      private IContainer components = null;
 
       /// <summary>
       /// Clean up any resources being used.
@@ -180,18 +183,18 @@
 
       #endregion
 
-      private System.Windows.Forms.Ribbon ribbon1;
-      private System.Windows.Forms.RibbonTab ribbonTab1;
-      private System.Windows.Forms.RibbonPanel ribbonPanel1;
-      private System.Windows.Forms.RibbonButton ribbonButton1;
-      private System.Windows.Forms.RibbonButton ribbonButton2;
-      private System.Windows.Forms.RibbonButton ribbonButton3;
-      private System.Windows.Forms.RibbonButton DropDownButton1;
-      private System.Windows.Forms.RibbonButton DropDownButton2;
-      private System.Windows.Forms.RibbonButton SubMenuButton1;
-      private System.Windows.Forms.RibbonButton SubMenuButton2;
-      private System.Windows.Forms.RibbonButton RibbonButtonOpen;
-      private System.Windows.Forms.RibbonButton DropDownButton3;
-      private System.Windows.Forms.RibbonButton DropDownButton4;
+      private Ribbon ribbon1;
+      private RibbonTab ribbonTab1;
+      private RibbonPanel ribbonPanel1;
+      private RibbonButton ribbonButton1;
+      private RibbonButton ribbonButton2;
+      private RibbonButton ribbonButton3;
+      private RibbonButton DropDownButton1;
+      private RibbonButton DropDownButton2;
+      private RibbonButton SubMenuButton1;
+      private RibbonButton SubMenuButton2;
+      private RibbonButton RibbonButtonOpen;
+      private RibbonButton DropDownButton3;
+      private RibbonButton DropDownButton4;
    }
 }

@@ -10,10 +10,8 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
+using System.Windows.Forms.Classes.Collections;
 
 namespace System.Windows.Forms
 {
@@ -21,10 +19,8 @@ namespace System.Windows.Forms
     /// Represents a collection of RibbonPanel objects
     /// </summary>
     public sealed class RibbonPanelCollection
-        : System.Windows.Forms.Classes.Collections.RibbonCollectionBase<RibbonPanel>
+        : RibbonCollectionBase<RibbonPanel>
     {
-        private RibbonTab _ownerTab;
-
         /// <summary>
         /// Creates a new RibbonPanelCollection
         /// </summary>
@@ -33,34 +29,20 @@ namespace System.Windows.Forms
         public RibbonPanelCollection(RibbonTab ownerTab)
            : base(null)
         {
-           if (ownerTab == null) throw new ArgumentNullException("ownerTab");
-
-           _ownerTab = ownerTab;
+            OwnerTab = ownerTab ?? throw new ArgumentNullException(nameof(ownerTab));
         }
 
         /// <summary>
         /// Gets the Ribbon that contains this panel collection
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override Ribbon Owner
-        {
-           get
-           {
-              return base.Owner ?? _ownerTab.Owner;
-           }
-        }
+        public override Ribbon Owner => base.Owner ?? OwnerTab.Owner;
 
         /// <summary>
         /// Gets the RibbonTab that contains this panel collection
         /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RibbonTab OwnerTab
-        {
-           get
-           {
-              return _ownerTab;
-           }
-        }
+        public RibbonTab OwnerTab { get; private set; }
 
         internal override void SetOwner(RibbonPanel item)
         {
@@ -80,15 +62,16 @@ namespace System.Windows.Forms
         {
             try
             {
-                this.OwnerTab.UpdatePanelsRegions();
+                OwnerTab.UpdatePanelsRegions();
                 if (Owner != null && Owner.IsDisposed == false)
                 {
-                    this.Owner.UpdateRegions();
-                    this.Owner.Invalidate();
+                    Owner.UpdateRegions();
+                    Owner.Invalidate();
                 }
             }
             catch
             {
+                // ignored
             }
         }
 
@@ -107,10 +90,9 @@ namespace System.Windows.Forms
         /// <summary>
         /// Sets the value of the OwnerTab Property
         /// </summary>
-        /// <param name="onwerTab"></param>
         internal void SetOwnerTab(RibbonTab ownerTab)
         {
-            _ownerTab = ownerTab;
+            OwnerTab = ownerTab;
 
             foreach (RibbonPanel panel in this)
             {

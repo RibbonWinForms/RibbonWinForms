@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms.Design.Behavior;
 using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Windows.Forms.Design.Behavior;
 
 namespace System.Windows.Forms
 {
@@ -11,9 +7,9 @@ namespace System.Windows.Forms
         : Glyph
     {
         #region Fields
-        private bool _menuVisible;
-        private BehaviorService _behaviorService;
-        private Ribbon _ribbon;
+
+        private readonly BehaviorService _behaviorService;
+        private readonly Ribbon _ribbon;
         private RibbonDesigner _componentDesigner;
         #endregion
 
@@ -34,11 +30,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets or sets if the orb menu is visible on the desginer
         /// </summary>
-        public bool MenuVisible
-        {
-            get { return _menuVisible; }
-            set { _menuVisible = value; }
-        }
+        public bool MenuVisible { get; set; }
 
         #endregion
 
@@ -57,7 +49,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public override Cursor GetHitTest(System.Drawing.Point p)
+        public override Cursor GetHitTest(Point p)
         {
             if (Bounds.Contains(p))
             {

@@ -9,13 +9,10 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
 using System.ComponentModel;
-using System.Windows.Forms.VisualStyles;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms.VisualStyles;
 
 namespace System.Windows.Forms
 {
@@ -35,16 +32,14 @@ namespace System.Windows.Forms
 
       #region Fields
       private const int spacing = 3;
-      private bool _labelVisible = true;
-      private Rectangle _labelBounds;
+       private Rectangle _labelBounds;
       private Rectangle _checkboxBounds;
       private int _labelWidth;
       private int _checkboxSize;
       private CheckBoxOrientationEnum _CheckBoxOrientation;
       private CheckBoxStyle _style;
-      private bool _textClickable = true;
 
-      #endregion
+       #endregion
 
       #region Events
 
@@ -76,8 +71,8 @@ namespace System.Windows.Forms
       [Category("Appearance")]
       public CheckBoxStyle Style
       {
-         get { return _style; }
-         set { _style = value; NotifyOwnerRegionsChanged(); }
+         get => _style;
+          set { _style = value; NotifyOwnerRegionsChanged(); }
       }
 
       /// <summary>
@@ -87,8 +82,8 @@ namespace System.Windows.Forms
       [Category("Appearance")]
       public CheckBoxOrientationEnum CheckBoxOrientation
       {
-         get { return _CheckBoxOrientation; }
-         set { _CheckBoxOrientation = value; NotifyOwnerRegionsChanged(); }
+         get => _CheckBoxOrientation;
+          set { _CheckBoxOrientation = value; NotifyOwnerRegionsChanged(); }
       }
 
       /// <summary>
@@ -96,41 +91,29 @@ namespace System.Windows.Forms
       /// </summary>
       [Browsable(false)]
        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public virtual Rectangle LabelBounds
-      {
-         get { return _labelBounds; }
-      }
+      public virtual Rectangle LabelBounds => _labelBounds;
 
-      /// <summary>
+       /// <summary>
       /// Gets a value indicating if the label is currently visible
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool LabelVisible
-      {
-         get { return _labelVisible; }
-      }
+      public bool LabelVisible { get; private set; } = true;
 
-      /// <summary>
+       /// <summary>
       /// Gets the bounds of the text
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public virtual Rectangle CheckBoxBounds
-      {
-         get
-         {
-            return _checkboxBounds;
-         }
-      }
+      public virtual Rectangle CheckBoxBounds => _checkboxBounds;
 
-      /// <summary>
+       /// <summary>
       /// Gets or sets the width of the Label
       /// </summary>
       [DefaultValue(0)]
       [Category("Appearance")]
       public int LabelWidth
       {
-         get { return _labelWidth; }
-         set { _labelWidth = value; NotifyOwnerRegionsChanged(); }
+         get => _labelWidth;
+           set { _labelWidth = value; NotifyOwnerRegionsChanged(); }
       }
 
       /// <summary>
@@ -139,13 +122,9 @@ namespace System.Windows.Forms
       [Description("Click on text changes the checked state.")]
       [Category("Behavior")]
       [DefaultValue(true)]
-      public bool TextClickable
-      {
-         get { return _textClickable; }
-         set { this._textClickable = value; }
-      }
+      public bool TextClickable { get; set; } = true;
 
-      #endregion
+       #endregion
 
       #region Methods
 
@@ -166,21 +145,21 @@ namespace System.Windows.Forms
 
             if (Style == CheckBoxStyle.CheckBox)
             {
-               CheckBoxState CheckState = Checked == true ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal;
+               CheckBoxState CheckState = Checked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal;
                if (Selected)
                   CheckState += 1;
 
-               if (this.CheckBoxOrientation == CheckBoxOrientationEnum.Left)
+               if (CheckBoxOrientation == CheckBoxOrientationEnum.Left)
                   CheckBoxRenderer.DrawCheckBox(e.Graphics, new Point(_checkboxBounds.Left, _checkboxBounds.Top), CheckState);
                else
                   CheckBoxRenderer.DrawCheckBox(e.Graphics, new Point(_checkboxBounds.Left + spacing, _checkboxBounds.Top), CheckState);
             }
             else
             {
-               RadioButtonState RadioState = Checked == true ? RadioButtonState.CheckedNormal : RadioButtonState.UncheckedNormal;
+               RadioButtonState RadioState = Checked ? RadioButtonState.CheckedNormal : RadioButtonState.UncheckedNormal;
                if (Selected)
                   RadioState += 1;
-               if (this.CheckBoxOrientation == CheckBoxOrientationEnum.Left)
+               if (CheckBoxOrientation == CheckBoxOrientationEnum.Left)
                   RadioButtonRenderer.DrawRadioButton(e.Graphics, new Point(_checkboxBounds.Left, _checkboxBounds.Top), RadioState);
                else
                   RadioButtonRenderer.DrawRadioButton(e.Graphics, new Point(_checkboxBounds.Left + spacing, _checkboxBounds.Top), RadioState);
@@ -202,7 +181,7 @@ namespace System.Windows.Forms
          }
       }
 
-      public override void SetBounds(System.Drawing.Rectangle bounds)
+      public override void SetBounds(Rectangle bounds)
       {
          base.SetBounds(bounds);
          if (CheckBoxOrientation == CheckBoxOrientationEnum.Left)
@@ -237,21 +216,21 @@ namespace System.Windows.Forms
 
          if (SizeMode == RibbonElementSizeMode.Large)
          {
-            _labelVisible = true;
+            LabelVisible = true;
          }
          else if (SizeMode == RibbonElementSizeMode.Medium)
          {
-            _labelVisible = true;
+            LabelVisible = true;
             _labelBounds = Rectangle.Empty;
          }
          else if (SizeMode == RibbonElementSizeMode.Compact)
          {
             _labelBounds = Rectangle.Empty;
-            _labelVisible = false;
+            LabelVisible = false;
          }
       }
 
-      private bool checkedGlyphSize = false;
+      private bool checkedGlyphSize;
       public override Size MeasureSize(object sender, RibbonElementMeasureSizeEventArgs e)
       {
          if (!checkedGlyphSize)
@@ -259,9 +238,9 @@ namespace System.Windows.Forms
             try
             {
                if (Style == CheckBoxStyle.CheckBox)
-                  _checkboxSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, Checked == true ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal).Height + spacing;
+                  _checkboxSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, Checked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal).Height + spacing;
                else
-                  _checkboxSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, Checked == true ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal).Height + spacing;
+                  _checkboxSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, Checked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal).Height + spacing;
             }
             catch { /* I don't mind at all */ }
             checkedGlyphSize = true;
@@ -347,7 +326,7 @@ namespace System.Windows.Forms
           Rectangle clickableBounds = TextClickable ? Bounds : CheckBoxBounds;
           if (clickableBounds.Contains(e.X, e.Y))
           {
-              Debug.WriteLine("Owner.Cursor = Cursors.Hand e.X=" +e.X + " e.Y=" + e.Y + " CheckBoxBounds (" + CheckBoxBounds.ToString() + ")");
+              Debug.WriteLine("Owner.Cursor = Cursors.Hand e.X=" +e.X + " e.Y=" + e.Y + " CheckBoxBounds (" + CheckBoxBounds + ")");
               Canvas.Cursor = Cursors.Hand;
 
               if (!Selected)
@@ -355,7 +334,7 @@ namespace System.Windows.Forms
           }
           else
           {
-              Debug.WriteLine("Owner.Cursor = Cursors.Default e.X=" + e.X + " e.Y=" + e.Y + " CheckBoxBounds (" + CheckBoxBounds.ToString() + ")");
+              Debug.WriteLine("Owner.Cursor = Cursors.Default e.X=" + e.X + " e.Y=" + e.Y + " CheckBoxBounds (" + CheckBoxBounds + ")");
               Canvas.Cursor = Cursors.Default;
  
               if (Selected)

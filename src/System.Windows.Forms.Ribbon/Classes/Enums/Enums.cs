@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
     public enum RibbonTheme
     {
-       /// <summary>
-       /// The default theme is identical to the Blue theme.
-       /// </summary>
+        /// <summary>
+        /// The default theme is identical to the Blue theme.
+        /// </summary>
         Normal,
-       /// <summary>
-       /// This theme is identical to the normal "default" theme.
-       /// </summary>
+        /// <summary>
+        /// This theme is identical to the normal "default" theme.
+        /// </summary>
         Blue,
         Blue_2010,
         Black,
@@ -72,7 +68,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Mimics a standard drop down list item with no image
         /// </summary>
-        DropDownListItem,
+        DropDownListItem
     }
 
     /// <summary>
@@ -139,7 +135,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// No size mode specified
         /// </summary>
-        None = 0,
+        None = 0
     }
 
     /// <summary>
@@ -155,6 +151,6 @@ namespace System.Windows.Forms
         /// <summary>
         /// Partial width to divide similar items
         /// </summary>
-        Partial = 0,
+        Partial = 0
     }
 }

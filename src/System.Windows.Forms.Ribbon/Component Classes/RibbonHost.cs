@@ -9,11 +9,8 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 
 namespace System.Windows.Forms
 {
@@ -32,17 +29,13 @@ namespace System.Windows.Forms
       public event RibbonHostSizeModeHandledEventHandler SizeModeChanging;
       public delegate void RibbonHostSizeModeHandledEventHandler(object sender, RibbonHostSizeModeHandledEventArgs e);
 
-      public RibbonHost()
-      {
-      }
-
-      /// <summary>
+       /// <summary>
       /// Gets or sets the control that this item will host
       /// </summary>
       public Control HostedControl
       {
-         get { return ctl; }
-         set
+         get => ctl;
+          set
          {
             ctl = value;
             NotifyOwnerRegionsChanged();
@@ -58,11 +51,11 @@ namespace System.Windows.Forms
                ctlSize = ctl.Size;
 
                //hook into some needed events
-               ctl.MouseMove += new MouseEventHandler(ctl_MouseMove);
-               this.CanvasChanged += new EventHandler(RibbonHost_CanvasChanged);
+               ctl.MouseMove += ctl_MouseMove;
+               CanvasChanged += RibbonHost_CanvasChanged;
                //we must know when our tab changes so we can hide the control
                if (OwnerTab != null)
-                  Owner.ActiveTabChanged += new EventHandler(Owner_ActiveTabChanged);
+                  Owner.ActiveTabChanged += Owner_ActiveTabChanged;
 
                //the control must always have the same parent as the host item so set it here.
                if (Owner != null)
@@ -96,14 +89,14 @@ namespace System.Windows.Forms
             }
             else
             {
-               Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, Bounds, this.Text, f));
+               Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, Bounds, Text, f));
                if (ctl != null)
                {
                    if (ctl.Parent != Canvas)
                        Canvas.Controls.Add(ctl);
                    
                   //time to show our control
-                   ctl.Location = new System.Drawing.Point(Bounds.Left, (this.SizeMode == RibbonElementSizeMode.DropDown) ? Bounds.Top:  Bounds.Top);
+                   ctl.Location = new Point(Bounds.Left, (SizeMode == RibbonElementSizeMode.DropDown) ? Bounds.Top:  Bounds.Top);
                   ctl.Visible = true;
                   ctl.BringToFront();
                }
@@ -115,7 +108,7 @@ namespace System.Windows.Forms
       /// Sets the bounds of the panel
       /// </summary>
       /// <param name="bounds"></param>
-      public override void SetBounds(System.Drawing.Rectangle bounds)
+      public override void SetBounds(Rectangle bounds)
       {
           base.SetBounds(bounds);
       }
@@ -133,10 +126,10 @@ namespace System.Windows.Forms
             //when in design mode just paint the name of this control
             int Width = Convert.ToInt32(e.Graphics.MeasureString(Site.Name, Owner.Font).Width);
             int Height = 20;
-            SetLastMeasuredSize(new System.Drawing.Size(Width, Height));
+            SetLastMeasuredSize(new Size(Width, Height));
          }
          else if (ctl == null || !Visible)
-            SetLastMeasuredSize(new System.Drawing.Size(0, 0));
+            SetLastMeasuredSize(new Size(0, 0));
          else
          {
             ctl.Visible = false;
@@ -146,7 +139,7 @@ namespace System.Windows.Forms
                RibbonHostSizeModeHandledEventArgs hev = new RibbonHostSizeModeHandledEventArgs(e.Graphics, e.SizeMode);
                OnSizeModeChanging(ref hev);
             }
-            SetLastMeasuredSize(new System.Drawing.Size(ctl.Size.Width, ctl.Size.Height));
+            SetLastMeasuredSize(new Size(ctl.Size.Width, ctl.Size.Height));
          }
          return LastMeasuredSize;
       }
@@ -177,7 +170,7 @@ namespace System.Windows.Forms
       {
          if (ctl != null && Site == null)
          {
-            ctl.Location = new System.Drawing.Point(Bounds.Left + 1, Bounds.Top + 1);
+            ctl.Location = new Point(Bounds.Left + 1, Bounds.Top + 1);
             //if we are located directly in a panel then we need to make sure the panel is not in overflow
             //mode or we will look bad showing on the panel when we shouldn't be
             if ((Canvas is Ribbon) && (OwnerPanel != null && OwnerPanel.SizeMode == RibbonElementSizeMode.Overflow))
@@ -211,7 +204,7 @@ namespace System.Windows.Forms
                   ClientMouseMove(this, eContArgs);
           }
 
-          base.OnMouseMove(e);
+          OnMouseMove(e);
 
       }
 

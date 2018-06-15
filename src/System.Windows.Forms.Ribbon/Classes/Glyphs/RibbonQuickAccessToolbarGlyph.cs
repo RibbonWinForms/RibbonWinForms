@@ -9,9 +9,9 @@ namespace System.Windows.Forms
         : Glyph
 
     {
-        BehaviorService _behaviorService;
-        Ribbon _ribbon;
-        RibbonDesigner _componentDesigner;
+        private readonly BehaviorService _behaviorService;
+        private readonly Ribbon _ribbon;
+        private RibbonDesigner _componentDesigner;
 
         public RibbonQuickAccessToolbarGlyph(BehaviorService behaviorService, RibbonDesigner designer, Ribbon ribbon)
             : base(new RibbonQuickAccessGlyphBehavior(designer, ribbon))
@@ -30,22 +30,21 @@ namespace System.Windows.Forms
                 {
                    return Rectangle.Empty;
                 }
-                else if (_ribbon.RightToLeft == RightToLeft.No)
+
+                if (_ribbon.RightToLeft == RightToLeft.No)
                 {
-                   return new Rectangle(
-                       edge.X + _ribbon.QuickAccessToolbar.Bounds.Right + _ribbon.QuickAccessToolbar.Bounds.Height / 2 + 4 + _ribbon.QuickAccessToolbar.DropDownButton.Bounds.Width,
-                       edge.Y + _ribbon.QuickAccessToolbar.Bounds.Top, _ribbon.QuickAccessToolbar.Bounds.Height, _ribbon.QuickAccessToolbar.Bounds.Height);
+                    return new Rectangle(
+                        edge.X + _ribbon.QuickAccessToolbar.Bounds.Right + _ribbon.QuickAccessToolbar.Bounds.Height / 2 + 4 + _ribbon.QuickAccessToolbar.DropDownButton.Bounds.Width,
+                        edge.Y + _ribbon.QuickAccessToolbar.Bounds.Top, _ribbon.QuickAccessToolbar.Bounds.Height, _ribbon.QuickAccessToolbar.Bounds.Height);
                 }
-                else
-                {
-                   return new Rectangle(
-                       _ribbon.QuickAccessToolbar.Bounds.Left - _ribbon.QuickAccessToolbar.Bounds.Height / 2 - 4 - _ribbon.QuickAccessToolbar.DropDownButton.Bounds.Width,
-                       edge.Y + _ribbon.QuickAccessToolbar.Bounds.Top, _ribbon.QuickAccessToolbar.Bounds.Height, _ribbon.QuickAccessToolbar.Bounds.Height);
-                }
+
+                return new Rectangle(
+                    _ribbon.QuickAccessToolbar.Bounds.Left - _ribbon.QuickAccessToolbar.Bounds.Height / 2 - 4 - _ribbon.QuickAccessToolbar.DropDownButton.Bounds.Width,
+                    edge.Y + _ribbon.QuickAccessToolbar.Bounds.Top, _ribbon.QuickAccessToolbar.Bounds.Height, _ribbon.QuickAccessToolbar.Bounds.Height);
             }
         }
 
-        public override Cursor GetHitTest(System.Drawing.Point p)
+        public override Cursor GetHitTest(Point p)
         {
             if (Bounds.Contains(p))
             {
@@ -76,8 +75,8 @@ namespace System.Windows.Forms
     public class RibbonQuickAccessGlyphBehavior
         : Behavior
     {
-        Ribbon _ribbon;
-        RibbonDesigner _designer;
+        private readonly Ribbon _ribbon;
+        private readonly RibbonDesigner _designer;
 
         public RibbonQuickAccessGlyphBehavior(RibbonDesigner designer, Ribbon ribbon)
         {

@@ -10,22 +10,16 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Drawing.Drawing2D;
 
 namespace System.Windows.Forms
 {
     [ToolboxItem(false)]
-    public partial class RibbonPanelPopup : RibbonPopup
+    public class RibbonPanelPopup : RibbonPopup
     {
         #region Fields
-        private RibbonMouseSensor _sensor;
-        private RibbonPanel _panel;
+
         private bool _ignoreNext;
 
         #endregion
@@ -35,10 +29,12 @@ namespace System.Windows.Forms
         {
             DoubleBuffered = true;
 
-            _sensor = new RibbonMouseSensor(this, panel.Owner, panel.Items);
-            _sensor.PanelLimit = panel;
-            _panel = panel;
-            _panel.PopUp = this;
+            Sensor = new RibbonMouseSensor(this, panel.Owner, panel.Items)
+            {
+                PanelLimit = panel
+            };
+            Panel = panel;
+            Panel.PopUp = this;
             panel.Owner.SuspendSensor();
 
             using (Graphics g = CreateGraphics())
@@ -60,24 +56,12 @@ namespace System.Windows.Forms
         
         #region Props
 
-        public RibbonMouseSensor Sensor
-        {
-            get
-            {
-                return _sensor;
-            }
-        }
+        public RibbonMouseSensor Sensor { get; }
 
         /// <summary>
         /// Gets the panel related to the form
         /// </summary>
-        public RibbonPanel Panel
-        {
-            get
-            {
-                return _panel;
-            }
-        } 
+        public RibbonPanel Panel { get; }
 
         #endregion
 
@@ -89,10 +73,8 @@ namespace System.Windows.Forms
             {
                 return RibbonElementSizeMode.Medium;
             }
-            else
-            {
-                return RibbonElementSizeMode.Large;
-            }
+
+            return RibbonElementSizeMode.Large;
         }
 
         /// <summary>
@@ -121,7 +103,6 @@ namespace System.Windows.Forms
             if (_ignoreNext)
             {
                 _ignoreNext = false;
-                return;
             }
 
         }
@@ -144,7 +125,7 @@ namespace System.Windows.Forms
 
         protected override void OnClosed(EventArgs e)
         {
-            foreach (RibbonItem item in _panel.Items)
+            foreach (RibbonItem item in Panel.Items)
             {
                 item.SetCanvas(null);
             }

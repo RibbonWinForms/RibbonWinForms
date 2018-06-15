@@ -15,10 +15,9 @@ namespace System.Windows.Forms
       #region Methods
       protected virtual int MeasureHeight()
       {
-         if (Owner != null)
+          if (Owner != null)
             return 16 + Owner.ItemMargin.Vertical;
-         else
-            return 16 + 4;
+          return 16 + 4;
       }
 
       /// <summary>
@@ -29,7 +28,7 @@ namespace System.Windows.Forms
       /// <returns></returns>
       public override Size MeasureSize(object sender, RibbonElementMeasureSizeEventArgs e)
       {
-         if (!this.Visible && ((this.Site == null) || !this.Site.DesignMode))
+         if (!Visible && ((Site == null) || !Site.DesignMode))
          {
             return new Size(0, 0);
          }
@@ -37,9 +36,9 @@ namespace System.Windows.Forms
          if (Owner != null)
             f = Owner.Font;
 
-         int w = string.IsNullOrEmpty(this.Text) ? 0 : ((this._labelWidth > 0) ? this._labelWidth : (e.Graphics.MeasureString(this.Text, f).ToSize().Width + 6));
-         base.SetLastMeasuredSize(new Size(w, this.MeasureHeight()));
-         return base.LastMeasuredSize;
+         int w = string.IsNullOrEmpty(Text) ? 0 : ((_labelWidth > 0) ? _labelWidth : (e.Graphics.MeasureString(Text, f).ToSize().Width + 6));
+         SetLastMeasuredSize(new Size(w, MeasureHeight()));
+         return LastMeasuredSize;
       }
 
       /// <summary>
@@ -51,11 +50,11 @@ namespace System.Windows.Forms
       {
          if (Owner != null)
          {
-            base.Owner.Renderer.OnRenderRibbonItem(new RibbonItemRenderEventArgs(base.Owner, e.Graphics, base.Bounds, this));
+            Owner.Renderer.OnRenderRibbonItem(new RibbonItemRenderEventArgs(Owner, e.Graphics, Bounds, this));
             StringFormat f = StringFormatFactory.CenterNoWrap(StringTrimming.None);
             f.Alignment = (StringAlignment)TextAlignment;
             Rectangle clipBounds = Rectangle.FromLTRB(Bounds.Left + 3, Bounds.Top + Owner.ItemMargin.Top, Bounds.Right - 3, Bounds.Bottom - Owner.ItemMargin.Bottom);
-            base.Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, clipBounds, this.Text, f));
+            Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, clipBounds, Text, f));
          }
       }
 
@@ -75,16 +74,13 @@ namespace System.Windows.Forms
       [DefaultValue(0)]
       public int LabelWidth
       {
-         get
+         get => _labelWidth;
+          set
          {
-            return this._labelWidth;
-         }
-         set
-         {
-             if (this._labelWidth != value)
+             if (_labelWidth != value)
              {
-                 this._labelWidth = value;
-                 base.NotifyOwnerRegionsChanged();
+                 _labelWidth = value;
+                 NotifyOwnerRegionsChanged();
              }
          }
       }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.RibbonHelpers;
@@ -12,15 +10,15 @@ namespace RibbonDemo
 {
     public partial class ThemeBuilderForm : RibbonForm
     {
-        private Dictionary<RibbonColorPart, Panel> dicPanel = new Dictionary<RibbonColorPart, Panel>();
-        private Dictionary<RibbonColorPart, TextBox> dicTxt = new Dictionary<RibbonColorPart, TextBox>();
+        private readonly Dictionary<RibbonColorPart, Panel> dicPanel = new Dictionary<RibbonColorPart, Panel>();
+        private readonly Dictionary<RibbonColorPart, TextBox> dicTxt = new Dictionary<RibbonColorPart, TextBox>();
 
         public ThemeBuilderForm()
         {
             InitializeComponent();
-            this.Height = Screen.PrimaryScreen.WorkingArea.Height;
+            Height = Screen.PrimaryScreen.WorkingArea.Height;
             LoadTheme();
-            this.StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void LoadTheme()
@@ -67,42 +65,54 @@ namespace RibbonDemo
             int count = Enum.GetNames(typeof(RibbonColorPart)).Length;
             for (int i = 0; i < count; i++)
             {
-                Label l = new Label();
-                l.Width = 180;
-                l.Text = ((RibbonColorPart)i).ToString();
+                Label l = new Label
+                {
+                    Width = 180,
+                    Text = ((RibbonColorPart)i).ToString()
+                };
 
-                Panel p = new Panel();
-                p.Height = 16;
-                p.Width = 100;
-                p.BorderStyle = BorderStyle.FixedSingle;
-                p.BackColor = r.GetColor((RibbonColorPart)i);
+                Panel p = new Panel
+                {
+                    Height = 16,
+                    Width = 100,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    BackColor = r.GetColor((RibbonColorPart)i)
+                };
                 dicPanel[(RibbonColorPart)i] = p;
 
-                TextBox t = new TextBox();
-                t.Tag = (RibbonColorPart)i;
-                t.Text = r.GetColorHexStr((RibbonColorPart)i);
-                t.LostFocus += new EventHandler(t_LostFocus);
-                t.KeyPress += new KeyPressEventHandler(t_KeyPress);
-                t.TextChanged += new EventHandler(t_LostFocus);
+                TextBox t = new TextBox
+                {
+                    Tag = (RibbonColorPart)i,
+                    Text = r.GetColorHexStr((RibbonColorPart)i)
+                };
+                t.LostFocus += t_LostFocus;
+                t.KeyPress += t_KeyPress;
+                t.TextChanged += t_LostFocus;
                 dicTxt[(RibbonColorPart)i] = t;
 
-                Button b = new Button();
-                b.Text = "Get Color";
-                b.Tag = (RibbonColorPart)i;
-                b.Click += new EventHandler(b_Click);
+                Button b = new Button
+                {
+                    Text = "Get Color",
+                    Tag = (RibbonColorPart)i
+                };
+                b.Click += b_Click;
 
-                CheckBox ib = new CheckBox();
-                ib.Text = "Invert";
-                ib.Tag = (RibbonColorPart)i;
-                ib.Click += new EventHandler(b_InvertClick);
+                CheckBox ib = new CheckBox
+                {
+                    Text = "Invert",
+                    Tag = (RibbonColorPart)i
+                };
+                ib.Click += b_InvertClick;
 
-                NumericUpDown nud = new NumericUpDown();
-                nud.Width = 50;
-                nud.Tag = (RibbonColorPart)i;
-                nud.Minimum = 0;
-                nud.Maximum = 255;
-                nud.Value = r.GetColor((RibbonColorPart)i).A;
-                nud.ValueChanged += new EventHandler(nud_ValueChanged);
+                NumericUpDown nud = new NumericUpDown
+                {
+                    Width = 50,
+                    Tag = (RibbonColorPart)i,
+                    Minimum = 0,
+                    Maximum = 255,
+                    Value = r.GetColor((RibbonColorPart)i).A
+                };
+                nud.ValueChanged += nud_ValueChanged;
 
                 tableLayoutPanel1.Controls.Add(l);
                 tableLayoutPanel1.Controls.Add(nud);
@@ -116,7 +126,7 @@ namespace RibbonDemo
             tableLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.Controls.Add(tableLayoutPanel1);
             ribbon1.Refresh();
-            this.Refresh();
+            Refresh();
         }
 
         private void nud_ValueChanged(object sender, EventArgs e)
@@ -130,9 +140,11 @@ namespace RibbonDemo
 
         private void b_Click(object sender, EventArgs e)
         {
-            ColorDialog d = new ColorDialog();
-            d.FullOpen = true;
-            d.AllowFullOpen = true;
+            ColorDialog d = new ColorDialog
+            {
+                FullOpen = true,
+                AllowFullOpen = true
+            };
             if (d.ShowDialog() == DialogResult.OK)
             {
                 RibbonColorPart rcp = (RibbonColorPart)((Button)sender).Tag;
@@ -194,7 +206,7 @@ namespace RibbonDemo
             dicPanel[rcp].BackColor = color;
             dicTxt[rcp].Text = ribbon1.Theme.RendererColorTable.GetColorHexStr(rcp);
             ribbon1.Refresh();
-            this.Refresh();
+            Refresh();
         }
 
         private void btGenerateThemeClass_Click(object sender, EventArgs e)
@@ -233,11 +245,11 @@ namespace RibbonDemo
             {
                 if (ribbon1.Theme.RendererColorTable.GetColor((RibbonColorPart)i).A == 255)
                 {
-                    sb.AppendLine("            " + ((RibbonColorPart)i).ToString() + " = FromHex(\"" + ribbon1.Theme.RendererColorTable.GetColorHexStr((RibbonColorPart)i) + "\");");
+                    sb.AppendLine("            " + ((RibbonColorPart)i) + " = FromHex(\"" + ribbon1.Theme.RendererColorTable.GetColorHexStr((RibbonColorPart)i) + "\");");
                 }
                 else
                 {
-                    sb.AppendLine("            " + ((RibbonColorPart)i).ToString() + " = Color.FromArgb(" + ribbon1.Theme.RendererColorTable.GetColor((RibbonColorPart)i).A + ", FromHex(\"" + ribbon1.Theme.RendererColorTable.GetColorHexStr((RibbonColorPart)i) + "\"));");
+                    sb.AppendLine("            " + ((RibbonColorPart)i) + " = Color.FromArgb(" + ribbon1.Theme.RendererColorTable.GetColor((RibbonColorPart)i).A + ", FromHex(\"" + ribbon1.Theme.RendererColorTable.GetColorHexStr((RibbonColorPart)i) + "\"));");
                 }
             }
 
@@ -279,14 +291,16 @@ namespace RibbonDemo
 
         private void btLoadFile_Click(object sender, EventArgs e)
         {
-            OpenFileDialog of = new OpenFileDialog();
-            of.Multiselect = false;
-            of.Filter = "ini or xml|*.ini;*.xml";
+            OpenFileDialog of = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "ini or xml|*.ini;*.xml"
+            };
             if (of.ShowDialog() == DialogResult.OK)
             {
                 txtThemeFile.Text = of.FileName;
-                string a = System.IO.File.ReadAllText(of.FileName);
-                string ext = System.IO.Path.GetExtension(of.FileName);
+                string a = File.ReadAllText(of.FileName);
+                string ext = Path.GetExtension(of.FileName);
                 if (ext.ToLower() == ".ini")
                     ribbon1.Theme.RendererColorTable.ReadThemeIniFile(a);
                 else if (ext.ToLower() == ".xml")
@@ -299,8 +313,10 @@ namespace RibbonDemo
         {
             try
             {
-                SaveFileDialog f = new SaveFileDialog();
-                f.Filter = "ini|*.ini";
+                SaveFileDialog f = new SaveFileDialog
+                {
+                    Filter = "ini|*.ini"
+                };
                 if (f.ShowDialog() == DialogResult.OK)
                 {
                     ribbon1.Theme.RendererColorTable.ThemeName = txtThemeName.Text;
@@ -309,7 +325,7 @@ namespace RibbonDemo
                     ribbon1.Theme.RendererColorTable.ThemeAuthorWebsite = txtAuthorWebsite.Text;
                     ribbon1.Theme.RendererColorTable.ThemeDateCreated = txtDateCreated.Text;
                     string a = ribbon1.Theme.RendererColorTable.WriteThemeIniFile();
-                    System.IO.File.WriteAllText(f.FileName, a, Encoding.UTF8);
+                    File.WriteAllText(f.FileName, a, Encoding.UTF8);
                     MessageBox.Show("Saved at:\r\n" + f.FileName, "Save");
                 }
             }
@@ -323,8 +339,10 @@ namespace RibbonDemo
         {
             try
             {
-                SaveFileDialog f = new SaveFileDialog();
-                f.Filter = "xml|*.xml";
+                SaveFileDialog f = new SaveFileDialog
+                {
+                    Filter = "xml|*.xml"
+                };
                 if (f.ShowDialog() == DialogResult.OK)
                 {
                     ribbon1.Theme.RendererColorTable.ThemeName = txtThemeName.Text;
@@ -333,7 +351,7 @@ namespace RibbonDemo
                     ribbon1.Theme.RendererColorTable.ThemeAuthorWebsite = txtAuthorWebsite.Text;
                     ribbon1.Theme.RendererColorTable.ThemeDateCreated = txtDateCreated.Text;
                     string a = ribbon1.Theme.RendererColorTable.WriteThemeXmlFile();
-                    System.IO.File.WriteAllText(f.FileName, a, Encoding.UTF8);
+                    File.WriteAllText(f.FileName, a, Encoding.UTF8);
                     MessageBox.Show("Saved at:\r\n" + f.FileName, "Save");
                 }
             }
@@ -364,7 +382,7 @@ namespace RibbonDemo
 
             LoadTheme();
 
-            this.Refresh();
+            Refresh();
 
             cboChooseTheme.Enabled = true;
             cboChooseTheme.Focus();
@@ -380,7 +398,7 @@ namespace RibbonDemo
                 ribbon1.OrbStyle = RibbonOrbStyle.Office_2013;
 
             // A hack to reapply Glass to the form when the Orb style changes
-            this.Helper.ReapplyGlass();
+            Helper.ReapplyGlass();
         }
 
         private void ThemeBuilderForm_Load(object sender, EventArgs e)
@@ -393,22 +411,22 @@ namespace RibbonDemo
         private void DummyAppButton_Click(object sender, EventArgs e)
         {
             // Get the system menu of this application
-            IntPtr wMenu = WinApi.GetSystemMenu(this.Handle, false);
+            IntPtr wMenu = WinApi.GetSystemMenu(Handle, false);
 
             // Display the menu
             uint command = WinApi.TrackPopupMenuEx(wMenu, WinApi.TPM_LEFTBUTTON | WinApi.TPM_RETURNCMD,
-                this.PointToScreen(ribbon1.Bounds.Location).X, this.PointToScreen(ribbon1.Bounds.Location).Y + ribbon1.CaptionBarSize, this.Handle, IntPtr.Zero);
+                PointToScreen(ribbon1.Bounds.Location).X, PointToScreen(ribbon1.Bounds.Location).Y + ribbon1.CaptionBarSize, Handle, IntPtr.Zero);
 
             if (command == 0)
                 return;
 
             // Post a message for the menu selection
-            WinApi.PostMessage(this.Handle, WinApi.WM_SYSCOMMAND, new UIntPtr(command), IntPtr.Zero);
+            WinApi.PostMessage(Handle, WinApi.WM_SYSCOMMAND, new UIntPtr(command), IntPtr.Zero);
         }
 
         private void DummyAppButton_DoubleClick(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void ribbonButton37_Click(object sender, EventArgs e)

@@ -10,9 +10,7 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -27,32 +25,17 @@ namespace System.Windows.Forms
     {
         #region Fields
         private bool _enabled;
-        private RibbonPanelCollection _panels;
-		private Rectangle _tabBounds;
-		private Rectangle _tabContentBounds;
-		private Ribbon _owner;
-		private bool _pressed;
+        private bool _pressed;
 		private bool _selected;
 		private bool _active;
-		private object _tag;
-		private string _value;
-		private string _text;
+        private string _text;
 		private RibbonContext _context;
-		private bool _scrollLeftVisible;
-		private Rectangle _scrollLeftBounds;
-		private bool _scrollLeftSelected;
-		private bool _scrollLeftPressed;
-		private Rectangle _scrollRightBounds;
-		private bool _scrollRightSelected;
-		private bool _scrollRightVisible;
-		private bool _scrollRightPressed;
-		private int _offset;
+        private int _offset;
 		private bool _visible = true;
 
-		RibbonToolTip _TT;
-		private string _tooltip;
+        private readonly RibbonToolTip _TT;
 
-		/// <summary>
+        /// <summary>
 		/// Occurs when the mouse pointer enters the panel
 		/// </summary>
 		public event MouseEventHandler MouseEnter;
@@ -73,17 +56,19 @@ namespace System.Windows.Forms
 
 		public RibbonTab()
 		{
-            _panels = new RibbonPanelCollection(this);
+            Panels = new RibbonPanelCollection(this);
             _enabled = true;
 
-			//Initialize the ToolTip for this Item
-			_TT = new RibbonToolTip(this);
-			_TT.InitialDelay = 100;
-			_TT.AutomaticDelay = 800;
-			_TT.AutoPopDelay = 8000;
-			_TT.UseAnimation = true;
-			_TT.Active = false;
-			_TT.Popup += new PopupEventHandler(_TT_Popup);
+            //Initialize the ToolTip for this Item
+            _TT = new RibbonToolTip(this)
+            {
+                InitialDelay = 100,
+                AutomaticDelay = 800,
+                AutoPopDelay = 8000,
+                UseAnimation = true,
+                Active = false
+            };
+            _TT.Popup += _TT_Popup;
 		}
 
       public RibbonTab(string text)
@@ -109,7 +94,7 @@ namespace System.Windows.Forms
              _TT.Popup -= _TT_Popup;
 
             _TT.Dispose();
-            foreach (RibbonPanel p in _panels)
+            foreach (RibbonPanel p in Panels)
                p.Dispose();
          }
 
@@ -149,16 +134,13 @@ namespace System.Windows.Forms
       {
          get
          {
-            if (base.Site != null)
+            if (Site != null)
             {
-               _Name = base.Site.Name;
+               _Name = Site.Name;
             }
             return _Name;
          }
-         set
-         {
-            _Name = value;
-         }
+         set => _Name = value;
       }
 
         [DefaultValue(true)]
@@ -172,10 +154,8 @@ namespace System.Windows.Forms
                 {
                     return _enabled && Owner.Enabled;
                 }
-                else
-                {
-                    return _enabled;
-                }
+
+                return _enabled;
             }
             set
             {
@@ -194,249 +174,145 @@ namespace System.Windows.Forms
         /// </summary>
         [Browsable(false)]
       [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public bool ScrollRightVisible
-		{
-			get { return _scrollRightVisible; }
-		}
+		public bool ScrollRightVisible { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets if the right-side scroll button is currently selected
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public bool ScrollRightSelected
-		{
-			get { return _scrollRightSelected; }
-		}
+		public bool ScrollRightSelected { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets if the right-side scroll button is currently pressed
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public bool ScrollRightPressed
-		{
-			get { return _scrollRightPressed; }
-		}
+		public bool ScrollRightPressed { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets if the right-side scroll button bounds
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public Rectangle ScrollRightBounds
-		{
-			get { return _scrollRightBounds; }
-		}
+		public Rectangle ScrollRightBounds { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets if the left scroll button is currently visible
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [Browsable(false)]
-        public bool ScrollLeftVisible
-		{
-			get { return _scrollLeftVisible; }
-		}
+        public bool ScrollLeftVisible { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets if the left scroll button bounds
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public Rectangle ScrollLeftBounds
-		{
-			get { return _scrollLeftBounds; }
-		}
+		public Rectangle ScrollLeftBounds { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets if the left scroll button is currently selected
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public bool ScrollLeftSelected
-		{
-			get { return _scrollLeftSelected; }
-		}
+		public bool ScrollLeftSelected { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets if the left scroll button is currently pressed
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public bool ScrollLeftPressed
-		{
-			get { return _scrollLeftPressed; }
-		}
+		public bool ScrollLeftPressed { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets the <see cref="TabBounds"/> property value
 		/// </summary>
 		[Browsable(false)]
-        public Rectangle Bounds
-		{
-			get { return TabBounds; }
-		}
+        public Rectangle Bounds => TabBounds;
 
-		/// <summary>
+        /// <summary>
 		/// Gets the collection of panels that belong to this tab
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public RibbonPanelCollection Panels
-		{
-			get
-			{
-				return _panels;
-			}
-		}
+		public RibbonPanelCollection Panels { get; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets the bounds of the little tab showing the text
 		/// </summary>
 		[Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public System.Drawing.Rectangle TabBounds
-		{
-			get
-			{
-				return _tabBounds;
-			}
-		}
+		public Rectangle TabBounds { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets the bounds of the tab content on the Ribbon
 		/// </summary>
 		[Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public System.Drawing.Rectangle TabContentBounds
-		{
-			get
-			{
-				return _tabContentBounds;
-			}
-		}
+		public Rectangle TabContentBounds { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets the Ribbon that contains this tab
 		/// </summary>
 		[Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Ribbon Owner
-		{
-			get
-			{
-				return _owner;
-			}
-		}
+		public Ribbon Owner { get; private set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets a value indicating whether the state of the tab is being pressed by the mouse or a key
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public virtual bool Pressed
-		{
-			get
-			{
-				return _pressed;
-			}
-		}
+		public virtual bool Pressed => _pressed;
 
-		/// <summary>
+        /// <summary>
 		/// Gets a value indicating whether the tab is selected
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public virtual bool Selected
-		{
-			get
-			{
-				return _selected;
-			}
-		}
+		public virtual bool Selected => _selected;
 
-		/// <summary>
+        /// <summary>
 		/// Gets a value indicating if the tab is currently the active tab
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public virtual bool Active
-		{
-			get
-			{
-				return _active;
-			}
-		}
+		public virtual bool Active => _active;
 
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the object that contains data about the control
 		/// </summary>
-      [DescriptionAttribute("An Object field for associating custom data for this control")]
+      [Description("An Object field for associating custom data for this control")]
       [DefaultValue(null)]
         [Category("Data")]
         [TypeConverter(typeof(StringConverter))]
-      public object Tag
-		{
-			get
-			{
-				return _tag;
-			}
-			set
-			{
-				_tag = value;
-			}
-		}
+      public object Tag { get; set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the custom string data associated with this control
 		/// </summary>
 		[DefaultValue(null)]
       [Category("Data")]
-      [DescriptionAttribute("A string field for associating custom data for this control")]
-		public string Value
-		{
-			get
-			{
-				return _value;
-			}
-			set
-			{
-				_value = value;
-			}
-		}
+      [Description("A string field for associating custom data for this control")]
+		public string Value { get; set; }
 
-        string _altKey;
-
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the key combination that activates this element when the Alt key was pressed
 		/// </summary>
         [Category("Behavior")]
         [DefaultValue(null)]
-		public string AltKey
-		{
-			get
-			{
-				return _altKey;
-			}
-			set
-			{
-				_altKey = value;
-			}
-		}
+		public string AltKey { get; set; }
 
 
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the text that is to be displayed on the tab
 		/// </summary>
 		[Localizable(true)]
         [Category("Appearance")]
         public string Text
 		{
-			get
-			{
-				return _text;
-			}
-			set
+			get => _text;
+            set
 			{
 
 				_text = value;
@@ -452,15 +328,9 @@ namespace System.Windows.Forms
 		/// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public virtual bool Contextual
-		{
-			get
-			{
-				return _context != null;
-			}
-		}
+		public virtual bool Contextual => _context != null;
 
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the context this tab belongs to
 		/// </summary>
 		/// <remarks>Tabs on a context are highlighted with a special glow color</remarks>
@@ -468,10 +338,7 @@ namespace System.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public RibbonContext Context
 		{
-			get
-			{
-				return _context;
-			}
+			get => _context;
             set
             {
                 _context = value;
@@ -509,7 +376,7 @@ namespace System.Windows.Forms
 				if (Owner != null)
 				{
 					Owner.UpdateRegions();
-					if (this.Active)
+					if (Active)
 					{
 						EnsureAnyTabVisible();
 					}
@@ -527,14 +394,8 @@ namespace System.Windows.Forms
 		[DefaultValue("")]
 		public string ToolTipTitle
 		{
-			get
-			{
-				return _TT.ToolTipTitle;
-			}
-			set
-			{
-				_TT.ToolTipTitle = value;
-			}
+			get => _TT.ToolTipTitle;
+		    set => _TT.ToolTipTitle = value;
 		}
 
 		/// <summary>
@@ -543,14 +404,8 @@ namespace System.Windows.Forms
 		[DefaultValue(ToolTipIcon.None)]
 		public ToolTipIcon ToolTipIcon
 		{
-			get
-			{
-				return _TT.ToolTipIcon;
-			}
-			set
-			{
-				_TT.ToolTipIcon = value;
-			}
+			get => _TT.ToolTipIcon;
+		    set => _TT.ToolTipIcon = value;
 		}
 
 		/// <summary>
@@ -558,49 +413,27 @@ namespace System.Windows.Forms
 		/// </summary>
 		[DefaultValue(null)]
 		[Localizable(true)]
-		public string ToolTip
-		{
-			get
-			{
-				return _tooltip;
-			}
-			set
-			{
-				_tooltip = value;
-			}
-		}
+		public string ToolTip { get; set; }
 
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the tool tip image
 		/// </summary>
 		[DefaultValue(null)]
 		[Localizable(true)]
 		public Image ToolTipImage
 		{
-			get
-			{
-				return _TT.ToolTipImage;
-			}
-			set
-			{
-				_TT.ToolTipImage = value;
-			}
-		}
+			get => _TT.ToolTipImage;
+            set => _TT.ToolTipImage = value;
+        }
 
       /// <summary>
       /// Gets whether the tab should be drawn invisible.
       /// </summary>
       [Browsable(false)]
       [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      internal bool Invisible
-      {
-         get
-         {
-            return Owner != null && Owner.HideSingleTabIfTextEmpty && Owner.Tabs.Count == 1 && string.IsNullOrEmpty(Text);
-         }
-      }
-      
-      #endregion
+      internal bool Invisible => Owner != null && Owner.HideSingleTabIfTextEmpty && Owner.Tabs.Count == 1 && string.IsNullOrEmpty(Text);
+
+        #endregion
 
 		#region IRibbonElement Members
 
@@ -681,7 +514,7 @@ namespace System.Windows.Forms
 		/// </summary>
 		internal void SetOwner(Ribbon owner)
 		{
-			_owner = owner;
+			Owner = owner;
 
 			Panels.SetOwner(owner);
 
@@ -693,7 +526,7 @@ namespace System.Windows.Forms
 		/// </summary>
 		internal virtual void ClearOwner()
 		{
-			_owner = null;
+			Owner = null;
 			OnOwnerChanged(EventArgs.Empty);
 		}
 
@@ -904,9 +737,9 @@ namespace System.Windows.Forms
 		/// <param name="tabBounds">Rectangle representing the bounds of the tab</param>
 		internal void SetTabBounds(Rectangle tabBounds)
 		{
-			bool tigger = _tabBounds != tabBounds;
+			bool tigger = TabBounds != tabBounds;
 
-			_tabBounds = tabBounds;
+			TabBounds = tabBounds;
 
 			OnTabBoundsChanged(EventArgs.Empty);
 		}
@@ -917,9 +750,9 @@ namespace System.Windows.Forms
 		/// <param name="tabContentBounds">Rectangle representing the bounds of the tab's content</param>
 		internal void SetTabContentBounds(Rectangle tabContentBounds)
 		{
-			bool trigger = _tabContentBounds != tabContentBounds;
+			bool trigger = TabContentBounds != tabContentBounds;
 
-			_tabContentBounds = tabContentBounds;
+			TabContentBounds = tabContentBounds;
 
 			OnTabContentBoundsChanged(EventArgs.Empty);
 		}
@@ -1124,10 +957,10 @@ namespace System.Windows.Forms
 		private void UpdateScrollBounds()
 		{
 			int w = 13;
-			bool scrBuffer = _scrollRightVisible;
-			bool sclBuffer = _scrollLeftVisible;
-			Rectangle rrBuffer = _scrollRightBounds;
-			Rectangle rlBuffer = _scrollLeftBounds;
+			bool scrBuffer = ScrollRightVisible;
+			bool sclBuffer = ScrollLeftVisible;
+			Rectangle rrBuffer = ScrollRightBounds;
+			Rectangle rlBuffer = ScrollLeftBounds;
 
 			if (Panels.Count == 0) return;
 
@@ -1135,14 +968,14 @@ namespace System.Windows.Forms
 
 			if (Panels[Panels.Count - 1].Bounds.Right > TabContentBounds.Right)
 			{
-				_scrollRightVisible = true;
+				ScrollRightVisible = true;
 			}
 			else
 			{
-				_scrollRightVisible = false;
+				ScrollRightVisible = false;
 			}
 
-			if (_scrollRightVisible != scrBuffer)
+			if (ScrollRightVisible != scrBuffer)
 			{
 				OnScrollRightVisibleChanged(EventArgs.Empty);
 			}
@@ -1151,38 +984,38 @@ namespace System.Windows.Forms
 
 			if (_offset < 0)
 			{
-				_scrollLeftVisible = true;
+				ScrollLeftVisible = true;
 			}
 			else
 			{
-				_scrollLeftVisible = false;
+				ScrollLeftVisible = false;
 			}
 
-			if (_scrollRightVisible != scrBuffer)
+			if (ScrollRightVisible != scrBuffer)
 			{
 				OnScrollLeftVisibleChanged(EventArgs.Empty);
 			}
 
-			if (_scrollLeftVisible || _scrollRightVisible)
+			if (ScrollLeftVisible || ScrollRightVisible)
 			{
-				_scrollRightBounds = Rectangle.FromLTRB(
+				ScrollRightBounds = Rectangle.FromLTRB(
 					 Owner.ClientRectangle.Right - w,
 					 TabContentBounds.Top,
 					 Owner.ClientRectangle.Right,
 					 TabContentBounds.Bottom);
 
-				_scrollLeftBounds = Rectangle.FromLTRB(
+				ScrollLeftBounds = Rectangle.FromLTRB(
 					 0,
 					 TabContentBounds.Top,
 					 w,
 					 TabContentBounds.Bottom);
 
-				if (_scrollRightBounds != rrBuffer)
+				if (ScrollRightBounds != rrBuffer)
 				{
 					OnScrollRightBoundsChanged(EventArgs.Empty);
 				}
 
-				if (_scrollLeftBounds != rlBuffer)
+				if (ScrollLeftBounds != rlBuffer)
 				{
 					OnScrollLeftBoundsChanged(EventArgs.Empty);
 				}
@@ -1234,11 +1067,11 @@ namespace System.Windows.Forms
          {
             MouseMove(this, e);
          }
-         if (!_TT.Active && !string.IsNullOrEmpty(this.ToolTip))  // ToolTip should be working without title as well - to get Office 2007 Look & Feel
+         if (!_TT.Active && !string.IsNullOrEmpty(ToolTip))  // ToolTip should be working without title as well - to get Office 2007 Look & Feel
          {
-            if (this.ToolTip != _TT.GetToolTip(this.Owner))
+            if (ToolTip != _TT.GetToolTip(Owner))
             {
-               _TT.SetToolTip(this.Owner, this.ToolTip);
+               _TT.SetToolTip(Owner, ToolTip);
             }
             _TT.Active = true;
          }
@@ -1250,7 +1083,7 @@ namespace System.Windows.Forms
 		/// <param name="pressed"></param>
 		internal void SetScrollLeftPressed(bool pressed)
 		{
-			_scrollLeftPressed = pressed;
+			ScrollLeftPressed = pressed;
 
 			if (pressed)
 				ScrollLeft();
@@ -1264,7 +1097,7 @@ namespace System.Windows.Forms
 		/// <param name="selected"></param>
 		internal void SetScrollLeftSelected(bool selected)
 		{
-			_scrollLeftSelected = selected;
+			ScrollLeftSelected = selected;
 
 			OnScrollLeftSelectedChanged(EventArgs.Empty);
 		}
@@ -1275,7 +1108,7 @@ namespace System.Windows.Forms
 		/// <param name="pressed"></param>
 		internal void SetScrollRightPressed(bool pressed)
 		{
-			_scrollRightPressed = pressed;
+			ScrollRightPressed = pressed;
 
 			if (pressed) ScrollRight();
 
@@ -1288,7 +1121,7 @@ namespace System.Windows.Forms
 		/// <param name="selected"></param>
 		internal void SetScrollRightSelected(bool selected)
 		{
-			_scrollRightSelected = selected;
+			ScrollRightSelected = selected;
 
 			OnScrollRightSelectedChanged(EventArgs.Empty);
 		}
@@ -1332,8 +1165,8 @@ namespace System.Windows.Forms
 			if (ToolTipPopUp != null)
 			{
 				ToolTipPopUp(sender, new RibbonElementPopupEventArgs(this, e));
-				if (this.ToolTip != _TT.GetToolTip(this.Owner))
-					_TT.SetToolTip(this.Owner, this.ToolTip);
+				if (ToolTip != _TT.GetToolTip(Owner))
+					_TT.SetToolTip(Owner, ToolTip);
 			}
 		}
 

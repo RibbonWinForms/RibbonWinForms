@@ -9,9 +9,6 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -22,7 +19,6 @@ namespace System.Windows.Forms
         #region Ctor
 
         public RibbonOrbRecentItem()
-            : base()
         {
 
         }
@@ -37,7 +33,7 @@ namespace System.Windows.Forms
 
         #region Methods
 
-        internal override Rectangle OnGetImageBounds(RibbonElementSizeMode sMode, System.Drawing.Rectangle bounds)
+        internal override Rectangle OnGetImageBounds(RibbonElementSizeMode sMode, Rectangle bounds)
         {
             return Rectangle.Empty;
         }

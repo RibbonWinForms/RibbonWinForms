@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
 
 namespace RibbonDemo
 {
@@ -48,7 +44,7 @@ namespace RibbonDemo
 
       private void ribbonComboBox1_DropDownItemClicked(object sender, RibbonItemEventArgs e)
       {
-         MessageBox.Show("Item Clicked");
+         MessageBox.Show(@"Item Clicked");
       }
 
       private void button2_Click(object sender, EventArgs e)

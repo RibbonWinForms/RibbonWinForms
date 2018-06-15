@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
+﻿using System.Drawing;
 
 namespace System.Windows.Forms
 {
@@ -10,8 +7,7 @@ namespace System.Windows.Forms
     /// </summary>
     public class LayoutHelper
     {
-
-        Ribbon _ribbon;
+        private readonly Ribbon _ribbon;
 
         public LayoutHelper(Ribbon ribbon)
         {
@@ -48,11 +44,9 @@ namespace System.Windows.Forms
                 //Object on left
                 return new Rectangle(reference.Left - distance - rect.Width, rect.Y, rect.Width, rect.Height);
             }
-            else
-            {
-                //Object on right
-                return new Rectangle(reference.Right + distance, rect.Y, rect.Width, rect.Height);
-            }
+
+            //Object on right
+            return new Rectangle(reference.Right + distance, rect.Y, rect.Width, rect.Height);
         }
 
         /// <summary>
@@ -70,11 +64,9 @@ namespace System.Windows.Forms
                 //Object on left
                 return new Point(reference.Left - distance, point.Y);
             }
-            else
-            {
-                //Object on right
-                return new Point(reference.Right + distance, point.Y);
-            }
+
+            //Object on right
+            return new Point(reference.Right + distance, point.Y);
         }
 
         /// <summary>
@@ -92,11 +84,9 @@ namespace System.Windows.Forms
                 //Object on left
                 return new Rectangle(reference.X - distance - rect.Width, rect.Y, rect.Width, rect.Height);
             }
-            else
-            {
-                //Object on right
-                return new Rectangle(reference.X + distance, rect.Y, rect.Width, rect.Height);
-            }
+
+            //Object on right
+            return new Rectangle(reference.X + distance, rect.Y, rect.Width, rect.Height);
         }
 
     }

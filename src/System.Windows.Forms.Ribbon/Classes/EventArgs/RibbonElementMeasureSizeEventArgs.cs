@@ -10,9 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -23,40 +20,25 @@ namespace System.Windows.Forms
     public class RibbonElementMeasureSizeEventArgs
         : EventArgs
     {
-        private RibbonElementSizeMode _sizeMode;
-        private System.Drawing.Graphics _graphics;
-
         /// <summary>
         /// Creates a new RibbonElementMeasureSizeEventArgs object
         /// </summary>
         /// <param name="graphics">Device info to draw and measure</param>
         /// <param name="sizeMode">Size mode to measure</param>
-        internal RibbonElementMeasureSizeEventArgs(System.Drawing.Graphics graphics, RibbonElementSizeMode sizeMode)
+        internal RibbonElementMeasureSizeEventArgs(Graphics graphics, RibbonElementSizeMode sizeMode)
         {
-            _graphics = graphics;
-            _sizeMode = sizeMode;
+            Graphics = graphics;
+            SizeMode = sizeMode;
         }
 
         /// <summary>
         /// Gets the size mode to measure
         /// </summary>
-        public RibbonElementSizeMode SizeMode
-        {
-            get
-            {
-                return _sizeMode;
-            }
-        }
+        public RibbonElementSizeMode SizeMode { get; }
 
         /// <summary>
         /// Gets the device to measure objects
         /// </summary>
-        public Graphics Graphics
-        {
-            get
-            {
-                return _graphics;
-            }
-        }
+        public Graphics Graphics { get; }
     }
 }

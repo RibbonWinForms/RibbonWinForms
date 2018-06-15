@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
+using RibbonDemo.Properties;
+using static System.Windows.Forms.Theme;
 
 namespace RibbonDemo
 {
@@ -31,14 +29,14 @@ namespace RibbonDemo
         private void InitLists()
         {
             Image[] images = new Image[255];
-            RibbonProfessionalRenderer rend = new RibbonProfessionalRenderer(this.ribbon1);
-            BackColor = Theme.ColorTable.RibbonBackground;
+            RibbonProfessionalRenderer rend = new RibbonProfessionalRenderer(ribbon1);
+            BackColor = ColorTable.RibbonBackground;
             Random r = new Random();
 
             #region Color Squares
             using (GraphicsPath path = RibbonProfessionalRenderer.RoundRectangle(new Rectangle(3, 3, 26, 26), 4))
             {
-                using (GraphicsPath outer = RibbonProfessionalRenderer.RoundRectangle(new Rectangle(0, 0, 32, 32), 4))
+                using (RibbonProfessionalRenderer.RoundRectangle(new Rectangle(0, 0, 32, 32), 4))
                 {
                     for (int i = 0; i < images.Length; i++)
                     {
@@ -65,8 +63,10 @@ namespace RibbonDemo
 
                         images[i] = b;
 
-                        RibbonButton btn = new RibbonButton();
-                        btn.Image = b;
+                        RibbonButton btn = new RibbonButton
+                        {
+                            Image = b
+                        };
                         lst.Buttons.Add(btn);
                     }
                 }
@@ -77,8 +77,10 @@ namespace RibbonDemo
 
             for (int i = 0; i < images.Length; i++)
             {
-                RibbonButton btn = new RibbonButton();
-                btn.Image = images[i];
+                RibbonButton btn = new RibbonButton
+                {
+                    Image = images[i]
+                };
                 lst2.Buttons.Add(btn);
             }
             lst.DropDownItems.Add(lst2);
@@ -111,17 +113,21 @@ namespace RibbonDemo
                         }
                         g.DrawRectangle(Pens.Gray, new Rectangle(j * (square + sqspace), 0, square, square));
                     }
-                } 
+                }
                 #endregion
 
-                buttons[i] = new RibbonButton(colors);
-                buttons[i].Text = string.Join(", ", colorss); ;
-                buttons[i].MaxSizeMode = RibbonElementSizeMode.Medium;
-                buttons[i].MinSizeMode = RibbonElementSizeMode.Medium;
+                buttons[i] = new RibbonButton(colors)
+                {
+                    Text = string.Join(", ", colorss),
+                    MaxSizeMode = RibbonElementSizeMode.Medium,
+                    MinSizeMode = RibbonElementSizeMode.Medium
+                };
             }
-            RibbonButtonList blst = new RibbonButtonList(buttons);
-            blst.FlowToBottom = false;
-            blst.ItemsSizeInDropwDownMode = new Size(1, 10);
+            RibbonButtonList blst = new RibbonButtonList(buttons)
+            {
+                FlowToBottom = false,
+                ItemsSizeInDropwDownMode = new Size(1, 10)
+            };
             itemColors.DropDownItems.Insert(0, blst);
             itemColors.DropDownResizable = true;
 
@@ -157,12 +163,12 @@ namespace RibbonDemo
         {
             if (quickAccessButton.Visible)
             {
-                dropDownButton.SmallImage = global::RibbonDemo.Properties.Resources.unchecked16;
+                dropDownButton.SmallImage = Resources.unchecked16;
                 quickAccessButton.Visible = false;
             }
             else
             {
-                dropDownButton.SmallImage = global::RibbonDemo.Properties.Resources.exit16;
+                dropDownButton.SmallImage = Resources.exit16;
                 quickAccessButton.Visible = true;
             } // if / else
         } // toggleQuickAccessButton

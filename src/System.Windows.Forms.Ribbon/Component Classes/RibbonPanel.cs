@@ -10,13 +10,9 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Design;
-using System.ComponentModel.Design;
 
 namespace System.Windows.Forms
 {
@@ -27,31 +23,16 @@ namespace System.Windows.Forms
 	{
 		#region Fields
 		private bool _enabled;
-		private System.Drawing.Image _image;
-		private RibbonItemCollection _items;
-		private string _text;
-		private Ribbon _owner;
-		private Rectangle _bounds;
-		private Rectangle _contentBounds;
-		private bool _selected;
-		private object _tag;
-		private RibbonTab _ownerTab;
-		private RibbonElementSizeMode _sizeMode;
-		private RibbonPanelFlowDirection _flowsTo;
-		private Control _popUp;
-		private bool _pressed;
-		private Rectangle _buttonMoreBounds;
-		private bool _buttonMorePressed;
-		private bool _butonMoreSelected;
-		private bool _buttonMoreVisible;
+		private Image _image;
+	    private string _text;
+	    private bool _selected;
+	    private RibbonPanelFlowDirection _flowsTo;
+	    private bool _buttonMoreVisible;
 		private bool _buttonMoreEnabled;
 		internal Rectangle overflowBoundsBuffer;
-		private bool _popupShowed;
-		private bool _visible = true;
-		private bool _IsFirstPanel = false;
-		private bool _IsLastPanel = false;
-		private int _Index = -1;
-		#endregion
+	    private bool _visible = true;
+
+	    #endregion
 
 		#region Events
 		/// <summary>
@@ -85,9 +66,9 @@ namespace System.Windows.Forms
 
 		public virtual event EventHandler DoubleClick;
 
-		public virtual event System.Windows.Forms.MouseEventHandler MouseDown;
+		public virtual event MouseEventHandler MouseDown;
 
-		public virtual event System.Windows.Forms.MouseEventHandler MouseUp;
+		public virtual event MouseEventHandler MouseUp;
 		#endregion
 
 		#region Ctor
@@ -96,9 +77,9 @@ namespace System.Windows.Forms
 		/// </summary>
 		public RibbonPanel()
 		{
-			_items = new RibbonItemCollection();
-			_items.SetOwnerPanel(this);
-			_sizeMode = RibbonElementSizeMode.None;
+			Items = new RibbonItemCollection();
+			Items.SetOwnerPanel(this);
+			SizeMode = RibbonElementSizeMode.None;
 			_flowsTo = RibbonPanelFlowDirection.Bottom;
 			_buttonMoreEnabled = true;
 			_buttonMoreVisible = true;
@@ -135,14 +116,14 @@ namespace System.Windows.Forms
 		{
 			_text = text;
 			_flowsTo = flowsTo;
-			_items.AddRange(items);
+			Items.AddRange(items);
 		}
 
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && RibbonDesigner.Current == null)
 			{
-				foreach (RibbonItem ri in _items)
+				foreach (RibbonItem ri in Items)
 					ri.Dispose();
 			}
 
@@ -160,16 +141,13 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				if (base.Site != null)
+				if (Site != null)
 				{
-					_Name = base.Site.Name;
+					_Name = Site.Name;
 				}
 				return _Name;
 			}
-			set
-			{
-				_Name = value;
-			}
+			set => _Name = value;
 		}
 
 		[DefaultValue(true)]
@@ -179,19 +157,17 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				if (OwnerTab != null)
+			    if (OwnerTab != null)
 				{
 					return _enabled && OwnerTab.Enabled;
 				}
-				else
-				{
-					return _enabled;
-				}
+
+			    return _enabled;
 			}
 			set
 			{
 				_enabled = value;
-                this.Owner.Invalidate();
+                Owner.Invalidate();
 
                 foreach (RibbonItem item in Items)
 				{
@@ -215,10 +191,10 @@ namespace System.Windows.Forms
 			{
 				_visible = value;
 				//this.OwnerTab.UpdatePanelsRegions();
-				if (this.Owner != null)
+				if (Owner != null)
 				{
-					this.Owner.PerformLayout();
-					this.Owner.Invalidate();
+					Owner.PerformLayout();
+					Owner.Invalidate();
 				}
 			}
 		}
@@ -227,12 +203,9 @@ namespace System.Windows.Forms
 		/// Gets if this panel is currenlty collapsed
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public bool Collapsed
-		{
-			get { return SizeMode == RibbonElementSizeMode.Overflow; }
-		}
+		public bool Collapsed => SizeMode == RibbonElementSizeMode.Overflow;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the visibility of the "More" button
 		/// </summary>
 		[Description("Sets the visibility of the \"More...\" button")]
@@ -240,8 +213,8 @@ namespace System.Windows.Forms
 		[DefaultValue(true)]
 		public bool ButtonMoreVisible
 		{
-			get { return _buttonMoreVisible; }
-			set { _buttonMoreVisible = value; if (Owner != null) Owner.OnRegionsChanged(); }
+			get => _buttonMoreVisible;
+	        set { _buttonMoreVisible = value; if (Owner != null) Owner.OnRegionsChanged(); }
 		}
 
 		/// <summary>
@@ -252,8 +225,8 @@ namespace System.Windows.Forms
 		[DefaultValue(true)]
 		public bool ButtonMoreEnabled
 		{
-			get { return _buttonMoreEnabled; }
-			set { _buttonMoreEnabled = value; if (Owner != null) Owner.OnRegionsChanged(); }
+			get => _buttonMoreEnabled;
+		    set { _buttonMoreEnabled = value; if (Owner != null) Owner.OnRegionsChanged(); }
 		}
 
 		/// <summary>
@@ -261,85 +234,57 @@ namespace System.Windows.Forms
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public bool ButtonMoreSelected
-		{
-			get { return _butonMoreSelected; }
-		}
+		public bool ButtonMoreSelected { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets if the "More" button is currently pressed
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public bool ButtonMorePressed
-		{
-			get { return _buttonMorePressed; }
-		}
+		public bool ButtonMorePressed { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the bounds of the "More" button
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Rectangle ButtonMoreBounds
-		{
-			get { return _buttonMoreBounds; }
-		}
+		public Rectangle ButtonMoreBounds { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets if the panel is currently on overflow and pressed
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public bool Pressed
-		{
-			get { return _pressed; }
-		}
+		public bool Pressed { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the pop up where the panel is being drawn (if any)
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		internal Control PopUp
-		{
-			get { return _popUp; }
-			set { _popUp = value; }
-		}
+		internal Control PopUp { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the current size mode of the panel
 		/// </summary>
 		[Browsable(false)]
-		public RibbonElementSizeMode SizeMode
-		{
-			get { return _sizeMode; }
-		}
+		public RibbonElementSizeMode SizeMode { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the collection of RibbonItem elements of this panel
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public RibbonItemCollection Items
-		{
-			get
-			{
-				return _items;
-			}
-		}
+		public RibbonItemCollection Items { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the text that is to be displayed on the bottom of the panel
 		/// </summary>
 		[Category("Appearance")]
 		[Localizable(true)]
 		public string Text
 		{
-			get
-			{
-				return _text;
-			}
-			set
+			get => _text;
+	        set
 			{
 				_text = value;
 
@@ -352,13 +297,10 @@ namespace System.Windows.Forms
 		/// </summary>
 		[DefaultValue(null)]
 		[Category("Appearance")]
-		public System.Drawing.Image Image
+		public Image Image
 		{
-			get
-			{
-				return _image;
-			}
-			set
+			get => _image;
+		    set
 			{
 				_image = value;
 
@@ -371,158 +313,79 @@ namespace System.Windows.Forms
 		/// </summary>
 		/// <remarks>Overflow mode is when the available space to draw the panel is not enough to draw components, so panel is drawn as a button that shows the full content of the panel in a pop-up window when clicked</remarks>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public bool OverflowMode
-		{
-			get
-			{
-				return SizeMode == RibbonElementSizeMode.Overflow;
-			}
-		}
+		public bool OverflowMode => SizeMode == RibbonElementSizeMode.Overflow;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the Ribbon that contains this panel
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Ribbon Owner
-		{
-			get
-			{
-				return _owner;
-			}
-		}
+		public Ribbon Owner { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the bounds of the panel relative to the Ribbon control
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Rectangle Bounds
-		{
-			get
-			{
-				return _bounds;
-			}
-		}
+		public Rectangle Bounds { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets a value indicating whether the panel is selected
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public virtual bool Selected
 		{
-			get
-			{
-				return _selected;
-			}
-			set
-			{
-				_selected = value;
-			}
-		}
+			get => _selected;
+	        set => _selected = value;
+	    }
 
 		/// <summary>
 		/// Gets a value indicating whether the panel is the first panel on the tab
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public virtual bool IsFirstPanel
-		{
-			get
-			{
-				return _IsFirstPanel;
-			}
-			set
-			{
-				_IsFirstPanel = value;
-			}
-		}
+		public virtual bool IsFirstPanel { get; set; } = false;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets a value indicating whether the panel is the last panel on the tab
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public virtual bool IsLastPanel
-		{
-			get
-			{
-				return _IsLastPanel;
-			}
-			set
-			{
-				_IsLastPanel = value;
-			}
-		}
+		public virtual bool IsLastPanel { get; set; } = false;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets a value indicating what the index of the panel is in the Tabs panel collection
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public virtual int Index
-		{
-			get
-			{
-				return _Index;
-			}
-			set
-			{
-				_Index = value;
-			}
-		}
+		public virtual int Index { get; set; } = -1;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the object that contains data about the control
 		/// </summary>
-		[DescriptionAttribute("An Object field for associating custom data for this control")]
+		[Description("An Object field for associating custom data for this control")]
 		[DefaultValue(null)]
 		[Category("Data")]
 		[TypeConverter(typeof(StringConverter))]
-		public object Tag
-		{
-			get
-			{
-				return _tag;
-			}
-			set
-			{
-				_tag = value;
-			}
-		}
+		public object Tag { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the bounds of the content of the panel
 		/// </summary>
 		[Browsable(false)]
-		public Rectangle ContentBounds
-		{
-			get
-			{
-				return _contentBounds;
-			}
-		}
+		public Rectangle ContentBounds { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the RibbonTab that contains this panel
 		/// </summary>
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public RibbonTab OwnerTab
-		{
-			get
-			{
-				return _ownerTab;
-			}
-		}
+		public RibbonTab OwnerTab { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the flow direction to layout items
 		/// </summary>
 		[DefaultValue(RibbonPanelFlowDirection.Bottom)]
 		[Category("Layout")]
 		public RibbonPanelFlowDirection FlowsTo
 		{
-			get
-			{
-				return _flowsTo;
-			}
-			set
+			get => _flowsTo;
+	        set
 			{
 				_flowsTo = value;
 
@@ -534,14 +397,9 @@ namespace System.Windows.Forms
 		/// Gets or sets if the popup is currently showing
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		internal bool PopupShowed
-		{
-			get { return _popupShowed; }
-			set { _popupShowed = value; }
-		}
+		internal bool PopupShowed { get; set; }
 
-
-		#endregion
+	    #endregion
 
 		#region IRibbonElement Members
 
@@ -575,12 +433,14 @@ namespace System.Windows.Forms
 
 			if (PopupShowed && e.Control == Owner)
 			{
-				//Draw a fake collapsed and pressed panel
+                //Draw a fake collapsed and pressed panel
 
-				#region Create fake panel
-				RibbonPanel fakePanel = new RibbonPanel(this.Text);
-				fakePanel.Image = this.Image;
-				fakePanel.SetSizeMode(RibbonElementSizeMode.Overflow);
+                #region Create fake panel
+                RibbonPanel fakePanel = new RibbonPanel(Text)
+                {
+                    Image = Image
+                };
+                fakePanel.SetSizeMode(RibbonElementSizeMode.Overflow);
 				fakePanel.SetBounds(overflowBoundsBuffer);
 				fakePanel.SetPressed(true);
 				fakePanel.SetOwner(Owner);
@@ -611,18 +471,18 @@ namespace System.Windows.Forms
 		/// Sets the bounds of the panel
 		/// </summary>
 		/// <param name="bounds"></param>
-		public void SetBounds(System.Drawing.Rectangle bounds)
+		public void SetBounds(Rectangle bounds)
 		{
-			bool trigger = _bounds != bounds;
+			bool trigger = Bounds != bounds;
 
-			_bounds = bounds;
+			Bounds = bounds;
 
 			OnResize(EventArgs.Empty);
 
 			if (Owner != null)
 			{
 				//Update contentBounds
-				_contentBounds = Rectangle.FromLTRB(
+				ContentBounds = Rectangle.FromLTRB(
 					bounds.X + Owner.PanelMargin.Left + 0,
 					bounds.Y + Owner.PanelMargin.Top + 0,
 					bounds.Right - Owner.PanelMargin.Right,
@@ -704,7 +564,7 @@ namespace System.Windows.Forms
 		/// </summary>
 		internal void SetOwner(Ribbon owner)
 		{
-			_owner = owner;
+			Owner = owner;
 
 			Items.SetOwner(owner);
 		}
@@ -714,8 +574,8 @@ namespace System.Windows.Forms
 		/// </summary>
 		internal virtual void ClearOwner()
 		{
-			_ownerTab = null;
-			_owner = null;
+			OwnerTab = null;
+			Owner = null;
 		}
 
 		/// <summary>
@@ -851,7 +711,7 @@ namespace System.Windows.Forms
 		/// <param name="sizeMode"></param>
 		internal void SetSizeMode(RibbonElementSizeMode sizeMode)
 		{
-			_sizeMode = sizeMode;
+			SizeMode = sizeMode;
 
 			foreach (RibbonItem item in Items)
 			{
@@ -865,7 +725,7 @@ namespace System.Windows.Forms
 		/// <param name="contentBounds">Bounds of the content on the panel</param>
 		internal void SetContentBounds(Rectangle contentBounds)
 		{
-			_contentBounds = contentBounds;
+			ContentBounds = contentBounds;
 		}
 
 		/// <summary>
@@ -874,7 +734,7 @@ namespace System.Windows.Forms
 		/// <param name="ownerTab">RibbonTab where this item is located</param>
 		internal void SetOwnerTab(RibbonTab ownerTab)
 		{
-			_ownerTab = ownerTab;
+			OwnerTab = ownerTab;
 
 			Items.SetOwnerTab(OwnerTab);
 		}
@@ -1095,7 +955,7 @@ namespace System.Windows.Forms
 		/// <param name="pressed"></param>
 		public void SetPressed(bool pressed)
 		{
-			_pressed = pressed;
+			Pressed = pressed;
 		}
 
 		/// <summary>
@@ -1104,7 +964,7 @@ namespace System.Windows.Forms
 		/// <param name="bounds">property value</param>
 		internal void SetMorePressed(bool pressed)
 		{
-			_buttonMorePressed = pressed;
+			ButtonMorePressed = pressed;
 		}
 
 		/// <summary>
@@ -1113,7 +973,7 @@ namespace System.Windows.Forms
 		/// <param name="bounds">property value</param>
 		internal void SetMoreSelected(bool selected)
 		{
-			_butonMoreSelected = selected;
+			ButtonMoreSelected = selected;
 		}
 
 		/// <summary>
@@ -1122,7 +982,7 @@ namespace System.Windows.Forms
 		/// <param name="bounds">property value</param>
 		internal void SetMoreBounds(Rectangle bounds)
 		{
-			_buttonMoreBounds = bounds;
+			ButtonMoreBounds = bounds;
 		}
 
 		/// <summary>

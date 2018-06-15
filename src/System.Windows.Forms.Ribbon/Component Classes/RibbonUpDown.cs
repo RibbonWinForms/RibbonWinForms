@@ -4,20 +4,14 @@ using System.Drawing;
 namespace System.Windows.Forms
 {
    //[Designer(typeof(RibbonUpDown))]
-   public partial class RibbonUpDown : RibbonTextBox
+   public class RibbonUpDown : RibbonTextBox
    {
       #region Fields
       private const int spacing = 3;
       //private Ribbon _ownerRibbon;
-      private Rectangle _UpButtonBounds;
-      private Rectangle _DownButtonBounds;
-      private int _UpDownSize = 16;
-      private bool _UpButtonSelected;
-      private bool _DownButtonSelected;
-      private bool _UpButtonPressed;
-      private bool _DownButtonPressed;
+       private readonly int _UpDownSize = 16;
 
-      #endregion
+       #endregion
 
       #region Events
 
@@ -78,7 +72,7 @@ namespace System.Windows.Forms
          }
       }
 
-      public override void SetBounds(System.Drawing.Rectangle bounds)
+      public override void SetBounds(Rectangle bounds)
       {
          base.SetBounds(bounds);
 
@@ -101,8 +95,8 @@ namespace System.Windows.Forms
              _textBoxBounds.Left - spacing,
              bounds.Bottom - Owner.ItemMargin.Bottom);
 
-         _UpButtonBounds = new Rectangle(bounds.Right - _UpDownSize, bounds.Top, _UpDownSize , bounds.Height / 2);
-         _DownButtonBounds = new Rectangle(_UpButtonBounds.X, _UpButtonBounds.Bottom + 1, _UpButtonBounds.Width, bounds.Height - _UpButtonBounds.Height);
+         UpButtonBounds = new Rectangle(bounds.Right - _UpDownSize, bounds.Top, _UpDownSize , bounds.Height / 2);
+         DownButtonBounds = new Rectangle(UpButtonBounds.X, UpButtonBounds.Bottom + 1, UpButtonBounds.Width, bounds.Height - UpButtonBounds.Height);
 
          if (SizeMode == RibbonElementSizeMode.Large)
          {
@@ -171,10 +165,10 @@ namespace System.Windows.Forms
 
          base.OnMouseLeave(e);
 
-         _UpButtonPressed = false;
-         _DownButtonPressed = false;
-         _UpButtonSelected = false;
-         _DownButtonSelected = false;
+         UpButtonPressed = false;
+         DownButtonPressed = false;
+         UpButtonSelected = false;
+         DownButtonSelected = false;
 
          Canvas.Cursor = Cursors.Default;
       }
@@ -186,11 +180,11 @@ namespace System.Windows.Forms
          base.OnMouseUp(e);
          bool mustRedraw = false;
 
-         if (_UpButtonPressed || _DownButtonPressed)
+         if (UpButtonPressed || DownButtonPressed)
             mustRedraw = true;
 
-         _UpButtonPressed = false;
-         _DownButtonPressed = false;
+         UpButtonPressed = false;
+         DownButtonPressed = false;
 
          if (mustRedraw)
             RedrawItem();
@@ -200,19 +194,19 @@ namespace System.Windows.Forms
       {
          if (!Enabled) return;
 
-         if (_UpButtonBounds.Contains(e.Location))
+         if (UpButtonBounds.Contains(e.Location))
          {
-            _UpButtonPressed = true;
-            _DownButtonPressed = false;
-            _DownButtonSelected = false;
+            UpButtonPressed = true;
+            DownButtonPressed = false;
+            DownButtonSelected = false;
             if (UpButtonClicked != null)
                UpButtonClicked(this, e);
          }
-         else if (_DownButtonBounds.Contains(e.Location))
+         else if (DownButtonBounds.Contains(e.Location))
          {
-            _DownButtonPressed = true;
-            _UpButtonPressed = false;
-            _UpButtonSelected = false;
+            DownButtonPressed = true;
+            UpButtonPressed = false;
+            UpButtonSelected = false;
             if (DownButtonClicked != null)
                DownButtonClicked(this, e);
          }
@@ -230,30 +224,30 @@ namespace System.Windows.Forms
          
          bool mustRedraw = false;
 
-         if (_UpButtonBounds.Contains(e.Location))
+         if (UpButtonBounds.Contains(e.Location))
          {
             Owner.Cursor = Cursors.Default;
-            mustRedraw = !_UpButtonSelected || _DownButtonSelected || _DownButtonPressed;
-            _UpButtonSelected = true;
-            _DownButtonSelected = false;
-            _DownButtonPressed = false;
+            mustRedraw = !UpButtonSelected || DownButtonSelected || DownButtonPressed;
+            UpButtonSelected = true;
+            DownButtonSelected = false;
+            DownButtonPressed = false;
          }
-         else if (_DownButtonBounds.Contains(e.Location))
+         else if (DownButtonBounds.Contains(e.Location))
          {
             Owner.Cursor = Cursors.Default;
-            mustRedraw = !_DownButtonSelected || _UpButtonSelected || _UpButtonPressed;
-            _DownButtonSelected = true;
-            _UpButtonSelected = false;
-            _UpButtonPressed = false;
+            mustRedraw = !DownButtonSelected || UpButtonSelected || UpButtonPressed;
+            DownButtonSelected = true;
+            UpButtonSelected = false;
+            UpButtonPressed = false;
          }
          else if (TextBoxBounds.Contains(e.X, e.Y))
          {
             Owner.Cursor = Cursors.IBeam;
-            mustRedraw = _DownButtonSelected || _DownButtonPressed || _UpButtonSelected || _UpButtonPressed;
-            _UpButtonSelected = false;
-            _UpButtonPressed = false;
-            _DownButtonSelected = false;
-            _DownButtonPressed = false;
+            mustRedraw = DownButtonSelected || DownButtonPressed || UpButtonSelected || UpButtonPressed;
+            UpButtonSelected = false;
+            UpButtonPressed = false;
+            DownButtonSelected = false;
+            DownButtonPressed = false;
          }
          else
          {
@@ -282,53 +276,39 @@ namespace System.Windows.Forms
       /// Gets a value indicating if the Up button is currently pressed
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool UpButtonPressed
-      {
-         get { return _UpButtonPressed; }
-      }
-      /// <summary>
+      public bool UpButtonPressed { get; private set; }
+
+       /// <summary>
       /// Gets a value indicating if the Down button is currently pressed
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool DownButtonPressed
-      {
-         get { return _DownButtonPressed; }
-      }
+      public bool DownButtonPressed { get; private set; }
 
-      /// <summary>
+       /// <summary>
       /// Gets a value indicating if the Up button is currently selected
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool UpButtonSelected
-      {
-         get { return _UpButtonSelected; }
-      }
-      /// <summary>
+      public bool UpButtonSelected { get; private set; }
+
+       /// <summary>
       /// Gets a value indicating if the Down button is currently selected
       /// </summary>
       [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public bool DownButtonSelected
-      {
-         get { return _DownButtonSelected; }
-      }
-      /// <summary>
-      /// Gets or sets the bounds of the DropDown button
-      /// </summary>
-      [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public Rectangle UpButtonBounds
-      {
-         get { return _UpButtonBounds; }
-      }
-      /// <summary>
-      /// Gets or sets the bounds of the DropDown button
-      /// </summary>
-      [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-      public Rectangle DownButtonBounds
-      {
-         get { return _DownButtonBounds; }
-      }
+      public bool DownButtonSelected { get; private set; }
 
-      /// <summary>
+       /// <summary>
+      /// Gets or sets the bounds of the DropDown button
+      /// </summary>
+      [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+      public Rectangle UpButtonBounds { get; private set; }
+
+       /// <summary>
+      /// Gets or sets the bounds of the DropDown button
+      /// </summary>
+      [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+      public Rectangle DownButtonBounds { get; private set; }
+
+       /// <summary>
       /// Overriden.
       /// </summary>
       //[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

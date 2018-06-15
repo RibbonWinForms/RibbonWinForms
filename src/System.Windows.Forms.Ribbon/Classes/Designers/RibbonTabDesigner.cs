@@ -10,11 +10,8 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel.Design;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Windows.Forms.Design.Behavior;
 
 namespace System.Windows.Forms
@@ -22,38 +19,25 @@ namespace System.Windows.Forms
    public class RibbonTabDesigner
        : ComponentDesigner
    {
-      Adorner panelAdorner;
+       private Adorner _panelAdorner;
 
-      public override DesignerVerbCollection Verbs
+      public override DesignerVerbCollection Verbs => new DesignerVerbCollection(new[] { 
+          new DesignerVerb("Add Panel", AddPanel)
+      });
+
+       public RibbonTab Tab => Component as RibbonTab;
+
+       public void AddPanel(object sender, EventArgs e)
       {
-         get
-         {
-            return new DesignerVerbCollection(new DesignerVerb[] { 
-                    new DesignerVerb("Add Panel", new EventHandler(AddPanel))
-                });
-         }
-      }
-
-      public RibbonTab Tab
-      {
-         get { return Component as RibbonTab; }
-      }
-
-      public void AddPanel(object sender, EventArgs e)
-      {
-         IDesignerHost host = GetService(typeof(IDesignerHost)) as IDesignerHost;
-
-         if (host != null && Tab != null)
+          if (GetService(typeof(IDesignerHost)) is IDesignerHost host && Tab != null)
          {
 
 
             DesignerTransaction transaction = host.CreateTransaction("AddPanel" + Component.Site.Name);
             MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Panels"];
-            base.RaiseComponentChanging(member);
+            RaiseComponentChanging(member);
 
-            RibbonPanel panel = host.CreateComponent(typeof(RibbonPanel)) as RibbonPanel;
-
-            if (panel != null)
+             if (host.CreateComponent(typeof(RibbonPanel)) is RibbonPanel panel)
             {
                panel.Text = panel.Site.Name;
 
@@ -78,7 +62,7 @@ namespace System.Windows.Forms
                Tab.Owner.OnRegionsChanged();
             }
 
-            base.RaiseComponentChanged(member, null, null);
+            RaiseComponentChanged(member, null, null);
             transaction.Commit();
          }
       }
@@ -87,7 +71,7 @@ namespace System.Windows.Forms
       {
          base.Initialize(component);
 
-         panelAdorner = new Adorner();
+         _panelAdorner = new Adorner();
 
          //Kevin Carbis - another point where exception is thrown by the designer when current is null
          if (RibbonDesigner.Current != null)
@@ -96,9 +80,9 @@ namespace System.Windows.Forms
 
             if (bs == null) return;
 
-            bs.Adorners.AddRange(new Adorner[] { panelAdorner });
+            bs.Adorners.AddRange(new[] { _panelAdorner });
 
-            panelAdorner.Glyphs.Add(new RibbonPanelGlyph(bs, this, Tab));
+            _panelAdorner.Glyphs.Add(new RibbonPanelGlyph(bs, this, Tab));
          }
       }
    }

@@ -9,11 +9,8 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace System.Windows.Forms
@@ -28,8 +25,6 @@ namespace System.Windows.Forms
         #region Fields
 
         private Color _color;
-        private int _imageColorHeight;
-        private int _smallImageColorHeight;
 
         #endregion
 
@@ -47,8 +42,8 @@ namespace System.Windows.Forms
         public RibbonColorChooser()
         {
             _color = Color.Transparent;
-            _imageColorHeight = 8;
-            _smallImageColorHeight = 4;
+            ImageColorHeight = 8;
+            SmallImageColorHeight = 4;
         }
 
         #endregion
@@ -61,11 +56,7 @@ namespace System.Windows.Forms
         [Description("Height of the color preview on the large image")]
         [Category("Appearance")]
         [DefaultValue(8)]
-        public int ImageColorHeight
-        {
-            get { return _imageColorHeight; }
-            set { _imageColorHeight = value; }
-        }
+        public int ImageColorHeight { get; set; }
 
         /// <summary>
         /// Gets or sets the height of the color preview on the <see cref="SmallImage"/>
@@ -73,11 +64,7 @@ namespace System.Windows.Forms
         [Description("Height of the color preview on the small image")]
         [Category("Appearance")]
         [DefaultValue(4)]
-        public int SmallImageColorHeight
-        {
-            get { return _smallImageColorHeight; }
-            set { _smallImageColorHeight = value; }
-        }
+        public int SmallImageColorHeight { get; set; }
 
 
         /// <summary>
@@ -86,7 +73,7 @@ namespace System.Windows.Forms
         [Category("Appearance")]
         public Color Color
         {
-            get { return _color; }
+            get => _color;
             set { _color = value; RedrawItem(); OnColorChanged(EventArgs.Empty); }
         }
 
@@ -131,7 +118,7 @@ namespace System.Windows.Forms
         {
             base.OnPaint(sender, e);
 
-            Color c = this.Color.Equals(Color.Transparent) ? Color.White : Color;
+            Color c = Color.Equals(Color.Transparent) ? Color.White : Color;
 
             int h = e.Mode == RibbonElementSizeMode.Large ? ImageColorHeight : SmallImageColorHeight;
 
@@ -149,7 +136,7 @@ namespace System.Windows.Forms
                 e.Graphics.FillRectangle(b, colorFill);
             }
 
-            if (this.Color.Equals(Color.Transparent))
+            if (Color.Equals(Color.Transparent))
             {
                 e.Graphics.DrawRectangle(Pens.DimGray, colorFill);
             }

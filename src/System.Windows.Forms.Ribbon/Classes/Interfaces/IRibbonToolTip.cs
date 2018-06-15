@@ -9,10 +9,7 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace System.Windows.Forms
 {

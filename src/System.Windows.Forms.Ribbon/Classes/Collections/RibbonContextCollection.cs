@@ -10,10 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
 using System.Windows.Forms.Classes.Collections;
 
 namespace System.Windows.Forms
@@ -33,7 +29,7 @@ namespace System.Windows.Forms
         internal RibbonContextCollection(Ribbon owner)
             : base(owner)
         {
-            if (owner == null) throw new ArgumentNullException("owner");
+            if (owner == null) throw new ArgumentNullException(nameof(owner));
         }
 
         public new void Remove(RibbonContext context)
@@ -87,6 +83,7 @@ namespace System.Windows.Forms
             }
             catch
             {
+                // ignored
             }
         }
     }

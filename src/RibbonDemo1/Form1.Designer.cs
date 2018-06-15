@@ -1,11 +1,14 @@
-﻿namespace RibbonDemo
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace RibbonDemo
 {
     partial class Form1
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -178,15 +181,15 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btMainForm;
-        private System.Windows.Forms.Button btTestForm;
-        private System.Windows.Forms.Button btHostForm;
-        private System.Windows.Forms.Button btBlackForm;
-        private System.Windows.Forms.Button btRightToLeft;
-        private System.Windows.Forms.Button btThemeBuilderForm;
-        private System.Windows.Forms.Button btnMDIForm;
-        private System.Windows.Forms.Label lblDescription;
-        private System.Windows.Forms.ComboBox cmbOrbStyle;
-        private System.Windows.Forms.ComboBox cmbColor;
+        private Button btMainForm;
+        private Button btTestForm;
+        private Button btHostForm;
+        private Button btBlackForm;
+        private Button btRightToLeft;
+        private Button btThemeBuilderForm;
+        private Button btnMDIForm;
+        private Label lblDescription;
+        private ComboBox cmbOrbStyle;
+        private ComboBox cmbColor;
     }
 }

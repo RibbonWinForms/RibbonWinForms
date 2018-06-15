@@ -9,9 +9,6 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel.Design;
 
 namespace System.Windows.Forms
@@ -23,9 +20,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonButton)
+                if (Component is RibbonButton button)
                 {
-                    return (Component as RibbonButton).Owner;
+                    return button.Owner;
                 }
                 return null;
             }
@@ -35,9 +32,9 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Component is RibbonButton)
+                if (Component is RibbonButton button)
                 {
-                    return (Component as RibbonButton).DropDownItems;
+                    return button.DropDownItems;
                 }
                 return null;
             }
@@ -45,9 +42,9 @@ namespace System.Windows.Forms
 
         protected override DesignerVerbCollection OnGetVerbs()
         {
-            return new DesignerVerbCollection(new DesignerVerb[] { 
-                new DesignerVerb("Add DescriptionMenuItem", new EventHandler(AddDescriptionMenuItem)),
-                new DesignerVerb("Add Separator", new EventHandler(AddSeparator))
+            return new DesignerVerbCollection(new[] { 
+                new DesignerVerb("Add DescriptionMenuItem", AddDescriptionMenuItem),
+                new DesignerVerb("Add Separator", AddSeparator)
             });
         }
     }

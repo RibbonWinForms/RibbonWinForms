@@ -10,12 +10,9 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms.RibbonHelpers;
 using System.Windows.Forms.VisualStyles;
@@ -47,9 +44,9 @@ namespace System.Windows.Forms
 
         #region Fields
 
-        private Size arrowSize = new Size(5, 3);
+        private readonly Size arrowSize = new Size(5, 3);
 
-        private Ribbon _ownerRibbon = null;
+        private readonly Ribbon _ownerRibbon;
 
         #endregion
 
@@ -67,15 +64,9 @@ namespace System.Windows.Forms
         /// <summary>
         /// Either specifiy a custom theme otherwise the standard theme is used.
         /// </summary>
-        public Theme Theme
-        {
-            get { return _ownerRibbon == null ? Theme.Standard : _ownerRibbon.Theme; }
-        }
+        public Theme Theme => _ownerRibbon == null ? Theme.Standard : _ownerRibbon.Theme;
 
-        public RibbonProfesionalRendererColorTable ColorTable
-        {
-            get { return Theme.RendererColorTable; }
-        }
+        public RibbonProfesionalRendererColorTable ColorTable => Theme.RendererColorTable;
 
         #endregion
 
@@ -89,10 +80,8 @@ namespace System.Windows.Forms
             {
                 return alternative;
             }
-            else
-            {
-                return ColorTable.ArrowDisabled;
-            }
+
+            return ColorTable.ArrowDisabled;
         }
 
         /// <summary>
@@ -108,9 +97,9 @@ namespace System.Windows.Forms
         /// </returns>
         public Color LightenColor(Color color, float correctionFactor)
         {
-            float red = (float)color.R;
-            float green = (float)color.G;
-            float blue = (float)color.B;
+            float red = color.R;
+            float green = color.G;
+            float blue = color.B;
 
             if ((0.0F < correctionFactor) && (correctionFactor < 1.0F))
             {
@@ -134,9 +123,9 @@ namespace System.Windows.Forms
         /// </returns>
         public Color DarkenColor(Color color, float correctionFactor)
         {
-            float red = (float)color.R;
-            float green = (float)color.G;
-            float blue = (float)color.B;
+            float red = color.R;
+            float green = color.G;
+            float blue = color.B;
 
             if ((0.0F < correctionFactor) && (correctionFactor < 1.0F))
             {
@@ -718,8 +707,10 @@ namespace System.Windows.Forms
                 //Selected glow
                 using (GraphicsPath path = CreateTabPath_2010(e.Tab))
                 {
-                    Pen p = new Pen(Color.FromArgb(150, Color.Gold));
-                    p.Width = 2;
+                    Pen p = new Pen(Color.FromArgb(150, Color.Gold))
+                    {
+                        Width = 2
+                    };
 
                     e.Graphics.DrawPath(p, path);
 
@@ -774,9 +765,11 @@ namespace System.Windows.Forms
                         using (LinearGradientBrush b = new LinearGradientBrush(
                                 r, north, south, 90))
                         {
-                            ColorBlend cb = new ColorBlend(3);
-                            cb.Colors = new Color[] { north, centre, south };
-                            cb.Positions = new float[] { 0f, .3f, 1f };
+                            ColorBlend cb = new ColorBlend(3)
+                            {
+                                Colors = new[] { north, centre, south },
+                                Positions = new[] { 0f, .3f, 1f }
+                            };
                             b.InterpolationColors = cb;
 
                             SmoothingMode sm = e.Graphics.SmoothingMode;
@@ -818,9 +811,11 @@ namespace System.Windows.Forms
                         using (LinearGradientBrush b = new LinearGradientBrush(
                                 r, north, south, 90))
                         {
-                            ColorBlend cb = new ColorBlend(3);
-                            cb.Colors = new Color[] { north, centre, south };
-                            cb.Positions = new float[] { 0f, .3f, 1f };
+                            ColorBlend cb = new ColorBlend(3)
+                            {
+                                Colors = new[] { north, centre, south },
+                                Positions = new[] { 0f, .3f, 1f }
+                            };
                             b.InterpolationColors = cb;
 
                             SmoothingMode sm = e.Graphics.SmoothingMode;
@@ -864,9 +859,11 @@ namespace System.Windows.Forms
                         using (LinearGradientBrush b = new LinearGradientBrush(
                                 r, north, south, 90))
                         {
-                            ColorBlend cb = new ColorBlend(3);
-                            cb.Colors = new Color[] { north, centre, south };
-                            cb.Positions = new float[] { 0f, .3f, 1f };
+                            ColorBlend cb = new ColorBlend(3)
+                            {
+                                Colors = new[] { north, centre, south },
+                                Positions = new[] { 0f, .3f, 1f }
+                            };
                             b.InterpolationColors = cb;
 
                             SmoothingMode sm = e.Graphics.SmoothingMode;
@@ -933,16 +930,20 @@ namespace System.Windows.Forms
                     //radialPath.AddEllipse(innerR);
                     radialPath.CloseFigure();
 
-                    PathGradientBrush gr = new PathGradientBrush(radialPath);
-                    gr.CenterPoint = new PointF(
+                    PathGradientBrush gr = new PathGradientBrush(radialPath)
+                    {
+                        CenterPoint = new PointF(
                          Convert.ToSingle(innerR.Left + innerR.Width / 2),
-                         Convert.ToSingle(innerR.Top - 5));
-                    gr.CenterColor = Color.Transparent;
-                    gr.SurroundColors = new Color[] { ColorTable.TabSelectedGlow };
+                         Convert.ToSingle(innerR.Top - 5)),
+                        CenterColor = Color.Transparent,
+                        SurroundColors = new[] { ColorTable.TabSelectedGlow }
+                    };
 
-                    Blend blend = new Blend(3);
-                    blend.Factors = new float[] { 0.0f, 0.9f, 0.0f };
-                    blend.Positions = new float[] { 0.0f, 0.8f, 1.0f };
+                    Blend blend = new Blend(3)
+                    {
+                        Factors = new[] { 0.0f, 0.9f, 0.0f },
+                        Positions = new[] { 0.0f, 0.8f, 1.0f }
+                    };
 
                     gr.Blend = blend;
 
@@ -988,9 +989,11 @@ namespace System.Windows.Forms
                         using (LinearGradientBrush b = new LinearGradientBrush(
                                 e.Tab.TabBounds, north, south, 90))
                         {
-                            ColorBlend cb = new ColorBlend(3);
-                            cb.Colors = new Color[] { north, centre, south };
-                            cb.Positions = new float[] { 0f, .3f, 1f };
+                            ColorBlend cb = new ColorBlend(3)
+                            {
+                                Colors = new[] { north, centre, south },
+                                Positions = new[] { 0f, .3f, 1f }
+                            };
                             b.InterpolationColors = cb;
 
                             e.Graphics.FillPath(b, path);
@@ -1018,9 +1021,11 @@ namespace System.Windows.Forms
 
                     LinearGradientBrush b = new LinearGradientBrush(innerR, Color.FromArgb(50, Color.Gray), Color.FromArgb(80, Color.White), 90);
 
-                    Blend blend = new Blend(3);
-                    blend.Factors = new float[] { 0.0f, 0.6f, 1.0f };
-                    blend.Positions = new float[] { 0.0f, 0.2f, 1.0f };
+                    Blend blend = new Blend(3)
+                    {
+                        Factors = new[] { 0.0f, 0.6f, 1.0f },
+                        Positions = new[] { 0.0f, 0.2f, 1.0f }
+                    };
 
                     b.Blend = blend;
 
@@ -1106,11 +1111,13 @@ namespace System.Windows.Forms
                         {
                             b.WrapMode = WrapMode.Clamp;
 
-                            ColorBlend cb = new ColorBlend(3);
-                            cb.Colors = new Color[]{Color.Transparent,
+                            ColorBlend cb = new ColorBlend(3)
+                            {
+                                Colors = new[]{Color.Transparent,
                     Color.FromArgb(50, Color.Black),
-                    Color.FromArgb(100, Color.Black)};
-                            cb.Positions = new float[] { 0f, .1f, 1f };
+                    Color.FromArgb(100, Color.Black)},
+                                Positions = new[] { 0f, .1f, 1f }
+                            };
 
                             b.InterpolationColors = cb;
 
@@ -1219,16 +1226,20 @@ namespace System.Windows.Forms
                         //radialPath.AddEllipse(innerR);
                         radialPath.CloseFigure();
 
-                        PathGradientBrush gr = new PathGradientBrush(radialPath);
-                        gr.CenterPoint = new PointF(
+                        PathGradientBrush gr = new PathGradientBrush(radialPath)
+                        {
+                            CenterPoint = new PointF(
                              Convert.ToSingle(innerR.Left + innerR.Width / 2),
-                             Convert.ToSingle(innerR.Top - 5));
-                        gr.CenterColor = Color.Transparent;
-                        gr.SurroundColors = new Color[] { ColorTable.TabSelectedGlow };
+                             Convert.ToSingle(innerR.Top - 5)),
+                            CenterColor = Color.Transparent,
+                            SurroundColors = new[] { ColorTable.TabSelectedGlow }
+                        };
 
-                        Blend blend = new Blend(3);
-                        blend.Factors = new float[] { 0.0f, 0.9f, 0.0f };
-                        blend.Positions = new float[] { 0.0f, 0.8f, 1.0f };
+                        Blend blend = new Blend(3)
+                        {
+                            Factors = new[] { 0.0f, 0.9f, 0.0f },
+                            Positions = new[] { 0.0f, 0.8f, 1.0f }
+                        };
 
                         gr.Blend = blend;
 
@@ -1281,9 +1292,11 @@ namespace System.Windows.Forms
 
                         LinearGradientBrush b = new LinearGradientBrush(innerR, Color.FromArgb(50, Color.Gray), Color.FromArgb(80, Color.White), 90);
 
-                        Blend blend = new Blend(3);
-                        blend.Factors = new float[] { 0.0f, 0.6f, 1.0f };
-                        blend.Positions = new float[] { 0.0f, 0.2f, 1.0f };
+                        Blend blend = new Blend(3)
+                        {
+                            Factors = new[] { 0.0f, 0.6f, 1.0f },
+                            Positions = new[] { 0.0f, 0.2f, 1.0f }
+                        };
 
                         b.Blend = blend;
 
@@ -1640,12 +1653,14 @@ namespace System.Windows.Forms
                     radialPath.AddArc(glowR, 180, 180);
                     radialPath.CloseFigure();
 
-                    PathGradientBrush gr = new PathGradientBrush(radialPath);
-                    gr.CenterPoint = new PointF(
+                    PathGradientBrush gr = new PathGradientBrush(radialPath)
+                    {
+                        CenterPoint = new PointF(
                          Convert.ToSingle(innerLightBorder.Left + innerLightBorder.Width / 2),
-                         Convert.ToSingle(innerLightBorder.Bottom));
-                    gr.CenterColor = ColorTable.PanelBackgroundSelected;
-                    gr.SurroundColors = new Color[] { Color.Transparent };
+                         Convert.ToSingle(innerLightBorder.Bottom)),
+                        CenterColor = ColorTable.PanelBackgroundSelected,
+                        SurroundColors = new[] { Color.Transparent }
+                    };
                     gr.SetSigmaBellShape(1.0f, 1.0f);
 
                     SmoothingMode sm = e.Graphics.SmoothingMode;
@@ -1660,9 +1675,11 @@ namespace System.Windows.Forms
                 using (LinearGradientBrush blendBrush = new LinearGradientBrush(e.Panel.Bounds, Color.FromArgb(90, Color.White),
                    Color.FromArgb(220, Color.White), LinearGradientMode.Vertical))
                 {
-                    Blend blend = new Blend();
-                    blend.Factors = new float[] { 0f, 1f, 1f };
-                    blend.Positions = new float[] { 0f, 0.5f, 1f };
+                    Blend blend = new Blend
+                    {
+                        Factors = new[] { 0f, 1f, 1f },
+                        Positions = new[] { 0f, 0.5f, 1f }
+                    };
                     blendBrush.Blend = blend;
                     blendBrush.WrapMode = WrapMode.TileFlipX; //This is here to stop an annoying single pixel being drawn at the top of the line.
 
@@ -2089,22 +2106,20 @@ namespace System.Windows.Forms
             {
                 return Corners.All;
             }
-            else
+
+            RibbonItemGroup g = button.OwnerItem as RibbonItemGroup;
+            Corners c = Corners.None;
+            if (button == g.FirstItem)
             {
-                RibbonItemGroup g = button.OwnerItem as RibbonItemGroup;
-                Corners c = Corners.None;
-                if (button == g.FirstItem)
-                {
-                    c |= Corners.West;
-                }
-
-                if (button == g.LastItem)
-                {
-                    c |= Corners.East;
-                }
-
-                return c;
+                c |= Corners.West;
             }
+
+            if (button == g.LastItem)
+            {
+                c |= Corners.East;
+            }
+
+            return c;
         }
 
         /// <summary>
@@ -2120,22 +2135,18 @@ namespace System.Windows.Forms
                 {
                     return Corners.North;
                 }
-                else
-                {
-                    return Corners.West;
-                }
-            }
-            else
-            {
-                Corners c = Corners.None;
-                RibbonItemGroup g = button.OwnerItem as RibbonItemGroup;
-                if (button == g.FirstItem)
-                {
-                    c |= Corners.West;
-                }
 
-                return c;
+                return Corners.West;
             }
+
+            Corners c = Corners.None;
+            RibbonItemGroup g = button.OwnerItem as RibbonItemGroup;
+            if (button == g.FirstItem)
+            {
+                c |= Corners.West;
+            }
+
+            return c;
         }
 
         /// <summary>
@@ -2151,22 +2162,18 @@ namespace System.Windows.Forms
                 {
                     return Corners.South;
                 }
-                else
-                {
-                    return Corners.East;
-                }
-            }
-            else
-            {
-                Corners c = Corners.None;
-                RibbonItemGroup g = button.OwnerItem as RibbonItemGroup;
-                if (button == g.LastItem)
-                {
-                    c |= Corners.East;
-                }
 
-                return c;
+                return Corners.East;
             }
+
+            Corners c = Corners.None;
+            RibbonItemGroup g = button.OwnerItem as RibbonItemGroup;
+            if (button == g.LastItem)
+            {
+                c |= Corners.East;
+            }
+
+            return c;
         }
 
         /// <summary>
@@ -2220,7 +2227,7 @@ namespace System.Windows.Forms
                  bounds.Left + 1,
                  bounds.Top + 1,
                  bounds.Right - 2,
-                 bounds.Top + Convert.ToInt32((double)bounds.Height * .36));
+                 bounds.Top + Convert.ToInt32(bounds.Height * .36));
 
             using (GraphicsPath boundsPath = RoundRectangle(outerR, 3, corners))
             {
@@ -2241,11 +2248,13 @@ namespace System.Windows.Forms
                              Convert.ToSingle(bounds.Left + bounds.Width / 2),
                              Convert.ToSingle(bounds.Bottom));
                         gradient.CenterColor = ColorTable.ButtonBgCenter;
-                        gradient.SurroundColors = new Color[] { ColorTable.ButtonBgOut };
+                        gradient.SurroundColors = new[] { ColorTable.ButtonBgOut };
 
-                        Blend blend = new Blend(3);
-                        blend.Factors = new float[] { 0f, 0.8f, 0f };
-                        blend.Positions = new float[] { 0f, 0.30f, 1f };
+                        Blend blend = new Blend(3)
+                        {
+                            Factors = new[] { 0f, 0.8f, 0f },
+                            Positions = new[] { 0f, 0.30f, 1f }
+                        };
 
 
                         Region lastClip = g.Clip;
@@ -2294,12 +2303,14 @@ namespace System.Windows.Forms
             Rectangle bounds = Rectangle.Empty;
 
             bool moreWords = text.Contains(" ");
-            StringFormat sf = new StringFormat();
-            sf.Alignment = StringAlignment.Center;
-            sf.LineAlignment = moreWords ? StringAlignment.Center : StringAlignment.Near;
-            sf.Trimming = StringTrimming.EllipsisCharacter;
+            StringFormat sf = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = moreWords ? StringAlignment.Center : StringAlignment.Near,
+                Trimming = StringTrimming.EllipsisCharacter
+            };
 
-            sf.SetMeasurableCharacterRanges(new CharacterRange[] { new CharacterRange(0, text.Length) });
+            sf.SetMeasurableCharacterRanges(new[] { new CharacterRange(0, text.Length) });
             Region[] regions = g.MeasureCharacterRanges(text, font, textLayout, sf);
 
             Rectangle lastCharBounds = Rectangle.Round(regions[regions.Length - 1].GetBounds(g));
@@ -2308,12 +2319,10 @@ namespace System.Windows.Forms
                 return new Rectangle(lastCharBounds.Right + 3,
                      lastCharBounds.Top + (lastCharBounds.Height - arrowSize.Height) / 2, arrowSize.Width, arrowSize.Height);
             }
-            else
-            {
-                return new Rectangle(
-                     textLayout.Left + (textLayout.Width - arrowSize.Width) / 2,
-                     lastCharBounds.Bottom + ((textLayout.Bottom - lastCharBounds.Bottom) - arrowSize.Height) / 2, arrowSize.Width, arrowSize.Height);
-            }
+
+            return new Rectangle(
+                textLayout.Left + (textLayout.Width - arrowSize.Width) / 2,
+                lastCharBounds.Bottom + ((textLayout.Bottom - lastCharBounds.Bottom) - arrowSize.Height) / 2, arrowSize.Width, arrowSize.Height);
         }
 
         /// <summary>
@@ -2368,7 +2377,7 @@ namespace System.Windows.Forms
                  bounds.Left + 1,
                  bounds.Top + 1,
                  bounds.Right - 2,
-                 bounds.Top + Convert.ToInt32((double)bounds.Height * .36));
+                 bounds.Top + Convert.ToInt32(bounds.Height * .36));
 
             using (GraphicsPath boundsPath = RoundRectangle(outerR, 3, corners))
             {
@@ -2389,11 +2398,13 @@ namespace System.Windows.Forms
                              Convert.ToSingle(bounds.Left + bounds.Width / 2),
                              Convert.ToSingle(bounds.Bottom));
                         gradient.CenterColor = ColorTable.ButtonDisabledBgCenter;
-                        gradient.SurroundColors = new Color[] { ColorTable.ButtonDisabledBgOut };
+                        gradient.SurroundColors = new[] { ColorTable.ButtonDisabledBgOut };
 
-                        Blend blend = new Blend(3);
-                        blend.Factors = new float[] { 0f, 0.8f, 0f };
-                        blend.Positions = new float[] { 0f, 0.30f, 1f };
+                        Blend blend = new Blend(3)
+                        {
+                            Factors = new[] { 0f, 0.8f, 0f },
+                            Positions = new[] { 0f, 0.30f, 1f }
+                        };
 
 
                         Region lastClip = g.Clip;
@@ -2449,7 +2460,7 @@ namespace System.Windows.Forms
                 using (GraphicsPath boundsPath = RoundRectangle(outerR, 3, corners))
                 {
                     Rectangle innerR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Bottom - 2);
-                    Rectangle glossyR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Top + Convert.ToInt32((double)bounds.Height * .36));
+                    Rectangle glossyR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Top + Convert.ToInt32(bounds.Height * .36));
 
                     using (SolidBrush brus = new SolidBrush(ColorTable.ButtonPressedBgOut))
                     {
@@ -2483,11 +2494,13 @@ namespace System.Windows.Forms
                                     Convert.ToSingle(bounds.Left + bounds.Width / 2),
                                     Convert.ToSingle(bounds.Bottom));
                             gradient.CenterColor = ColorTable.ButtonPressedBgCenter;
-                            gradient.SurroundColors = new Color[] { ColorTable.ButtonPressedBgOut };
+                            gradient.SurroundColors = new[] { ColorTable.ButtonPressedBgOut };
 
-                            Blend blend = new Blend(3);
-                            blend.Factors = new float[] { 0f, 0.8f, 0f };
-                            blend.Positions = new float[] { 0f, 0.30f, 1f };
+                            Blend blend = new Blend(3)
+                            {
+                                Factors = new[] { 0f, 0.8f, 0f },
+                                Positions = new[] { 0f, 0.30f, 1f }
+                            };
 
 
                             Region lastClip = g.Clip;
@@ -2543,7 +2556,7 @@ namespace System.Windows.Forms
                 using (GraphicsPath boundsPath = RoundRectangle(outerR, 3, corners))
                 {
                     Rectangle innerR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Bottom - 2);
-                    Rectangle glossyR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Top + Convert.ToInt32((double)bounds.Height * .36));
+                    Rectangle glossyR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Top + Convert.ToInt32(bounds.Height * .36));
 
                     using (SolidBrush brus = new SolidBrush(ColorTable.ButtonSelectedBgOut))
                     {
@@ -2577,11 +2590,13 @@ namespace System.Windows.Forms
                                     Convert.ToSingle(bounds.Left + bounds.Width / 2),
                                     Convert.ToSingle(bounds.Bottom));
                             gradient.CenterColor = ColorTable.ButtonSelectedBgCenter;
-                            gradient.SurroundColors = new Color[] { ColorTable.ButtonSelectedBgOut };
+                            gradient.SurroundColors = new[] { ColorTable.ButtonSelectedBgOut };
 
-                            Blend blend = new Blend(3);
-                            blend.Factors = new float[] { 0f, 0.8f, 0f };
-                            blend.Positions = new float[] { 0f, 0.30f, 1f };
+                            Blend blend = new Blend(3)
+                            {
+                                Factors = new[] { 0f, 0.8f, 0f },
+                                Positions = new[] { 0f, 0.30f, 1f }
+                            };
 
 
                             Region lastClip = g.Clip;
@@ -2664,7 +2679,7 @@ namespace System.Windows.Forms
 
                 Rectangle outerR = Rectangle.FromLTRB(bounds.Left, bounds.Top, bounds.Right - 1, bounds.Bottom - 1);
                 Rectangle innerR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Bottom - 2);
-                Rectangle glossyR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Top + Convert.ToInt32((double)bounds.Height * .36));
+                Rectangle glossyR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Top + Convert.ToInt32(bounds.Height * .36));
 
                 using (GraphicsPath boundsPath = RoundRectangle(outerR, 3, corners))
                 {
@@ -2685,11 +2700,13 @@ namespace System.Windows.Forms
                                  Convert.ToSingle(bounds.Left + bounds.Width / 2),
                                  Convert.ToSingle(bounds.Bottom));
                             gradient.CenterColor = ColorTable.ButtonCheckedBgCenter;
-                            gradient.SurroundColors = new Color[] { ColorTable.ButtonCheckedBgOut };
+                            gradient.SurroundColors = new[] { ColorTable.ButtonCheckedBgOut };
 
-                            Blend blend = new Blend(3);
-                            blend.Factors = new float[] { 0f, 0.8f, 0f };
-                            blend.Positions = new float[] { 0f, 0.30f, 1f };
+                            Blend blend = new Blend(3)
+                            {
+                                Factors = new[] { 0f, 0.8f, 0f },
+                                Positions = new[] { 0f, 0.30f, 1f }
+                            };
 
 
                             Region lastClip = g.Clip;
@@ -2766,7 +2783,7 @@ namespace System.Windows.Forms
                 using (GraphicsPath boundsPath = RoundRectangle(outerR, 3, corners))
                 {
                     Rectangle innerR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Bottom - 2);
-                    Rectangle glossyR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Top + Convert.ToInt32((double)bounds.Height * .36));
+                    Rectangle glossyR = Rectangle.FromLTRB(bounds.Left + 1, bounds.Top + 1, bounds.Right - 2, bounds.Top + Convert.ToInt32(bounds.Height * .36));
 
                     using (SolidBrush brus = new SolidBrush(ColorTable.ButtonCheckedSelectedBgOut))
                     {
@@ -2800,11 +2817,13 @@ namespace System.Windows.Forms
                                     Convert.ToSingle(bounds.Left + bounds.Width / 2),
                                     Convert.ToSingle(bounds.Bottom));
                             gradient.CenterColor = ColorTable.ButtonCheckedSelectedBgCenter;
-                            gradient.SurroundColors = new Color[] { ColorTable.ButtonCheckedSelectedBgOut };
+                            gradient.SurroundColors = new[] { ColorTable.ButtonCheckedSelectedBgOut };
 
-                            Blend blend = new Blend(3);
-                            blend.Factors = new float[] { 0f, 0.8f, 0f };
-                            blend.Positions = new float[] { 0f, 0.30f, 1f };
+                            Blend blend = new Blend(3)
+                            {
+                                Factors = new[] { 0f, 0.8f, 0f },
+                                Positions = new[] { 0f, 0.30f, 1f }
+                            };
 
 
                             Region lastClip = g.Clip;
@@ -3604,8 +3623,8 @@ namespace System.Windows.Forms
             Rectangle r3 = new Rectangle(r.Left, r2.Bottom, r.Width, r.Height - 8);
             Rectangle r4 = new Rectangle(r.Left, r3.Bottom, r.Width, 1);
 
-            Rectangle[] rects = new Rectangle[] { r1, r2, r3, r4 };
-            Color[,] colors = new Color[,] {
+            Rectangle[] rects = { r1, r2, r3, r4 };
+            Color[,] colors = {
                 { ColorTable.Caption1, ColorTable.Caption2 },
                 { ColorTable.Caption3, ColorTable.Caption4 },
                 { ColorTable.Caption5, ColorTable.Caption6 },
@@ -3664,7 +3683,7 @@ namespace System.Windows.Forms
                 path.AddLine(d, c);
                 if (ribbon.OrbVisible)
                 {
-                    path.AddCurve(new Point[] { c, e, a });
+                    path.AddCurve(new[] { c, e, a });
                 }
                 else
                 {
@@ -3681,7 +3700,7 @@ namespace System.Windows.Forms
                 path.AddLine(a, b);
                 if (ribbon.OrbVisible)
                 {
-                    path.AddCurve(new Point[] { b, e, d });
+                    path.AddCurve(new[] { b, e, d });
                 }
                 else
                 {
@@ -3747,11 +3766,13 @@ namespace System.Windows.Forms
                     gradient.WrapMode = WrapMode.Clamp;
                     gradient.CenterPoint = new PointF(shadow.Left + shadow.Width / 2, shadow.Top + shadow.Height / 2);
                     gradient.CenterColor = Color.FromArgb(180, Color.Black);
-                    gradient.SurroundColors = new Color[] { Color.Transparent };
+                    gradient.SurroundColors = new[] { Color.Transparent };
 
-                    Blend blend = new Blend(3);
-                    blend.Factors = new float[] { 0f, 1f, 1f };
-                    blend.Positions = new float[] { 0, 0.2f, 1f };
+                    Blend blend = new Blend(3)
+                    {
+                        Factors = new[] { 0f, 1f, 1f },
+                        Positions = new[] { 0, 0.2f, 1f }
+                    };
                     gradient.Blend = blend;
 
                     g.FillPath(gradient, p);
@@ -3778,11 +3799,13 @@ namespace System.Windows.Forms
                     gradient.WrapMode = WrapMode.Clamp;
                     gradient.CenterPoint = new PointF(Convert.ToSingle(r.Left + r.Width / 2), Convert.ToSingle(r.Bottom));
                     gradient.CenterColor = bglight;
-                    gradient.SurroundColors = new Color[] { bgmed };
+                    gradient.SurroundColors = new[] { bgmed };
 
-                    Blend blend = new Blend(3);
-                    blend.Factors = new float[] { 0f, .8f, 1f };
-                    blend.Positions = new float[] { 0, 0.50f, 1f };
+                    Blend blend = new Blend(3)
+                    {
+                        Factors = new[] { 0f, .8f, 1f },
+                        Positions = new[] { 0, 0.50f, 1f }
+                    };
                     gradient.Blend = blend;
 
 
@@ -3809,7 +3832,7 @@ namespace System.Windows.Forms
                     gradient.WrapMode = WrapMode.Clamp;
                     gradient.CenterPoint = new PointF(Convert.ToSingle(r.Left + r.Width / 2), Convert.ToSingle(r.Bottom));
                     gradient.CenterColor = Color.White;
-                    gradient.SurroundColors = new Color[] { Color.Transparent };
+                    gradient.SurroundColors = new[] { Color.Transparent };
 
                     g.FillPath(gradient, p);
                 }
@@ -3829,18 +3852,20 @@ namespace System.Windows.Forms
                 p1 = Point.Round(p.PathData.Points[0]);
                 p2 = Point.Round(p.PathData.Points[p.PathData.Points.Length - 1]);
                 p3 = new Point(rinner.Left + rinner.Width / 2, p2.Y - 3);
-                p.AddCurve(new Point[] { p2, p3, p1 });
+                p.AddCurve(new[] { p2, p3, p1 });
 
                 using (PathGradientBrush gradient = new PathGradientBrush(p))
                 {
                     gradient.WrapMode = WrapMode.Clamp;
                     gradient.CenterPoint = p3;
                     gradient.CenterColor = Color.Transparent;
-                    gradient.SurroundColors = new Color[] { light };
+                    gradient.SurroundColors = new[] { light };
 
-                    Blend blend = new Blend(3);
-                    blend.Factors = new float[] { .3f, .8f, 1f };
-                    blend.Positions = new float[] { 0, 0.50f, 1f };
+                    Blend blend = new Blend(3)
+                    {
+                        Factors = new[] { .3f, .8f, 1f },
+                        Positions = new[] { 0, 0.50f, 1f }
+                    };
                     gradient.Blend = blend;
 
                     g.FillPath(gradient, p);
@@ -3848,9 +3873,11 @@ namespace System.Windows.Forms
 
                 using (LinearGradientBrush b = new LinearGradientBrush(new Point(r.Left, r.Top), new Point(r.Left, p1.Y), Color.White, Color.Transparent))
                 {
-                    Blend blend = new Blend(4);
-                    blend.Factors = new float[] { 0f, .4f, .8f, 1f };
-                    blend.Positions = new float[] { 0f, .3f, .4f, 1f };
+                    Blend blend = new Blend(4)
+                    {
+                        Factors = new[] { 0f, .4f, .8f, 1f },
+                        Positions = new[] { 0f, .3f, .4f, 1f }
+                    };
                     b.Blend = blend;
                     g.FillPath(b, p);
                 }
@@ -4223,8 +4250,10 @@ namespace System.Windows.Forms
                 cb.Width -= (e.Ribbon.ItemMargin.Left + e.Ribbon.ItemMargin.Right);
                 cb.Height -= e.RibbonOrbDropDown.RecentItemsCaptionLineSpacing;
 
-                StringFormat sf = new StringFormat();
-                sf.LineAlignment = StringAlignment.Center;
+                StringFormat sf = new StringFormat
+                {
+                    LineAlignment = StringAlignment.Center
+                };
                 if (e.Ribbon.RightToLeft == RightToLeft.Yes)
                 {
                     sf.Alignment = StringAlignment.Far;
@@ -4528,9 +4557,11 @@ namespace System.Windows.Forms
                 using (LinearGradientBrush b = new LinearGradientBrush(
                         rH, north, south, 90))
                 {
-                    ColorBlend cb = new ColorBlend(3);
-                    cb.Colors = new Color[] { north, centre, south };
-                    cb.Positions = new float[] { 0f, .3f, 1f };
+                    ColorBlend cb = new ColorBlend(3)
+                    {
+                        Colors = new[] { north, centre, south },
+                        Positions = new[] { 0f, .3f, 1f }
+                    };
                     b.InterpolationColors = cb;
 
                     SmoothingMode sbuff = e.Graphics.SmoothingMode;
@@ -4566,9 +4597,11 @@ namespace System.Windows.Forms
                 using (LinearGradientBrush b = new LinearGradientBrush(
                         rH, north, south, 90))
                 {
-                    ColorBlend cb = new ColorBlend(3);
-                    cb.Colors = new Color[] { north, centre, south };
-                    cb.Positions = new float[] { 0f, .3f, 1f };
+                    ColorBlend cb = new ColorBlend(3)
+                    {
+                        Colors = new[] { north, centre, south },
+                        Positions = new[] { 0f, .3f, 1f }
+                    };
                     b.InterpolationColors = cb;
 
                     SmoothingMode sbuff = e.Graphics.SmoothingMode;
@@ -4604,9 +4637,11 @@ namespace System.Windows.Forms
                 using (LinearGradientBrush b = new LinearGradientBrush(
                         rH, north, south, 90))
                 {
-                    ColorBlend cb = new ColorBlend(3);
-                    cb.Colors = new Color[] { north, centre, south };
-                    cb.Positions = new float[] { 0f, .3f, 1f };
+                    ColorBlend cb = new ColorBlend(3)
+                    {
+                        Colors = new[] { north, centre, south },
+                        Positions = new[] { 0f, .3f, 1f }
+                    };
                     b.InterpolationColors = cb;
 
                     SmoothingMode sbuff = e.Graphics.SmoothingMode;
@@ -4703,13 +4738,13 @@ namespace System.Windows.Forms
             if (e.Ribbon.AltPressed)
             {
 
-                sf.HotkeyPrefix = Drawing.Text.HotkeyPrefix.Show;
+                sf.HotkeyPrefix = HotkeyPrefix.Show;
 
             }
             else
             {
 
-                sf.HotkeyPrefix = Drawing.Text.HotkeyPrefix.Hide;
+                sf.HotkeyPrefix = HotkeyPrefix.Hide;
             }
 
             Rectangle r = Rectangle.FromLTRB(e.Tab.TabBounds.Left + e.Ribbon.TabTextMargin.Left, e.Tab.TabBounds.Top + e.Ribbon.TabTextMargin.Top, e.Tab.TabBounds.Right - e.Ribbon.TabTextMargin.Right, e.Tab.TabBounds.Bottom - e.Ribbon.TabTextMargin.Bottom);
@@ -4849,10 +4884,6 @@ namespace System.Windows.Forms
                             {
                                 DrawButtonSelected(e.Graphics, b, e.Ribbon);
                             }
-                            else
-                            {
-                                //No background
-                            }
                         }
                         else if (b.Pressed)
                         {
@@ -4873,10 +4904,6 @@ namespace System.Windows.Forms
                         else if (b is RibbonOrbOptionButton)
                         {
                             DrawOrbOptionButton(e.Graphics, b.Bounds);
-                        }
-                        else
-                        {
-                            //No background
                         }
                     }
                     else
@@ -5493,11 +5520,13 @@ namespace System.Windows.Forms
                 {
                     b.WrapMode = WrapMode.Clamp;
 
-                    ColorBlend cb = new ColorBlend(3);
-                    cb.Colors = new Color[]{Color.Transparent,
+                    ColorBlend cb = new ColorBlend(3)
+                    {
+                        Colors = new[]{Color.Transparent,
                        Color.FromArgb(50, Color.Black),
-                       Color.FromArgb(100, Color.Black)};
-                    cb.Positions = new float[] { 0f, .1f, 1f };
+                       Color.FromArgb(100, Color.Black)},
+                        Positions = new[] { 0f, .1f, 1f }
+                    };
 
                     b.InterpolationColors = cb;
 
@@ -5536,7 +5565,7 @@ namespace System.Windows.Forms
             {
                 using (Brush b = new SolidBrush(ColorTable.ToolTipText))
                 {
-                    e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                    e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                     e.Graphics.DrawString(e.Text, e.Font, b, e.ClipRectangle, e.Format);
                 }
             }
@@ -5544,7 +5573,7 @@ namespace System.Windows.Forms
             {
                 using (Brush b = new SolidBrush(ColorTable.ToolTipText_2013))
                 {
-                    e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                    e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                     e.Graphics.DrawString(e.Text, e.Font, b, e.ClipRectangle, e.Format);
                 }
             }

@@ -10,19 +10,14 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {
    public sealed class RibbonSeparator : RibbonItem
    {
-      bool _drawBackground = true;
-
-      public RibbonSeparator()
+       public RibbonSeparator()
       {
           DropDownWidth = RibbonSeparatorDropDownWidth.Partial;
       }
@@ -53,7 +48,7 @@ namespace System.Windows.Forms
          }
       }
 
-      public override void SetBounds(System.Drawing.Rectangle bounds)
+      public override void SetBounds(Rectangle bounds)
       {
          base.SetBounds(bounds);
       }
@@ -97,13 +92,9 @@ namespace System.Windows.Forms
       [DefaultValue(true)]
       [Category("Appearance")]
       [Description("Background drawing should be avoided when group contains only TextBoxes and ComboBoxes")]
-      public bool DrawBackground
-      {
-         get { return _drawBackground; }
-         set { _drawBackground = value; }
-      }
+      public bool DrawBackground { get; set; } = true;
 
-      /// <summary>
+       /// <summary>
       /// The width of the Separator bar when displayed on a drop down
       /// </summary>
       [DefaultValue(0)]

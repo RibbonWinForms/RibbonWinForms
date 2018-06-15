@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace System.Windows.Forms
 {
     internal class RibbonWrappedDropDown
         : ToolStripDropDown
     {
         public RibbonWrappedDropDown()
-            : base()
         {
             DoubleBuffered = false;
             SetStyle(ControlStyles.Opaque, true);

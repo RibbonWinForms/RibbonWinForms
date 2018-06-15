@@ -10,11 +10,8 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel.Design;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 
 namespace System.Windows.Forms
 {
@@ -39,34 +36,28 @@ namespace System.Windows.Forms
       /// <returns></returns>
       protected virtual DesignerVerbCollection OnGetVerbs()
       {
-         return new DesignerVerbCollection(new DesignerVerb[] { 
-               new DesignerVerb("Add Button", new EventHandler(AddButton)),
-               new DesignerVerb("Add ButtonList", new EventHandler(AddButtonList)),
-               new DesignerVerb("Add ItemGroup", new EventHandler(AddItemGroup)),
-               new DesignerVerb("Add Separator", new EventHandler(AddSeparator)),
-               new DesignerVerb("Add TextBox", new EventHandler(AddTextBox)),
-               new DesignerVerb("Add ComboBox", new EventHandler(AddComboBox)),
-               new DesignerVerb("Add ColorChooser", new EventHandler(AddColorChooser)),
-               new DesignerVerb("Add DescriptionMenuItem", new EventHandler(AddDescriptionMenuItem)),
-               new DesignerVerb("Add CheckBox", new EventHandler(AddCheckBox)),
-               new DesignerVerb("Add UpDown", new EventHandler(AddUpDown)),
-               new DesignerVerb("Add Label", new EventHandler(AddLabel)),
-               new DesignerVerb("Add Host", new EventHandler(AddHost))
+         return new DesignerVerbCollection(new[] { 
+               new DesignerVerb("Add Button", AddButton),
+               new DesignerVerb("Add ButtonList", AddButtonList),
+               new DesignerVerb("Add ItemGroup", AddItemGroup),
+               new DesignerVerb("Add Separator", AddSeparator),
+               new DesignerVerb("Add TextBox", AddTextBox),
+               new DesignerVerb("Add ComboBox", AddComboBox),
+               new DesignerVerb("Add ColorChooser", AddColorChooser),
+               new DesignerVerb("Add DescriptionMenuItem", AddDescriptionMenuItem),
+               new DesignerVerb("Add CheckBox", AddCheckBox),
+               new DesignerVerb("Add UpDown", AddUpDown),
+               new DesignerVerb("Add Label", AddLabel),
+               new DesignerVerb("Add Host", AddHost)
             });
       }
 
       /// <summary>
       /// Overriden. Passes the verbs to the designer
       /// </summary>
-      public override DesignerVerbCollection Verbs
-      {
-         get
-         {
-            return OnGetVerbs();
-         }
-      }
+      public override DesignerVerbCollection Verbs => OnGetVerbs();
 
-      #endregion
+       #endregion
 
       #region Methods
 
@@ -87,23 +78,23 @@ namespace System.Windows.Forms
       /// <param name="t"></param>
       protected virtual void CreateItem(Ribbon ribbon, RibbonItemCollection collection, Type t)
       {
-         IDesignerHost host = GetService(typeof(IDesignerHost)) as IDesignerHost;
-
-         if (host != null && collection != null && ribbon != null)
+          if (GetService(typeof(IDesignerHost)) is IDesignerHost host && collection != null && ribbon != null)
          {
             DesignerTransaction transaction = host.CreateTransaction("AddRibbonItem_" + Component.Site.Name);
 
             MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Items"];
-            base.RaiseComponentChanging(member);
+            RaiseComponentChanging(member);
 
             RibbonItem item = host.CreateComponent(t) as RibbonItem;
 
-            if (!(item is RibbonSeparator)) item.Text = item.Site.Name;
+            if (!(item is RibbonSeparator))
+                 if (item != null)
+                     item.Text = item.Site.Name;
 
-            collection.Add(item);
+             collection.Add(item);
             ribbon.OnRegionsChanged();
 
-            base.RaiseComponentChanged(member, null, null);
+            RaiseComponentChanged(member, null, null);
             transaction.Commit();
          }
       }

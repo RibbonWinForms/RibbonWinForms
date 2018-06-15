@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-
-using System.Text;
 using System.Windows.Forms;
 
 namespace RibbonDemo
@@ -19,9 +13,9 @@ namespace RibbonDemo
       protected override void OnLoad(EventArgs e)
       {
          base.OnLoad(e);
-         this.ControlBox = false;
-         this.WindowState = FormWindowState.Maximized;
-         this.BringToFront();
+         ControlBox = false;
+         WindowState = FormWindowState.Maximized;
+         BringToFront();
       }
    }
 }

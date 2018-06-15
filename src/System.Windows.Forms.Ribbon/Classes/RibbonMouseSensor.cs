@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace System.Windows.Forms
@@ -12,27 +10,8 @@ namespace System.Windows.Forms
 	{
 
 		#region Fields
-		private Control _control;
-		private Ribbon _ribbon;
-		private List<RibbonTab> _tabs;
-		private List<RibbonPanel> _panels;
-		private List<RibbonItem> _items;
-		private RibbonTab _tabLimit;
-		private RibbonPanel _panelLimit;
-		private IEnumerable<RibbonItem> _itemsLimit;
-		private bool _disposed;
-		private bool _suspended;
-		private RibbonTab _hittedTab;
-		private RibbonPanel _hittedPanel;
-		private RibbonItem _hittedItem;
-		private RibbonItem _hittedSubItem;
-		private bool _hittedTabScrollLeft;
-		private bool _hittedTabScrollRight;
-		private RibbonTab _selectedTab;
-		private RibbonPanel _selectedPanel;
-		private RibbonItem _selectedItem;
-		private RibbonItem _selectedSubItem;
-		private RibbonItem _lastMouseDown;
+
+	    private RibbonItem _lastMouseDown;
 		#endregion
 
 		#region Constructor
@@ -42,9 +21,9 @@ namespace System.Windows.Forms
 		/// </summary>
 		private RibbonMouseSensor()
 		{
-			_tabs = new List<RibbonTab>();
-			_panels = new List<RibbonPanel>();
-			_items = new List<RibbonItem>();
+			Tabs = new List<RibbonTab>();
+			Panels = new List<RibbonPanel>();
+			Items = new List<RibbonItem>();
 
 		}
 
@@ -56,11 +35,8 @@ namespace System.Windows.Forms
 		public RibbonMouseSensor(Control control, Ribbon ribbon)
 			: this()
 		{
-			if (control == null) throw new ArgumentNullException("control");
-			if (ribbon == null) throw new ArgumentNullException("ribbon");
-
-			_control = control;
-			_ribbon = ribbon;
+		    Control = control ?? throw new ArgumentNullException(nameof(control));
+			Ribbon = ribbon ?? throw new ArgumentNullException(nameof(ribbon));
 
 			AddHandlers();
 		}
@@ -128,195 +104,119 @@ namespace System.Windows.Forms
 		/// <summary>
 		/// Gets the control where the sensor listens to mouse events
 		/// </summary>
-		public Control Control
-		{
-			get { return _control; }
-		}
+		public Control Control { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets if the sensor has already been 
 		/// </summary>
-		public bool Disposed
-		{
-			get { return _disposed; }
-		}
+		public bool Disposed { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the RibbonTab hitted by the last <see cref="HitTest"/>
 		/// </summary>
-		internal RibbonTab HittedTab
-		{
-			get { return _hittedTab; }
-			set { _hittedTab = value; }
-		}
+		internal RibbonTab HittedTab { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets if the test hit resulted on some scroll button of the hitted tab
 		/// </summary>
-		internal bool HittedTabScroll
-		{
-			get { return HittedTabScrollLeft || HittedTabScrollRight; }
-		}
+		internal bool HittedTabScroll => HittedTabScrollLeft || HittedTabScrollRight;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets if the last hit test resulted on the left scroll of the hitted tab
 		/// </summary>
-		internal bool HittedTabScrollLeft
-		{
-			get { return _hittedTabScrollLeft; }
-			set { _hittedTabScrollLeft = value; }
-		}
+		internal bool HittedTabScrollLeft { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets if the last hit test resulted on the right scroll of the hitted tab
 		/// </summary>
-		internal bool HittedTabScrollRight
-		{
-			get { return _hittedTabScrollRight; }
-			set { _hittedTabScrollRight = value; }
-		}
+		internal bool HittedTabScrollRight { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the RibbonPanel hitted by the last <see cref="HitTest"/>
 		/// </summary>
-		internal RibbonPanel HittedPanel
-		{
-			get { return _hittedPanel; }
-			set { _hittedPanel = value; }
-		}
+		internal RibbonPanel HittedPanel { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the RibbonItem hitted by the last <see cref="HitTest"/>
 		/// </summary>
-		internal RibbonItem HittedItem
-		{
-			get { return _hittedItem; }
-			set { _hittedItem = value; }
-		}
+		internal RibbonItem HittedItem { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the RibbonItem (on other RibbonItem) hitted by the last <see cref="HitTest"/>
 		/// </summary>
-		internal RibbonItem HittedSubItem
-		{
-			get { return _hittedSubItem; }
-			set { _hittedSubItem = value; }
-		}
+		internal RibbonItem HittedSubItem { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets if the sensor is currently suspended
 		/// </summary>
-		public bool IsSupsended
-		{
-			get { return _suspended; }
-		}
+		public bool IsSupsended { get; private set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or ests the source of items what limits the sensing.
 		/// If collection is null, all items on the <see cref="Items"/> property will be sensed.
 		/// </summary>
-		public IEnumerable<RibbonItem> ItemsSource
-		{
-			get { return _itemsLimit; }
-			set { _itemsLimit = value; }
-		}
+		public IEnumerable<RibbonItem> ItemsSource { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the collection of items this sensor affects.
 		/// Sensing can be limitated by the <see cref="ItemsLimit"/> property
 		/// </summary>
-		public List<RibbonItem> Items
-		{
-			get { return _items; }
-		}
+		public List<RibbonItem> Items { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the Panel that will be the limit to be sensed.
 		/// If set to null, all panels in the <see cref="Panels"/> property will be sensed.
 		/// </summary>
-		public RibbonPanel PanelLimit
-		{
-			get { return _panelLimit; }
-			set { _panelLimit = value; }
-		}
+		public RibbonPanel PanelLimit { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the collection of panels this sensor affects.
 		/// Sensing can be limitated by the <see cref="PanelLimit"/> property
 		/// </summary>
-		public List<RibbonPanel> Panels
-		{
-			get { return _panels; }
-		}
+		public List<RibbonPanel> Panels { get; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the ribbon this sensor responds to
 		/// </summary>
-		public Ribbon Ribbon
-		{
-			get { return _ribbon; }
-		}
+		public Ribbon Ribbon { get; }
 
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the last selected tab
 		/// </summary>
-		internal RibbonTab SelectedTab
-		{
-			get { return _selectedTab; }
-			set { _selectedTab = value; }
-		}
+		internal RibbonTab SelectedTab { get; set; }
 
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the last selected panel
 		/// </summary>
-		internal RibbonPanel SelectedPanel
-		{
-			get { return _selectedPanel; }
-			set { _selectedPanel = value; }
-		}
+		internal RibbonPanel SelectedPanel { get; set; }
 
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the last selected item
 		/// </summary>
-		internal RibbonItem SelectedItem
-		{
-			get { return _selectedItem; }
-			set { _selectedItem = value; }
-		}
+		internal RibbonItem SelectedItem { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the last selected sub-item
 		/// </summary>
-		internal RibbonItem SelectedSubItem
-		{
-			get { return _selectedSubItem; }
-			set { _selectedSubItem = value; }
-		}
+		internal RibbonItem SelectedSubItem { get; set; }
 
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets the Tab that will be the only to be sensed. 
 		/// If set to null, all tabs in the <see cref="Tabs"/> property will be sensed.
 		/// </summary>
-		public RibbonTab TabLimit
-		{
-			get { return _tabLimit; }
-			set { _tabLimit = value; }
-		}
+		public RibbonTab TabLimit { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the collection of tabs this sensor affects. 
 		/// Sensing can be limitated by the <see cref="TabLimit"/> property
 		/// </summary>
-		public List<RibbonTab> Tabs
-		{
-			get { return _tabs; }
-		}
+		public List<RibbonTab> Tabs { get; }
 
-		#endregion
+	    #endregion
 
 		#region Methods
 
@@ -330,12 +230,12 @@ namespace System.Windows.Forms
 				throw new ApplicationException("Control is Null, cant Add RibbonMouseSensor Handles");
 			}
 
-			Control.MouseMove += new MouseEventHandler(Control_MouseMove);
-			Control.MouseLeave += new EventHandler(Control_MouseLeave);
-			Control.MouseDown += new MouseEventHandler(Control_MouseDown);
-			Control.MouseUp += new MouseEventHandler(Control_MouseUp);
-			Control.MouseClick += new MouseEventHandler(Control_MouseClick);
-			Control.MouseDoubleClick += new MouseEventHandler(Control_MouseDoubleClick);
+			Control.MouseMove += Control_MouseMove;
+			Control.MouseLeave += Control_MouseLeave;
+			Control.MouseDown += Control_MouseDown;
+			Control.MouseUp += Control_MouseUp;
+			Control.MouseClick += Control_MouseClick;
+			Control.MouseDoubleClick += Control_MouseDoubleClick;
 			//Control.MouseEnter 
 		}
 
@@ -812,7 +712,7 @@ namespace System.Windows.Forms
 		/// </summary>
 		public void Resume()
 		{
-			_suspended = false;
+			IsSupsended = false;
 		}
 
 		/// <summary>
@@ -820,7 +720,7 @@ namespace System.Windows.Forms
 		/// </summary>
 		public void Suspend()
 		{
-			_suspended = true;
+			IsSupsended = true;
 		}
 
 		#endregion
@@ -829,7 +729,7 @@ namespace System.Windows.Forms
 
 		public void Dispose()
 		{
-			_disposed = true;
+			Disposed = true;
 			RemoveHandlers();
 		}
 

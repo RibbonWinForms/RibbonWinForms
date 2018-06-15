@@ -9,11 +9,12 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
+using System.Text;
+using System.Windows.Forms.RibbonHelpers;
 using System.Xml;
 
 namespace System.Windows.Forms
@@ -22,41 +23,15 @@ namespace System.Windows.Forms
     {
         #region Theme Information
 
-        private string _ThemeName;
-        private string _ThemeAuthor;
-        private string _ThemeAuthorEmail;
-        private string _ThemeAuthorWebsite;
-        private string _ThemeDateCreated;
+        public string ThemeName { get; set; }
 
-        public string ThemeName
-        {
-            get { return _ThemeName; }
-            set { _ThemeName = value; }
-        }
+        public string ThemeAuthor { get; set; }
 
-        public string ThemeAuthor
-        {
-            get { return _ThemeAuthor; }
-            set { _ThemeAuthor = value; }
-        }
+        public string ThemeAuthorEmail { get; set; }
 
-        public string ThemeAuthorEmail
-        {
-            get { return _ThemeAuthorEmail; }
-            set { _ThemeAuthorEmail = value; }
-        }
+        public string ThemeAuthorWebsite { get; set; }
 
-        public string ThemeAuthorWebsite
-        {
-            get { return _ThemeAuthorWebsite; }
-            set { _ThemeAuthorWebsite = value; }
-        }
-
-        public string ThemeDateCreated
-        {
-            get { return _ThemeDateCreated; }
-            set { _ThemeDateCreated = value; }
-        }
+        public string ThemeDateCreated { get; set; }
 
         #endregion
 
@@ -252,7 +227,7 @@ namespace System.Windows.Forms
         public Color ToolTipContentSouth = Color.FromArgb(206, 220, 241);// SystemColors.MenuBar;// FromHex("#E7F2FF");
         public Color ToolTipDarkBorder = Color.DarkGray;// Color.FromArgb(51, FromHex("#15428B"));
         public Color ToolTipLightBorder = Color.FromArgb(102, Color.White);
-        public Color ToolTipText = System.Windows.Forms.RibbonHelpers.WinApi.IsVista ? SystemColors.InactiveCaptionText : FromHexStr("#15428B");  // in XP SystemColors.InactiveCaptionText is hardly readable
+        public Color ToolTipText = WinApi.IsVista ? SystemColors.InactiveCaptionText : FromHexStr("#15428B");  // in XP SystemColors.InactiveCaptionText is hardly readable
 
         public Color ToolStripItemTextPressed = FromHexStr("#444444");
         public Color ToolStripItemTextSelected = FromHexStr("#444444");
@@ -299,7 +274,7 @@ namespace System.Windows.Forms
         #region Methods
 
         //internal static Color FromHex(string hex)
-        static Color FromHexStr(string hex)
+        private static Color FromHexStr(string hex)
         {
             if (hex.StartsWith("#"))
                 hex = hex.Substring(1);
@@ -308,16 +283,16 @@ namespace System.Windows.Forms
             {
                 case 6:
                     return Color.FromArgb(
-                        int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber));
+                        int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber));
                 
                 case 8:
                     return Color.FromArgb(
-                        int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
-                        int.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber));
+                        int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber),
+                        int.Parse(hex.Substring(6, 2), NumberStyles.HexNumber));
               
                 default:
                     throw new Exception("Color not valid");
@@ -326,7 +301,7 @@ namespace System.Windows.Forms
 
         public Color FromHex(string hex)
         {
-            return RibbonProfesionalRendererColorTable.FromHexStr(hex);
+            return FromHexStr(hex);
         }
 
         internal static Color ToGray(Color c)
@@ -678,9 +653,9 @@ namespace System.Windows.Forms
             Color c = GetColor(ribbonColorPart);
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("#");
-            sb.Append(BitConverter.ToString(new byte[] { c.R }));
-            sb.Append(BitConverter.ToString(new byte[] { c.G }));
-            sb.Append(BitConverter.ToString(new byte[] { c.B }));
+            sb.Append(BitConverter.ToString(new[] { c.R }));
+            sb.Append(BitConverter.ToString(new[] { c.G }));
+            sb.Append(BitConverter.ToString(new[] { c.B }));
             return sb.ToString();
         }
 
@@ -689,10 +664,10 @@ namespace System.Windows.Forms
             Color c = GetColor(ribbonColorPart);
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("#");
-            sb.Append(BitConverter.ToString(new byte[] { c.A }));
-            sb.Append(BitConverter.ToString(new byte[] { c.R }));
-            sb.Append(BitConverter.ToString(new byte[] { c.G }));
-            sb.Append(BitConverter.ToString(new byte[] { c.B }));
+            sb.Append(BitConverter.ToString(new[] { c.A }));
+            sb.Append(BitConverter.ToString(new[] { c.R }));
+            sb.Append(BitConverter.ToString(new[] { c.G }));
+            sb.Append(BitConverter.ToString(new[] { c.B }));
             return sb.ToString();
         }
 
@@ -1037,7 +1012,7 @@ namespace System.Windows.Forms
             int count = Enum.GetNames(typeof(RibbonColorPart)).Length;
             for (int i = 0; i < count; i++)
             {
-                sb.AppendLine(((RibbonColorPart)i).ToString() + " = " + GetFullColorHexStr((RibbonColorPart)i));
+                sb.AppendLine(((RibbonColorPart)i) + " = " + GetFullColorHexStr((RibbonColorPart)i));
             }
 
             return sb.ToString();
@@ -1048,11 +1023,11 @@ namespace System.Windows.Forms
             string[] sa = null;
             if (iniFileContent.Contains("\r\n"))
             {
-                sa = iniFileContent.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                sa = iniFileContent.Split(new[] { "\r\n" }, StringSplitOptions.None);
             }
             else if (iniFileContent.Contains("\n"))
             {
-                sa = iniFileContent.Split(new string[] { "\n" }, StringSplitOptions.None);
+                sa = iniFileContent.Split(new[] { "\n" }, StringSplitOptions.None);
             }
             else
             {
@@ -1070,7 +1045,6 @@ namespace System.Windows.Forms
                 string a = s.Trim();
                 if (a.Length == 0)
                 {
-                    continue;
                 }
                 else
                 {

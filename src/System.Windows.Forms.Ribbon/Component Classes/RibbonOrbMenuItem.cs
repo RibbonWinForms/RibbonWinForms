@@ -9,9 +9,6 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -31,7 +28,7 @@ namespace System.Windows.Forms
       {
          DropDownArrowDirection = RibbonArrowDirection.Left;
          SetDropDownMargin(new Padding(10));
-         DropDownShowing += new EventHandler(RibbonOrbMenuItem_DropDownShowing);
+         DropDownShowing += RibbonOrbMenuItem_DropDownShowing;
       }
 
       public RibbonOrbMenuItem(string text)
@@ -50,14 +47,8 @@ namespace System.Windows.Forms
         [Browsable(false)]
         public override Image LargeImage
         {
-            get
-            {
-                return base.Image;
-            }
-            set
-            {
-                base.Image = value;
-            }
+            get => base.Image;
+            set => base.Image = value;
         }
 
         [DefaultValue(null)]
@@ -65,10 +56,7 @@ namespace System.Windows.Forms
         [Category("Appearance")]
         public override Image Image
         {
-            get
-            {
-                return base.Image;
-            }
+            get => base.Image;
             set
             {
                 base.Image = value;
@@ -83,14 +71,8 @@ namespace System.Windows.Forms
         [Browsable(false)]
         public override Image SmallImage
         {
-            get
-            {
-                return base.SmallImage;
-            }
-            set
-            {
-                base.SmallImage = value;
-            }
+            get => base.SmallImage;
+            set => base.SmallImage = value;
         }
 
         #endregion

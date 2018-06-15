@@ -9,9 +9,6 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms.RibbonHelpers;
 
@@ -48,7 +45,7 @@ namespace System.Windows.Forms
       /// <returns>Character to use with "Marlett" font in Windows, some other representative characters when in other O.S.</returns>
       public static string GetCharFor(CaptionButton type)
       {
-         if (WinApi.IsWindows)
+          if (WinApi.IsWindows)
          {
             switch (type)
             {
@@ -64,28 +61,26 @@ namespace System.Windows.Forms
                   return "?";
             }
          }
-         else
-         {
-            switch (type)
-            {
-               case CaptionButton.Minimize:
+
+          switch (type)
+          {
+              case CaptionButton.Minimize:
                   return "_";
-               case CaptionButton.Maximize:
+              case CaptionButton.Maximize:
                   return "+";
-               case CaptionButton.Restore:
+              case CaptionButton.Restore:
                   return "^";
-               case CaptionButton.Close:
+              case CaptionButton.Close:
                   return "X";
-               default:
+              default:
                   return "?";
-            }
-         }
+          }
       }
       #endregion
 
       #region Fields
-      private CaptionButton _captionButtonType;
-      #endregion
+
+       #endregion
 
       #region Ctor
       /// <summary>
@@ -102,11 +97,9 @@ namespace System.Windows.Forms
       /// <summary>
       /// Gets the type of caption button this is
       /// </summary>
-      public CaptionButton CaptionButtonType
-      {
-         get { return _captionButtonType; }
-      }
-      #endregion
+      public CaptionButton CaptionButtonType { get; private set; }
+
+       #endregion
 
       #region Methods
 
@@ -153,7 +146,7 @@ namespace System.Windows.Forms
       internal void SetCaptionButtonType(CaptionButton buttonType)
       {
          Text = GetCharFor(buttonType);
-         _captionButtonType = buttonType;
+         CaptionButtonType = buttonType;
       }
 
       internal override Rectangle OnGetTextBounds(RibbonElementSizeMode sMode, Rectangle bounds)

@@ -2,7 +2,7 @@
 
 namespace System.Windows.Forms
 {
-   static class StringFormatFactory
+    internal static class StringFormatFactory
    {
       /// <summary>
       /// <see cref="StringFormat"/> with options:
@@ -12,12 +12,13 @@ namespace System.Windows.Forms
       /// <returns>new <see cref="StringFormat"/> instance</returns>
       public static StringFormat NearCenter()
       {
-         StringFormat sf = new StringFormat();
+            StringFormat sf = new StringFormat
+            {
+                Alignment = StringAlignment.Near,
+                LineAlignment = StringAlignment.Center
+            };
 
-         sf.Alignment = StringAlignment.Near;
-         sf.LineAlignment = StringAlignment.Center;
-
-         return sf;
+            return sf;
       }
 
       /// <summary>
@@ -47,13 +48,14 @@ namespace System.Windows.Forms
       /// <returns>new <see cref="StringFormat"/> instance</returns>
       public static StringFormat CenterNearTrimChar()
       {
-         StringFormat sf = new StringFormat();
+            StringFormat sf = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Near,
+                Trimming = StringTrimming.Character
+            };
 
-         sf.Alignment = StringAlignment.Center;
-         sf.LineAlignment = StringAlignment.Near;
-         sf.Trimming = StringTrimming.Character;
-
-         return sf;
+            return sf;
       }
 
       /// <summary>
@@ -64,12 +66,13 @@ namespace System.Windows.Forms
       /// <returns>new <see cref="StringFormat"/> instance</returns>
       public static StringFormat Center()
       {
-         StringFormat sf = new StringFormat();
+            StringFormat sf = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
 
-         sf.Alignment = StringAlignment.Center;
-         sf.LineAlignment = StringAlignment.Center;
-
-         return sf;
+            return sf;
       }
 
       /// <summary>

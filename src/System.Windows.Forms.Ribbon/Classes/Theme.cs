@@ -19,17 +19,13 @@
          }
       }
 
-      private static bool _standardThemeIsGlobal = true;
-      /// <summary>
+       /// <summary>
       /// If this value is set all ribbons will use the same theme.
       /// Otherwise different themes can be applied to multiple ribbon instances, e.g. RibbonDemo!
       /// </summary>
-      public static bool StandardThemeIsGlobal
-      {
-         get { return _standardThemeIsGlobal; }
-         set { _standardThemeIsGlobal = value; }
-      }
-      #endregion
+      public static bool StandardThemeIsGlobal { get; set; } = true;
+
+       #endregion
 
       #region Constructor
 
@@ -58,25 +54,15 @@
 
       #region Properties
 
-      private RibbonProfesionalRendererColorTable _RendererColorTable = new RibbonProfesionalRendererColorTable();
-      public RibbonProfesionalRendererColorTable RendererColorTable
-      {
-         get { return _RendererColorTable; }
-         set { _RendererColorTable = value; }
-      }
+       public RibbonProfesionalRendererColorTable RendererColorTable { get; set; } = new RibbonProfesionalRendererColorTable();
 
-      private RibbonOrbStyle _Style;
-      public RibbonOrbStyle Style
-      {
-         get { return _Style; }
-         set { _Style = value; }
-      }
+       public RibbonOrbStyle Style { get; set; }
 
-      private RibbonTheme _Theme = RibbonTheme.Normal;
+       private RibbonTheme _Theme = RibbonTheme.Normal;
       public RibbonTheme RibbonTheme
       {
-         get { return _Theme; }
-         set
+         get => _Theme;
+          set
          {
             _Theme = value;
             if (_Theme == RibbonTheme.Blue || _Theme == RibbonTheme.Normal)
@@ -103,22 +89,22 @@
       [Obsolete("Either create a theme for your Ribbon or use 'Standard' instance!")]
       public static RibbonProfesionalRendererColorTable ColorTable
       {
-         get { return Standard.RendererColorTable; }
-         set { Standard.RendererColorTable = value; }
+         get => Standard.RendererColorTable;
+          set => Standard.RendererColorTable = value;
       }
 
       [Obsolete("Either create a theme for your Ribbon or use 'Standard' instance!")]
       public static RibbonOrbStyle ThemeStyle
       {
-         get { return Standard.Style; }
-         set { Standard.Style = value; }
+         get => Standard.Style;
+          set => Standard.Style = value;
       }
 
       [Obsolete("Either create a theme for your Ribbon or use 'Standard' instance!")]
       public RibbonTheme ThemeColor
       {
-         get { return Standard.RibbonTheme; }
-         set { Standard.RibbonTheme = value; }
+         get => Standard.RibbonTheme;
+          set => Standard.RibbonTheme = value;
       }
 
       #endregion Compatiblity to Release 7 Oct 2013

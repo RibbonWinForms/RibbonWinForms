@@ -10,10 +10,6 @@
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing.Design;
 using System.ComponentModel.Design;
 
 namespace System.Windows.Forms
@@ -34,7 +30,7 @@ namespace System.Windows.Forms
 
       protected override Type[] CreateNewItemTypes()
       {
-         return new Type[] {
+         return new[] {
             typeof(RibbonButton),
             typeof(RibbonButtonList),
             typeof(RibbonItemGroup),

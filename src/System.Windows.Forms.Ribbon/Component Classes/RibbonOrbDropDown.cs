@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace System.Windows.Forms
 {
@@ -29,42 +30,32 @@ namespace System.Windows.Forms
       #region Fields
       internal RibbonOrbMenuItem LastPoppedMenuItem;
 		private Rectangle designerSelectedBounds;
-		private int glyphGap = 3;
+		private readonly int glyphGap = 3;
 		private Padding _contentMargin;
-		private Ribbon _ribbon;
-		private RibbonItemCollection _menuItems;
-		private RibbonItemCollection _recentItems;
-		private RibbonItemCollection _optionItems;
-		private RibbonMouseSensor _sensor;
-		private int _optionsPadding;
-		private DateTime OpenedTime; //Steve - capture time popup was shown
+       private DateTime OpenedTime; //Steve - capture time popup was shown
 		private string _recentItemsCaption;
-		private int _RecentItemsCaptionLineSpacing = 8;
-		//private GlobalHook _keyboardHook;
-		private int _contentButtonsWidth = DefaultContentButtonsMinWidth;
-		private bool _autoSizeContentButtons = DefaultAutoSizeContentButtons;
-		private int _contentButtonsMinWidth = DefaultContentButtonsMinWidth;
-		private int _contentRecentItemsMinWidth = DefaultContentRecentItemsMinWidth;
 
-		#endregion
+       //private GlobalHook _keyboardHook;
+		private int _contentButtonsWidth = DefaultContentButtonsMinWidth;
+
+       #endregion
 
 		#region Ctor
 
 		internal RibbonOrbDropDown(Ribbon ribbon)
-			: base()
 		{
 			DoubleBuffered = true;
-			_ribbon = ribbon;
-			_menuItems = new RibbonItemCollection();
-			_recentItems = new RibbonItemCollection();
-			_optionItems = new RibbonItemCollection();
+			Ribbon = ribbon;
+			MenuItems = new RibbonItemCollection();
+			RecentItems = new RibbonItemCollection();
+			OptionItems = new RibbonItemCollection();
 
-			_menuItems.SetOwner(Ribbon);
-			_recentItems.SetOwner(Ribbon);
-			_optionItems.SetOwner(Ribbon);
+			MenuItems.SetOwner(Ribbon);
+			RecentItems.SetOwner(Ribbon);
+			OptionItems.SetOwner(Ribbon);
 
-			_optionsPadding = 6;
-			Size = new System.Drawing.Size(527, 447);
+			OptionItemsPadding = 6;
+			Size = new Size(527, 447);
 			BorderRoundness = 8;
 
 			//if (!(Site != null && Site.DesignMode))
@@ -76,9 +67,9 @@ namespace System.Windows.Forms
 
 		~RibbonOrbDropDown()
 		{
-			if (_sensor != null)
+			if (Sensor != null)
 			{
-				_sensor.Dispose();
+				Sensor.Dispose();
 			}
 			//if (_keyboardHook != null)
 			//{
@@ -124,17 +115,11 @@ namespace System.Windows.Forms
 		/// Gets the bounds of the content (where menu buttons are)
 		/// </summary>
 		[Browsable(false)]
-		public Rectangle ContentBounds
-		{
-			get
-			{
-				return Rectangle.FromLTRB(ContentMargin.Left, ContentMargin.Top,
-					 ClientRectangle.Right - ContentMargin.Right,
-					 ClientRectangle.Bottom - ContentMargin.Bottom);
-			}
-		}
+		public Rectangle ContentBounds => Rectangle.FromLTRB(ContentMargin.Left, ContentMargin.Top,
+		    ClientRectangle.Right - ContentMargin.Right,
+		    ClientRectangle.Bottom - ContentMargin.Bottom);
 
-		/// <summary>
+       /// <summary>
 		/// Gets the bounds of the content part that contains the buttons on the left
 		/// </summary>
 		[Browsable(false)]
@@ -154,13 +139,9 @@ namespace System.Windows.Forms
       /// Gets or sets the minimum width for the content buttons.
       /// </summary>
       [DefaultValue(DefaultContentButtonsMinWidth)]
-      public int ContentButtonsMinWidth
-      {
-         get { return _contentButtonsMinWidth; }
-         set { _contentButtonsMinWidth = value; }
-      }
+      public int ContentButtonsMinWidth { get; set; } = DefaultContentButtonsMinWidth;
 
-		/// <summary>
+       /// <summary>
 		/// Gets the bounds fo the content part that contains the recent-item list
 		/// </summary>
 		[Browsable(false)]
@@ -189,25 +170,25 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				if (RecentItemsCaption != null)
+			    if (RecentItemsCaption != null)
 				{
 					//Lets measure the height of the text so we take into account the font and its size
 					SizeF cs;
-					using (Graphics g = this.CreateGraphics())
+					using (Graphics g = CreateGraphics())
 					{
                         cs = g.MeasureString(RecentItemsCaption, Ribbon.RibbonTabFont);
 					}
 					Rectangle r = ContentBounds;
 					r.Width -= _contentButtonsWidth;
 					r.Height = Convert.ToInt32(cs.Height) + Ribbon.ItemMargin.Top + Ribbon.ItemMargin.Bottom; //padding
-					r.Height += _RecentItemsCaptionLineSpacing; //Spacing for the divider line
+					r.Height += RecentItemsCaptionLineSpacing; //Spacing for the divider line
 
 					if (Ribbon.RightToLeft == RightToLeft.No)
 						r.X += _contentButtonsWidth;
 					return r;
 				}
-				else
-					return Rectangle.Empty;
+
+			    return Rectangle.Empty;
 			}
 		}
 
@@ -215,93 +196,64 @@ namespace System.Windows.Forms
 		/// Gets the bounds of the caption area on the content part of the recent-item list
 		/// </summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public int RecentItemsCaptionLineSpacing
-		{
-			get { return _RecentItemsCaptionLineSpacing; }
-		}
+		public int RecentItemsCaptionLineSpacing { get; } = 8;
 
-      /// <summary>
+       /// <summary>
       /// Gets or sets the minimum width for the recent items.
       /// </summary>
       [DefaultValue(DefaultContentRecentItemsMinWidth)]
-      public int ContentRecentItemsMinWidth
-      {
-         get { return _contentRecentItemsMinWidth; }
-         set { _contentRecentItemsMinWidth = value; }
-      }
+      public int ContentRecentItemsMinWidth { get; set; } = DefaultContentRecentItemsMinWidth;
 
-		/// <summary>
+       /// <summary>
 		/// Gets if currently on design mode
 		/// </summary>
-		private bool RibbonInDesignMode
-		{
-			get { return RibbonDesigner.Current != null; }
-		}
+		private bool RibbonInDesignMode => RibbonDesigner.Current != null;
 
-		/// <summary>
+       /// <summary>
 		/// Gets the collection of items shown in the menu area
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public RibbonItemCollection MenuItems
-		{
-			get { return _menuItems; }
-		}
+		public RibbonItemCollection MenuItems { get; }
 
-		/// <summary>
+       /// <summary>
 		/// Gets the collection of items shown in the options area (bottom)
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public RibbonItemCollection OptionItems
-		{
-			get { return _optionItems; }
-		}
+		public RibbonItemCollection OptionItems { get; }
 
-		[DefaultValue(6)]
+       [DefaultValue(6)]
 		[Description("Spacing between option buttons (those on the bottom)")]
-		public int OptionItemsPadding
-		{
-			get { return _optionsPadding; }
-			set { _optionsPadding = value; }
-		}
+		public int OptionItemsPadding { get; set; }
 
-		/// <summary>
+       /// <summary>
 		/// Gets the collection of items shown in the recent items area
 		/// </summary>
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public RibbonItemCollection RecentItems
-		{
-			get { return _recentItems; }
-		}
+		public RibbonItemCollection RecentItems { get; }
 
-		/// <summary>
+       /// <summary>
 		/// Gets or Sets the caption for the Recent Items area
 		/// </summary>
 		[DefaultValue(null)]
 		public string RecentItemsCaption
 		{
-			get { return _recentItemsCaption; }
-			set { _recentItemsCaption = value; Invalidate(); }
+			get => _recentItemsCaption;
+           set { _recentItemsCaption = value; Invalidate(); }
 		}
 
 		/// <summary>
 		/// Gets the ribbon that owns this dropdown
 		/// </summary>
 		[Browsable(false)]
-		public Ribbon Ribbon
-		{
-			get { return _ribbon; }
-		}
+		public Ribbon Ribbon { get; }
 
-		/// <summary>
+       /// <summary>
 		/// Gets the sensor of the dropdown
 		/// </summary>
 		[Browsable(false)]
-		public RibbonMouseSensor Sensor
-		{
-			get { return _sensor; }
-		}
+		public RibbonMouseSensor Sensor { get; private set; }
 
-		/// <summary>
+       /// <summary>
 		/// Gets the bounds of the glyph
 		/// </summary>
 		internal Rectangle ButtonsGlyphBounds
@@ -379,13 +331,9 @@ namespace System.Windows.Forms
 		}
 
       [DefaultValue(DefaultAutoSizeContentButtons)]
-      public bool AutoSizeContentButtons
-      {
-         get { return _autoSizeContentButtons; }
-         set { _autoSizeContentButtons = value; }
-      }
+      public bool AutoSizeContentButtons { get; set; } = DefaultAutoSizeContentButtons;
 
-      #endregion
+       #endregion
 
 		#region Methods
 
@@ -414,14 +362,12 @@ namespace System.Windows.Forms
 		/// <returns></returns>
 		private int SeparatorHeight(RibbonSeparator s)
 		{
-			if (!string.IsNullOrEmpty(s.Text))
+		    if (!string.IsNullOrEmpty(s.Text))
 			{
 				return 20;
 			}
-			else
-			{
-				return 3;
-			}
+
+		    return 3;
 		}
 
 		/// <summary>
@@ -543,12 +489,12 @@ namespace System.Windows.Forms
 		/// </summary>
 		private void UpdateSensor()
 		{
-			if (_sensor != null)
+			if (Sensor != null)
 			{
-				_sensor.Dispose();
+				Sensor.Dispose();
 			}
 
-			_sensor = new RibbonMouseSensor(this, Ribbon, AllItems);
+			Sensor = new RibbonMouseSensor(this, Ribbon, AllItems);
 		}
 
 		/// <summary>
@@ -658,7 +604,7 @@ namespace System.Windows.Forms
 
 		}
 
-		protected override void OnOpening(System.ComponentModel.CancelEventArgs e)
+		protected override void OnOpening(CancelEventArgs e)
 		{
 			base.OnOpening(e);
 
@@ -697,7 +643,7 @@ namespace System.Windows.Forms
 
 				using (Pen p = new Pen(Color.Black))
 				{
-					p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+					p.DashStyle = DashStyle.Dot;
 					e.Graphics.DrawRectangle(p, designerSelectedBounds);
 				}
 
