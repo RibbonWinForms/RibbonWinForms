@@ -23,6 +23,8 @@ In 31 March 2017, codeplex.com has announced the shutdown of the site's operatio
 
 For historical articles and source code, you can still obtain it at the old sites, but for support and new development, you may continue to seek or contribute here.
 
+This project is a result of contributions from many named and unnamed C# programmers. A project from .NET programmers for .NET programmers.
+
 Jase Menendez Poo is back with us in this repository :)
 
 by adriancs, Nov 23 2017
