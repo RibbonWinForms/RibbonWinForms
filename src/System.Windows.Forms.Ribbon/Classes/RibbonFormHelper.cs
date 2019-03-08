@@ -76,7 +76,7 @@ namespace System.Windows.Forms
             // in case the RibbonForm is started in WindowState.Maximized and the WindowState changes to normal
             // the size of the RibbonForm is set to the values of _storeSize - which has not been set yet!
             if (_storeSize.IsEmpty)
-               _storeSize = Form.Size;
+                _storeSize = Form.Size;
 
             if (WinApi.IsGlassEnabled)
                 Form.Invalidate();
@@ -237,6 +237,16 @@ namespace System.Windows.Forms
                 Margins.Bottom + ((Ribbon.OrbStyle == RibbonOrbStyle.Office_2007) ? Ribbon.CaptionBarHeight : Ribbon.CaptionBarHeight + Ribbon.TabsMargin.Top),
                 Margins.Bottom);
 
+            if (WinApi.IsWin10)
+            {
+                dwmMargins.cxLeftWidth = 0;
+                dwmMargins.cxRightWidth = 0;
+                //dwmMargins.cyTopHeight = 1;
+                dwmMargins.cyBottomHeight = 0;
+
+                // https://msdn.microsoft.com/en-us/library/windows/desktop/aa969512(v=vs.85).aspx
+            }
+
             if (WinApi.IsVista && !_frameExtended)
             {
                 WinApi.DwmExtendFrameIntoClientArea(Form.Handle, ref dwmMargins);
@@ -301,6 +311,12 @@ namespace System.Windows.Forms
 
                         MarginsChecked = true;
                     }
+                    if (WinApi.IsWin10)
+                    {
+                        nccsp.rect0.Left += Margins.Left;
+                        nccsp.rect0.Right -= Margins.Right;
+                        nccsp.rect0.Bottom -= Margins.Bottom;
+                    }
 
                     #region Hack to get rid of the black caption bar when form is maximized on multi-monitor setups with DWM enabled
                     // toATwork: on multi-monitor setups the caption bar when the form is maximized the caption bar is black instead of glass
@@ -364,22 +380,29 @@ namespace System.Windows.Forms
         public virtual NonClientHitTestResult NonClientHitTest(Point hitPoint)
         {
 
-            Rectangle topleft = Form.RectangleToScreen(new Rectangle(0, 0, Margins.Left, Margins.Left));
+            int leftX = 0;
+            int rightX = 0;
+            if (WinApi.IsWin10)
+            {
+                leftX = -Margins.Left;
+                rightX = -Margins.Right;
+            }
+            Rectangle topleft = Form.RectangleToScreen(new Rectangle(leftX, 0, Margins.Left, Margins.Left));
 
             if (topleft.Contains(hitPoint))
                 return NonClientHitTestResult.TopLeft;
 
-            Rectangle topright = Form.RectangleToScreen(new Rectangle(Form.Width - Margins.Right, 0, Margins.Right, Margins.Right));
+            Rectangle topright = Form.RectangleToScreen(new Rectangle(rightX + Form.Width - Margins.Right, 0, Margins.Right, Margins.Right));
 
             if (topright.Contains(hitPoint))
                 return NonClientHitTestResult.TopRight;
 
-            Rectangle botleft = Form.RectangleToScreen(new Rectangle(0, Form.Height - Margins.Bottom, Margins.Left, Margins.Bottom));
+            Rectangle botleft = Form.RectangleToScreen(new Rectangle(leftX, Form.Height - Margins.Bottom, Margins.Left, Margins.Bottom));
 
             if (botleft.Contains(hitPoint))
                 return NonClientHitTestResult.BottomLeft;
 
-            Rectangle botright = Form.RectangleToScreen(new Rectangle(Form.Width - Margins.Right, Form.Height - Margins.Bottom, Margins.Right, Margins.Bottom));
+            Rectangle botright = Form.RectangleToScreen(new Rectangle(rightX + Form.Width - Margins.Right, Form.Height - Margins.Bottom, Margins.Right, Margins.Bottom));
 
             if (botright.Contains(hitPoint))
                 return NonClientHitTestResult.BottomRight;
@@ -394,12 +417,12 @@ namespace System.Windows.Forms
             if (cap.Contains(hitPoint))
                 return NonClientHitTestResult.Caption;
 
-            Rectangle left = Form.RectangleToScreen(new Rectangle(0, 0, Margins.Left, Form.Height));
+            Rectangle left = Form.RectangleToScreen(new Rectangle(leftX, 0, Margins.Left, Form.Height));
 
             if (left.Contains(hitPoint))
                 return NonClientHitTestResult.Left;
 
-            Rectangle right = Form.RectangleToScreen(new Rectangle(Form.Width - Margins.Right, 0, Margins.Right, Form.Height));
+            Rectangle right = Form.RectangleToScreen(new Rectangle(rightX + Form.Width - Margins.Right, 0, Margins.Right, Form.Height));
 
             if (right.Contains(hitPoint))
                 return NonClientHitTestResult.Right;
@@ -424,7 +447,16 @@ namespace System.Windows.Forms
             formPadding.Top = p.Bottom - 1;
 
             if (!DesignMode)
+            {
+                if (WinApi.IsWin10)
+                {
+                    formPadding.Left = 1;
+                    formPadding.Right = 1;
+                    formPadding.Bottom = 1;
+                }
+
                 Form.Padding = formPadding;
+            }
         }
 
         #endregion
