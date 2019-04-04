@@ -450,9 +450,9 @@ namespace System.Windows.Forms
             {
                 if (WinApi.IsWin10)
                 {
-                    formPadding.Left = 1;
-                    formPadding.Right = 1;
-                    formPadding.Bottom = 1;
+                    formPadding.Left = 0;
+                    formPadding.Right = 0;
+                    formPadding.Bottom = 0;
                 }
 
                 Form.Padding = formPadding;

@@ -440,10 +440,10 @@ namespace System.Windows.Forms
                 {
                     Image = Image
                 };
+				fakePanel.SetOwner(Owner);
                 fakePanel.SetSizeMode(RibbonElementSizeMode.Overflow);
 				fakePanel.SetBounds(overflowBoundsBuffer);
 				fakePanel.SetPressed(true);
-				fakePanel.SetOwner(Owner);
 				#endregion
 
 				Owner.Renderer.OnRenderRibbonPanelBackground(new RibbonPanelRenderEventArgs(Owner, e.Graphics, e.Clip, fakePanel, e.Control));
