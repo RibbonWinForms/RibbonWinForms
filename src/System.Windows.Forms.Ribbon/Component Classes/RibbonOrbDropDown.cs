@@ -65,26 +65,40 @@ namespace System.Windows.Forms
 			//}
 		}
 
-		~RibbonOrbDropDown()
-		{
-			if (Sensor != null)
-			{
-				Sensor.Dispose();
-			}
-			//if (_keyboardHook != null)
-			//{
-			//   _keyboardHook.Dispose();
-			//}
-		}
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (Sensor != null && !Sensor.Disposed)
+            {
+                Sensor.Dispose();
+            }
+            //if (_keyboardHook != null)
+            //{
+            //   _keyboardHook.Dispose();
+            //}
+        }
+        //Finalize is called by base class "System.ComponentModel.Component"
+        //Finalize should normally used to dispose unmanaged resources 
+        //      ~RibbonOrbDropDown()
+        //{
+        //	if (Sensor != null)
+        //	{
+        //		Sensor.Dispose();
+        //	}
+        //	//if (_keyboardHook != null)
+        //	//{
+        //	//   _keyboardHook.Dispose();
+        //	//}
+        //}
 
-		#endregion
+        #endregion
 
-		#region Props
+        #region Props
 
-		/// <summary>
-		/// Gets all items involved in the dropdown
-		/// </summary>
-		internal List<RibbonItem> AllItems
+        /// <summary>
+        /// Gets all items involved in the dropdown
+        /// </summary>
+        internal List<RibbonItem> AllItems
 		{
 			get
 			{
@@ -489,7 +503,7 @@ namespace System.Windows.Forms
 		/// </summary>
 		private void UpdateSensor()
 		{
-			if (Sensor != null)
+			if (Sensor != null && !Sensor.Disposed)
 			{
 				Sensor.Dispose();
 			}

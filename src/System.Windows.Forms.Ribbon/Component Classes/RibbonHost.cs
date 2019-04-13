@@ -211,7 +211,7 @@ namespace System.Windows.Forms
       private void Owner_ActiveTabChanged(object sender, EventArgs e)
       {
          //hide this control if our tab is not the active tab
-         if (OwnerTab != null && Owner.ActiveTab != OwnerTab)
+         if (ctl != null && OwnerTab != null && Owner.ActiveTab != OwnerTab)
             ctl.Visible = false;
       }
       private void RibbonHost_CanvasChanged(object sender, EventArgs e)
@@ -226,7 +226,7 @@ namespace System.Windows.Forms
       internal override void SetSizeMode(RibbonElementSizeMode sizeMode)
       {
          base.SetSizeMode(sizeMode);
-         if (OwnerPanel != null && OwnerPanel.SizeMode == RibbonElementSizeMode.Overflow)
+         if (ctl != null && OwnerPanel != null && OwnerPanel.SizeMode == RibbonElementSizeMode.Overflow)
          {
             ctl.Visible = false;
          }

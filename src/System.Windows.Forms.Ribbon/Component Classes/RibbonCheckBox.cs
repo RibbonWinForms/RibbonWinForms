@@ -36,7 +36,7 @@ namespace System.Windows.Forms
       private Rectangle _checkboxBounds;
       private int _labelWidth;
       private int _checkboxSize;
-      private CheckBoxOrientationEnum _CheckBoxOrientation;
+      private CheckBoxOrientationEnum _checkBoxOrientation;
       private CheckBoxStyle _style;
 
        #endregion
@@ -82,8 +82,8 @@ namespace System.Windows.Forms
       [Category("Appearance")]
       public CheckBoxOrientationEnum CheckBoxOrientation
       {
-         get => _CheckBoxOrientation;
-          set { _CheckBoxOrientation = value; NotifyOwnerRegionsChanged(); }
+         get => _checkBoxOrientation;
+          set { _checkBoxOrientation = value; NotifyOwnerRegionsChanged(); }
       }
 
       /// <summary>
@@ -168,7 +168,7 @@ namespace System.Windows.Forms
             if (LabelVisible)
             {
                StringFormat f = new StringFormat();
-               if (_CheckBoxOrientation == CheckBoxOrientationEnum.Left)
+               if (_checkBoxOrientation == CheckBoxOrientationEnum.Left)
                   f.Alignment = StringAlignment.Near;
                else
                   f.Alignment = StringAlignment.Far;

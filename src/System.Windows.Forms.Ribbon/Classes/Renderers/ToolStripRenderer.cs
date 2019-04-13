@@ -231,7 +231,7 @@ namespace System.Windows.Forms
 
             RenderBackground(e);
 
-            drawText(e, e.Graphics);
+            DrawText(e, e.Graphics);
         }
 
         //RENDER DROP DOWN BUTTON SELECTED, CHECKED, OR UNSELECTED
@@ -241,7 +241,7 @@ namespace System.Windows.Forms
 
             RenderBackground(e);
 
-            drawText(e, e.Graphics);
+            DrawText(e, e.Graphics);
         }
 
         //RENDER BUTTON SELECTED, CHECKED, OR UNSELECTED
@@ -251,7 +251,7 @@ namespace System.Windows.Forms
 
             RenderBackground(e);
 
-            drawText(e, e.Graphics);
+            DrawText(e, e.Graphics);
         }
 
         protected override void OnRenderItemBackground(ToolStripItemRenderEventArgs e)
@@ -260,7 +260,7 @@ namespace System.Windows.Forms
 
             RenderBackground(e);
 
-            drawText(e, e.Graphics);
+            DrawText(e, e.Graphics);
         }
 
         protected override void OnRenderLabelBackground(ToolStripItemRenderEventArgs e)
@@ -269,7 +269,7 @@ namespace System.Windows.Forms
 
             RenderBackground(e);
 
-            drawText(e, e.Graphics);
+            DrawText(e, e.Graphics);
         }
 
         private void RenderBackground(ToolStripItemRenderEventArgs e)
@@ -488,7 +488,7 @@ namespace System.Windows.Forms
             }
         }
 
-        private void drawText(ToolStripItemRenderEventArgs e, Graphics graphics)
+        private void DrawText(ToolStripItemRenderEventArgs e, Graphics graphics)
         {
             try
             {

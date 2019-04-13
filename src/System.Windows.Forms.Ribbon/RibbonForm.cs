@@ -9,6 +9,7 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
+using System.Security.Permissions;
 using System.Windows.Forms.RibbonHelpers;
 
 namespace System.Windows.Forms
@@ -53,6 +54,7 @@ namespace System.Windows.Forms
         /// Overrides the WndProc funciton
         /// </summary>
         /// <param name="m"></param>
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         protected override void WndProc(ref Message m)
         {
             if (!Helper.WndProc(ref m))
@@ -63,6 +65,7 @@ namespace System.Windows.Forms
 
         protected override CreateParams CreateParams
         {
+            [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
             get
             {
                 CreateParams cp = base.CreateParams;

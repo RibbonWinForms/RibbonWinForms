@@ -23,7 +23,9 @@ namespace System.Windows.Forms
     {
         #region Fields
         private readonly RibbonQuickAccessToolbarItemCollection _items;
-        private bool _DropDownButtonVisible;
+        private bool _dropDownButtonVisible;
+        private RibbonMouseSensor _sensor;
+        private RibbonButton _dropDownButton;
         #endregion
 
         #region Ctor
@@ -34,16 +36,16 @@ namespace System.Windows.Forms
 
             SetOwner(ownerRibbon);
 
-            DropDownButton = new RibbonButton();
-            DropDownButton.SetOwner(ownerRibbon);
-            DropDownButton.SmallImage = CreateDropDownButtonImage();
-            DropDownButton.Style = RibbonButtonStyle.DropDown;
+            _dropDownButton = new RibbonButton();
+            _dropDownButton.SetOwner(ownerRibbon);
+            _dropDownButton.SmallImage = CreateDropDownButtonImage();
+            _dropDownButton.Style = RibbonButtonStyle.DropDown;
 
             Margin = new Padding(9);
             Padding = new Padding(3, 0, 0, 0);
             _items = new RibbonQuickAccessToolbarItemCollection(this);
-            Sensor = new RibbonMouseSensor(ownerRibbon, ownerRibbon, Items);
-            _DropDownButtonVisible = true;
+            _sensor = new RibbonMouseSensor(ownerRibbon, ownerRibbon, Items);
+            _dropDownButtonVisible = true;
         }
 
         protected override void Dispose(bool disposing)
@@ -52,8 +54,8 @@ namespace System.Windows.Forms
             {
                 foreach (RibbonItem item in _items)
                     item.Dispose();
-                DropDownButton.Dispose();
-                Sensor.Dispose();
+                _dropDownButton.Dispose();
+                _sensor.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -116,8 +118,8 @@ namespace System.Windows.Forms
         [DefaultValue(true)]
         public bool DropDownButtonVisible
         {
-            get => _DropDownButtonVisible;
-            set { _DropDownButtonVisible = value; Owner.OnRegionsChanged(); }
+            get => _dropDownButtonVisible;
+            set { _dropDownButtonVisible = value; Owner.OnRegionsChanged(); }
         }
 
 
@@ -132,7 +134,7 @@ namespace System.Windows.Forms
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RibbonButton DropDownButton { get; }
+        public RibbonButton DropDownButton { get { return _dropDownButton; } }
 
         [Description("The drop down items of the dropdown button of the toolbar")]
         [Category("Drop Down")]
@@ -159,7 +161,7 @@ namespace System.Windows.Forms
         public bool MenuButtonVisible { get; set; }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RibbonMouseSensor Sensor { get; }
+        public RibbonMouseSensor Sensor { get { return _sensor; } }
 
         /// <summary>
         /// Gets the Items of the QuickAccess toolbar.

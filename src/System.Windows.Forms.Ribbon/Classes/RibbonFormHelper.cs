@@ -12,6 +12,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Windows.Forms.RibbonHelpers;
 
 namespace System.Windows.Forms
@@ -268,6 +269,7 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="m">Message to process</param>
         /// <returns><c>true</c> if message has been handled. <c>false</c> otherwise</returns>
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         public virtual bool WndProc(ref Message m)
         {
             if (DesignMode) return false;

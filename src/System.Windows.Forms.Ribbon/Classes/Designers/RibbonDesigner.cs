@@ -20,12 +20,13 @@ using System.Windows.Forms.RibbonHelpers;
 
 namespace System.Windows.Forms
 {
+    [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
     public class RibbonDesigner
        : ControlDesigner
     {
         #region Static
 
-        public static RibbonDesigner Current;
+        internal static RibbonDesigner Current;
 
         #endregion
 
@@ -44,13 +45,23 @@ namespace System.Windows.Forms
             Current = this;
         }
 
-        ~RibbonDesigner()
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
             if (Current == this)
             {
                 Current = null;
             }
         }
+        //Finalize is called by base class "System.ComponentModel.Design.ComponentDesigner"
+        //Finalize should normally used to dispose unmanaged resources 
+        //~RibbonDesigner()
+        //{
+        //    if (Current == this)
+        //    {
+        //        Current = null;
+        //    }
+        //}
 
         #endregion
 

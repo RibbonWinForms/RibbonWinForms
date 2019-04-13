@@ -286,14 +286,14 @@ namespace System.Windows.Forms
                         int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber),
                         int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber),
                         int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber));
-                
+
                 case 8:
                     return Color.FromArgb(
                         int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber),
                         int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber),
                         int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber),
                         int.Parse(hex.Substring(6, 2), NumberStyles.HexNumber));
-              
+
                 default:
                     throw new Exception("Color not valid");
             }
@@ -1078,9 +1078,9 @@ namespace System.Windows.Forms
         public string WriteThemeXmlFile()
         {
             string a = "";
-            using (StringWriter str = new StringWriter())
+            StringWriter str;
             {
-                using (XmlTextWriter xml = new XmlTextWriter(str))
+                using (XmlTextWriter xml = new XmlTextWriter(str = new StringWriter()))
                 {
                     xml.WriteStartDocument();
                     xml.WriteWhitespace("\r\n");
@@ -1111,8 +1111,8 @@ namespace System.Windows.Forms
                     xml.WriteEndElement(); xml.WriteWhitespace("\r\n");
                     xml.WriteEndElement(); xml.WriteWhitespace("\r\n");
                     xml.WriteEndDocument();
+                    a = str.ToString();
                 }
-                a = str.ToString();
             }
             return a;
         }
@@ -1125,38 +1125,37 @@ namespace System.Windows.Forms
                 dic1[e.ToString().ToLower()] = e;
             }
 
-            using (StringReader stringReader = new StringReader(xmlFileContent))
+            StringReader stringReader;
+            using (XmlTextReader reader = new XmlTextReader(stringReader = new StringReader(xmlFileContent)))
             {
-                using (XmlTextReader reader = new XmlTextReader(stringReader))
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    switch (reader.Name)
                     {
-                        switch (reader.Name)
-                        {
-                            case "ThemeName":
-                                ThemeName = reader.ReadString();
-                                break;
-                            case "Author":
-                                ThemeAuthor = reader.ReadString();
-                                break;
-                            case "AuthorEmail":
-                                ThemeAuthorEmail = reader.ReadString();
-                                break;
-                            case "AuthorWebsite":
-                                ThemeAuthorWebsite = reader.ReadString();
-                                break;
-                            case "DateCreated":
-                                ThemeDateCreated = reader.ReadString();
-                                break;
-                            default:
+                        case "ThemeName":
+                            ThemeName = reader.ReadString();
+                            break;
+                        case "Author":
+                            ThemeAuthor = reader.ReadString();
+                            break;
+                        case "AuthorEmail":
+                            ThemeAuthorEmail = reader.ReadString();
+                            break;
+                        case "AuthorWebsite":
+                            ThemeAuthorWebsite = reader.ReadString();
+                            break;
+                        case "DateCreated":
+                            ThemeDateCreated = reader.ReadString();
+                            break;
+                        default:
+                            {
+                                if (dic1.ContainsKey(reader.Name.ToLower()))
                                 {
-                                    if (dic1.ContainsKey(reader.Name.ToLower()))
-                                    {
-                                        SetColor(dic1[reader.Name.ToLower()], reader.ReadString());
-                                    }
-                                    break;
+                                    SetColor(dic1[reader.Name.ToLower()], reader.ReadString());
                                 }
-                        }
+                                break;
+                            }
+
                     }
                 }
             }

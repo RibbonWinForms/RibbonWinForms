@@ -13,10 +13,11 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 
 namespace System.Windows.Forms.RibbonHelpers
 {
-    public class GlobalHook
+    internal class GlobalHook
         : IDisposable
     {
         #region Subclasses
@@ -41,6 +42,8 @@ namespace System.Windows.Forms.RibbonHelpers
 
         #region Fields
         private HookProcCallBack _HookProc;
+        private IntPtr _handle;
+        private HookTypes _hookType;
 
         #endregion
 
@@ -114,16 +117,17 @@ namespace System.Windows.Forms.RibbonHelpers
         /// <param name="hookType"></param>
         public GlobalHook(HookTypes hookType)
         {
-            HookType = hookType;
+            _hookType = hookType;
             InstallHook();
         }
 
         ~GlobalHook()
         {
-            if (Handle != IntPtr.Zero)
-            {
-                Unhook();
-            }
+            Dispose(false);
+            //if (Handle != IntPtr.Zero)
+            //{
+            //    Unhook();
+            //}
         }
 
         #endregion
@@ -133,12 +137,12 @@ namespace System.Windows.Forms.RibbonHelpers
         /// <summary>
         /// Gets the type of this hook
         /// </summary>
-        public HookTypes HookType { get; }
+        //public HookTypes HookType { get { return _hookType; } }
 
         /// <summary>
         /// Gets the handle of the hook
         /// </summary>
-        public IntPtr Handle { get; private set; }
+        //public IntPtr Handle { get { return _handle; } }
 
         #endregion
 
@@ -267,14 +271,14 @@ namespace System.Windows.Forms.RibbonHelpers
         {
             if (code < 0)
             {
-                return WinApi.CallNextHookEx(Handle, code, wParam, lParam);
+                return WinApi.CallNextHookEx(_handle, code, wParam, lParam);
             }
 
-            switch (HookType)
+            switch (_hookType)
             {
-                case HookTypes.Mouse:       
+                case HookTypes.Mouse:
                     return MouseProc(code, wParam, lParam);
-                case HookTypes.Keyboard:    
+                case HookTypes.Keyboard:
                     return KeyboardProc(code, wParam, lParam);
                 default:
                     throw new Exception("HookType not supported");
@@ -331,7 +335,7 @@ namespace System.Windows.Forms.RibbonHelpers
             }
 
 
-            return handled ? (IntPtr)1 : WinApi.CallNextHookEx(Handle, code, wParam, lParam);
+            return handled ? (IntPtr)1 : WinApi.CallNextHookEx(_handle, code, wParam, lParam);
         }
 
         /// <summary>
@@ -349,7 +353,7 @@ namespace System.Windows.Forms.RibbonHelpers
             int x = hookStruct.pt.x;
             int y = hookStruct.pt.y;
             int delta = (short)((hookStruct.mouseData >> 16) & 0xffff);
-            
+
             if (msg == WinApi.WM_MOUSEWHEEL)
             {
                 OnMouseWheel(new MouseEventArgs(MouseButtons.None, 0, x, y, delta));
@@ -407,22 +411,23 @@ namespace System.Windows.Forms.RibbonHelpers
             {
                 OnMouseUp(new MouseEventArgs(MouseButtons.XButton1, 0, x, y, delta));
             }
-            
-            return WinApi.CallNextHookEx(Handle, code, wParam, lParam);
+
+            return WinApi.CallNextHookEx(_handle, code, wParam, lParam);
         }
 
         /// <summary>
         /// Installs the actual unsafe hook
         /// </summary>
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         private void InstallHook()
         {
             /// Error check
-            if (Handle != IntPtr.Zero) throw new Exception("Hook is already installed");
+            if (_handle != IntPtr.Zero) throw new Exception("Hook is already installed");
 
             #region htype
             int htype = 0;
 
-            switch (HookType)
+            switch (_hookType)
             {
                 case HookTypes.Mouse:
                     htype = WinApi.WH_MOUSE_LL;
@@ -432,7 +437,7 @@ namespace System.Windows.Forms.RibbonHelpers
                     break;
                 default:
                     throw new Exception("HookType is not supported");
-            } 
+            }
             #endregion
 
             /// Delegate to recieve message
@@ -441,18 +446,19 @@ namespace System.Windows.Forms.RibbonHelpers
             /// Hook
             /// Ed Obeda suggestion for .net 4.0
             //_hHook = WinApi.SetWindowsHookEx(htype, _HookProc, Marshal.GetHINSTANCE(Assembly.GetExecutingAssembly().GetModules()[0]), 0);
-            Handle = WinApi.SetWindowsHookEx(htype, _HookProc, Process.GetCurrentProcess().MainModule.BaseAddress, 0);
-            
+            _handle = WinApi.SetWindowsHookEx(htype, _HookProc, Process.GetCurrentProcess().MainModule.BaseAddress, 0);
+            int lastWin32Error = Marshal.GetLastWin32Error();
             /// Error check
-            if (Handle == IntPtr.Zero) throw new Win32Exception(Marshal.GetLastWin32Error());
+            if (_handle == IntPtr.Zero) throw new Win32Exception(lastWin32Error);
         }
 
         /// <summary>
         /// Unhooks the hook
         /// </summary>
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         private void Unhook()
         {
-            if (Handle != IntPtr.Zero)
+            if (_handle != IntPtr.Zero)
             {
                 //bool ret = WinApi.UnhookWindowsHookEx(Handle);
 
@@ -463,14 +469,15 @@ namespace System.Windows.Forms.RibbonHelpers
                 try
                 {
                     //Fix submitted by Simon Dallmair to handle win32 error when closing the form in vista
-                    if (!WinApi.UnhookWindowsHookEx(Handle))
+                    if (!WinApi.UnhookWindowsHookEx(_handle))
                     {
-                        Win32Exception ex = new Win32Exception(Marshal.GetLastWin32Error());
+                        int lastWin32Error = Marshal.GetLastWin32Error();
+                        Win32Exception ex = new Win32Exception(lastWin32Error);
                         if (ex.NativeErrorCode != 0)
                             throw ex;
                     }
 
-                    Handle = IntPtr.Zero;
+                    _handle = IntPtr.Zero;
                 }
                 catch (Exception)
                 {
@@ -485,7 +492,17 @@ namespace System.Windows.Forms.RibbonHelpers
 
         public void Dispose()
         {
-            if (Handle != IntPtr.Zero)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            //if (Handle != IntPtr.Zero)
+            //{
+            //    Unhook();
+            //}
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_handle != IntPtr.Zero)
             {
                 Unhook();
             }

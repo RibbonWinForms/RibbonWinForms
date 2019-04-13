@@ -1887,11 +1887,16 @@ namespace System.Windows.Forms
             light.Dispose();
         }
 
+        [Obsolete("use DrawPanelOverflowSelected")]
+        public void DrawPannelOveflowSelected(RibbonPanelRenderEventArgs e)
+        {
+            DrawPanelOverflowSelected(e);
+        }
         /// <summary>
         /// Draws an overflown panel in selected state
         /// </summary>
         /// <param name="e"></param>
-        public void DrawPannelOveflowSelected(RibbonPanelRenderEventArgs e)
+        public void DrawPanelOverflowSelected(RibbonPanelRenderEventArgs e)
         {
             Rectangle darkBorder = Rectangle.FromLTRB(
                  e.Panel.Bounds.Left,
@@ -3573,7 +3578,13 @@ namespace System.Windows.Forms
 
         #region ComboBox
 
+        [Obsolete("use DrawComboBoxDropDown")]
         public void DrawComboxDropDown(Graphics g, RibbonComboBox b, Ribbon ribbon)
+        {
+            DrawComboBoxDropDown(g, b, ribbon); ;
+        }
+
+        public void DrawComboBoxDropDown(Graphics g, RibbonComboBox b, Ribbon ribbon)
         {
             if (b.DropDownButtonPressed)
             {
@@ -4811,7 +4822,7 @@ namespace System.Windows.Forms
                 }
                 else if (e.Panel.Selected)
                 {
-                    DrawPannelOveflowSelected(e);
+                    DrawPanelOverflowSelected(e);
                 }
                 else
                 {
@@ -5039,7 +5050,7 @@ namespace System.Windows.Forms
                     DrawTextBoxDisabled(e.Graphics, c.TextBoxBounds);
                 }
 
-                DrawComboxDropDown(e.Graphics, c, e.Ribbon);
+                DrawComboBoxDropDown(e.Graphics, c, e.Ribbon);
 
                 #endregion
             }

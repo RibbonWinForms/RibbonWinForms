@@ -26,21 +26,21 @@ namespace System.Windows.Forms
         #region Fields
 
         private const int arrowWidth = 5;
-        private RibbonButtonStyle _style = RibbonButtonStyle.Normal;
+        private RibbonButtonStyle _style;
         private Image _smallImage;
         private Image _flashSmallImage;
         private Size _dropDownArrowSize;
         private Padding _dropDownMargin;
         private Point _lastMousePos;
-        private RibbonArrowDirection _DropDownArrowDirection = RibbonArrowDirection.Down;
+        private RibbonArrowDirection _dropDownArrowDirection;
 
         //Kevin - Tracks the selected item when it has dropdownitems assigned
         private RibbonItem _selectedItem;
 
-        private readonly Set<RibbonItem> _assignedHandlers = new Set<RibbonItem>();
+        private readonly Set<RibbonItem> _assignedHandlers;
 
-        private Size _MinimumSize;
-        private Size _MaximumSize;
+        private Size _minimumSize;
+        private Size _maximumSize;
 
         #endregion
 
@@ -75,6 +75,9 @@ namespace System.Windows.Forms
         /// <param name="text">Text of the button</param>
         public RibbonButton()
         {
+            _style = RibbonButtonStyle.Normal;
+            _dropDownArrowDirection = RibbonArrowDirection.Down;
+            _assignedHandlers = new Set<RibbonItem>();
             DropDownItems = new RibbonItemCollection();
             DropDownItems.SetOwnerItem(this);
             _dropDownArrowSize = new Size(5, 3);
@@ -248,8 +251,8 @@ namespace System.Windows.Forms
         [DefaultValue(RibbonArrowDirection.Down)]
         public RibbonArrowDirection DropDownArrowDirection
         {
-            get => _DropDownArrowDirection;
-            set { _DropDownArrowDirection = value; NotifyOwnerRegionsChanged(); }
+            get => _dropDownArrowDirection;
+            set { _dropDownArrowDirection = value; NotifyOwnerRegionsChanged(); }
         }
 
 
@@ -376,8 +379,8 @@ namespace System.Windows.Forms
         [Description("Sets the minimum size for this Item.  Only applies when in Large Size Mode.")]
         public Size MinimumSize
         {
-            get => _MinimumSize;
-            set { _MinimumSize = value; NotifyOwnerRegionsChanged(); }
+            get => _minimumSize;
+            set { _minimumSize = value; NotifyOwnerRegionsChanged(); }
 
         }
 
@@ -389,8 +392,8 @@ namespace System.Windows.Forms
         [Description("Sets the maximum size for this Item.  Only applies when in Large Size Mode.")]
         public Size MaximumSize
         {
-            get => _MaximumSize;
-            set { _MaximumSize = value; NotifyOwnerRegionsChanged(); }
+            get => _maximumSize;
+            set { _maximumSize = value; NotifyOwnerRegionsChanged(); }
 
         }
 
@@ -473,17 +476,17 @@ namespace System.Windows.Forms
 
         internal override void ClearOwner()
         {
-           List<RibbonItem> oldItems = DropDownItems == null ? null : new List<RibbonItem>(DropDownItems);
+            List<RibbonItem> oldItems = DropDownItems == null ? null : new List<RibbonItem>(DropDownItems);
 
-           base.ClearOwner();
+            base.ClearOwner();
 
-           if (oldItems != null)
-           {
-              foreach (RibbonItem item in oldItems)
-              {
-                 item.ClearOwner();
-              }
-           }
+            if (oldItems != null)
+            {
+                foreach (RibbonItem item in oldItems)
+                {
+                    item.ClearOwner();
+                }
+            }
         }
 
         /// <summary>
@@ -515,7 +518,7 @@ namespace System.Windows.Forms
 
                 if (Owner.AltPressed || Owner.OrbDropDown.MenuItems.Contains(this))
                 {
-                    
+
                     sf.HotkeyPrefix = HotkeyPrefix.Show;
 
                 }
@@ -644,7 +647,7 @@ namespace System.Windows.Forms
 
             if (SmallImage != null)
             {
-                if (SmallImage.PixelFormat != PixelFormat.DontCare )
+                if (SmallImage.PixelFormat != PixelFormat.DontCare)
                 {
                     return new Rectangle(
                         Bounds.Left + Owner.ItemMargin.Left,
@@ -688,7 +691,7 @@ namespace System.Windows.Forms
             // ddw is the dropdown arrow width
             int ddw = (Style == RibbonButtonStyle.Normal || Style == RibbonButtonStyle.DropDownListItem) ? 0 : _dropDownMargin.Horizontal;
             int imageToTextSpacing = (sMode == RibbonElementSizeMode.DropDown) ? Owner.ItemImageToTextSpacing : 0;
-                
+
             return Rectangle.FromLTRB(
                 Bounds.Left + imgw + Owner.ItemMargin.Horizontal + Owner.ItemMargin.Left + imageToTextSpacing,
                 Bounds.Top + Owner.ItemMargin.Top,
@@ -956,9 +959,9 @@ namespace System.Windows.Forms
             OnDropDownShowing(EventArgs.Empty);
             if (DropDownItems.Count == 0)
             {
-               if (DropDown != null)
-                  RibbonPopupManager.DismissChildren(DropDown, RibbonPopupManager.DismissReason.NewPopup);
-               return;
+                if (DropDown != null)
+                    RibbonPopupManager.DismissChildren(DropDown, RibbonPopupManager.DismissReason.NewPopup);
+                return;
             }
             AssignHandlers();
 
