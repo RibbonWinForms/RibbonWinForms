@@ -410,18 +410,20 @@ namespace RibbonDemo
 
         private void DummyAppButton_Click(object sender, EventArgs e)
         {
-            // Get the system menu of this application
-            IntPtr wMenu = WinApi.GetSystemMenu(Handle, false);
+            WinApi.ShowSystemMenu(this);
 
-            // Display the menu
-            uint command = WinApi.TrackPopupMenuEx(wMenu, WinApi.TPM_LEFTBUTTON | WinApi.TPM_RETURNCMD,
-                PointToScreen(ribbon1.Bounds.Location).X, PointToScreen(ribbon1.Bounds.Location).Y + ribbon1.CaptionBarSize, Handle, IntPtr.Zero);
+            //// Get the system menu of this application
+            //IntPtr wMenu = WinApi.GetSystemMenu(Handle, false);
 
-            if (command == 0)
-                return;
+            //// Display the menu
+            //uint command = WinApi.TrackPopupMenuEx(wMenu, WinApi.TPM_LEFTBUTTON | WinApi.TPM_RETURNCMD,
+            //    PointToScreen(ribbon1.Bounds.Location).X, PointToScreen(ribbon1.Bounds.Location).Y + ribbon1.CaptionBarSize, Handle, IntPtr.Zero);
 
-            // Post a message for the menu selection
-            WinApi.PostMessage(Handle, WinApi.WM_SYSCOMMAND, new UIntPtr(command), IntPtr.Zero);
+            //if (command == 0)
+            //    return;
+
+            //// Post a message for the menu selection
+            //WinApi.PostMessage(Handle, WinApi.WM_SYSCOMMAND, new UIntPtr(command), IntPtr.Zero);
         }
 
         private void DummyAppButton_DoubleClick(object sender, EventArgs e)

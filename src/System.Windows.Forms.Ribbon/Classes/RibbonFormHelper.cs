@@ -351,6 +351,17 @@ namespace System.Windows.Forms
                     m.Result = new IntPtr(Convert.ToInt32(NonClientHitTest(new Point(WinApi.LoWord((int)m.LParam), WinApi.HiWord((int)m.LParam)))));
                     handled = true;
                 }
+                else if (m.Msg == WinApi.WM_NCRBUTTONUP) //0x00A5
+                {
+                    int xMouse = WinApi.Get_X_LParam((int)m.LParam);
+                    int yMouse = WinApi.Get_Y_LParam((int)m.LParam);
+                    int hitTest = WinApi.LoWord((int)m.WParam);
+                    if (hitTest == (int)WinApi.HitTest.HTCAPTION || hitTest == (int)WinApi.HitTest.HTSYSMENU)
+                    {
+                        WinApi.ShowSystemMenu(Form, xMouse, yMouse);
+                        handled = true;
+                    }
+                }
                 else if (m.Msg == WinApi.WM_SYSCOMMAND)
                 {
                     uint param = IntPtr.Size == 4 ? (uint)m.WParam.ToInt32() : (uint)m.WParam.ToInt64();
