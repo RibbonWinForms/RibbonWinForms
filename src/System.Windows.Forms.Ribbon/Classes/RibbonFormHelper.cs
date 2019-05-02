@@ -163,11 +163,20 @@ namespace System.Windows.Forms
 
                 using (Brush b = new SolidBrush(Form.BackColor))
                 {
+                    int left;
+                    int right;
+                    if (WinApi.IsWin10) {
+                        left = 0;
+                        right = Form.Width;
+                    } else {
+                        left = Margins.Left - 0;
+                        right = Form.Width - Margins.Right - 0;
+                    }
                     e.Graphics.FillRectangle(b,
                         Rectangle.FromLTRB(
-                            Margins.Left - 0,
+                            left,
                             Margins.Top + 0,
-                            Form.Width - Margins.Right - 0,
+                            right,
                             Form.Height - Margins.Bottom - 0));
                 }
 
