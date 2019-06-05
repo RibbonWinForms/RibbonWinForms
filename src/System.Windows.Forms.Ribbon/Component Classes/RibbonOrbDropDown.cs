@@ -588,19 +588,19 @@ namespace System.Windows.Forms
 				}
 				if (ButtonsGlyphBounds.Contains(e.Location))
 				{
-					RibbonDesigner.Current.CreteOrbMenuItem(typeof(RibbonOrbMenuItem));
+					RibbonDesigner.Current.CreateOrbMenuItem(typeof(RibbonOrbMenuItem));
 				}
 				else if (ButtonsSeparatorGlyphBounds.Contains(e.Location))
 				{
-					RibbonDesigner.Current.CreteOrbMenuItem(typeof(RibbonSeparator));
+					RibbonDesigner.Current.CreateOrbMenuItem(typeof(RibbonSeparator));
 				}
 				else if (RecentGlyphBounds.Contains(e.Location))
 				{
-					RibbonDesigner.Current.CreteOrbRecentItem(typeof(RibbonOrbRecentItem));
+					RibbonDesigner.Current.CreateOrbRecentItem(typeof(RibbonOrbRecentItem));
 				}
 				else if (OptionGlyphBounds.Contains(e.Location))
 				{
-					RibbonDesigner.Current.CreteOrbOptionItem(typeof(RibbonOrbOptionButton));
+					RibbonDesigner.Current.CreateOrbOptionItem(typeof(RibbonOrbOptionButton));
 				}
 				else
 				{

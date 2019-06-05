@@ -147,7 +147,7 @@ namespace System.Windows.Forms
         /// Creates an Orb's MenuItem
         /// </summary>
         /// <param name="t"></param>
-        public void CreteOrbMenuItem(Type t)
+        public void CreateOrbMenuItem(Type t)
         {
             CreateOrbItem("MenuItems", Ribbon.OrbDropDown.MenuItems, t);
         }
@@ -156,7 +156,7 @@ namespace System.Windows.Forms
         /// Creates an Orb's RecentItem
         /// </summary>
         /// <param name="t"></param>
-        public void CreteOrbRecentItem(Type t)
+        public void CreateOrbRecentItem(Type t)
         {
             CreateOrbItem("RecentItems", Ribbon.OrbDropDown.RecentItems, t);
         }
@@ -165,7 +165,7 @@ namespace System.Windows.Forms
         /// Creates an Orb's OptionItem
         /// </summary>
         /// <param name="t"></param>
-        public void CreteOrbOptionItem(Type t)
+        public void CreateOrbOptionItem(Type t)
         {
             CreateOrbItem("OptionItems", Ribbon.OrbDropDown.OptionItems, t);
         }

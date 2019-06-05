@@ -19,7 +19,7 @@ namespace System.Windows.Forms
 {
     /// <summary>
     /// This class is used to make a form able to contain a ribbon on the non-client area.
-    /// For further instrucions search "ribbon non-client" on www.menendezpoo.com
+    /// For further instructions search "ribbon non-client" on www.menendezpoo.com
     /// </summary>
     public class RibbonFormHelper
     {
@@ -241,6 +241,9 @@ namespace System.Windows.Forms
         protected virtual void Form_Load(object sender, EventArgs e)
         {
             if (DesignMode) return;
+            if (Ribbon == null) {
+                throw new ArgumentNullException("Ribbon Control was not placed to RibbonForm");
+            }
             WinApi.MARGINS dwmMargins = new WinApi.MARGINS(
                 Margins.Left,
                 Margins.Right,
@@ -251,10 +254,9 @@ namespace System.Windows.Forms
             {
                 dwmMargins.cxLeftWidth = 0;
                 dwmMargins.cxRightWidth = 0;
-                //dwmMargins.cyTopHeight = 1;
                 dwmMargins.cyBottomHeight = 0;
 
-                // https://msdn.microsoft.com/en-us/library/windows/desktop/aa969512(v=vs.85).aspx
+                // https://docs.microsoft.com/en-us/windows/desktop/api/dwmapi/nf-dwmapi-dwmextendframeintoclientarea
             }
 
             if (WinApi.IsVista && !_frameExtended)
@@ -270,7 +272,7 @@ namespace System.Windows.Forms
         public virtual void ReapplyGlass()
         {
             _frameExtended = false;
-            Form_Load(this, null);
+            Form_Load(this, EventArgs.Empty);
         }
 
         /// <summary>
