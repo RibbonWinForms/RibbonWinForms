@@ -14,28 +14,28 @@ using System.Drawing;
 
 namespace System.Windows.Forms
 {
-   [Designer(typeof(RibbonOrbMenuItemDesigner))]
-   public class RibbonOrbMenuItem
-       : RibbonButton
-   {
-      #region Fields
+    [Designer(typeof(RibbonOrbMenuItemDesigner))]
+    public class RibbonOrbMenuItem
+        : RibbonButton
+    {
+        #region Fields
 
-      #endregion
+        #endregion
 
-      #region Ctor
+        #region Ctor
 
-      public RibbonOrbMenuItem()
-      {
-         DropDownArrowDirection = RibbonArrowDirection.Left;
-         SetDropDownMargin(new Padding(10));
-         DropDownShowing += RibbonOrbMenuItem_DropDownShowing;
-      }
+        public RibbonOrbMenuItem()
+        {
+            DropDownArrowDirection = RibbonArrowDirection.Left;
+            SetDropDownMargin(new Padding(10));
+            DropDownShowing += RibbonOrbMenuItem_DropDownShowing;
+        }
 
-      public RibbonOrbMenuItem(string text)
-         : this()
-      {
-         Text = text;
-      }
+        public RibbonOrbMenuItem(string text)
+           : this()
+        {
+            Text = text;
+        }
 
         #endregion
 
@@ -80,62 +80,62 @@ namespace System.Windows.Forms
         #region Methods
 
         private void RibbonOrbMenuItem_DropDownShowing(object sender, EventArgs e)
-      {
-         if (DropDown != null)
-         {
-            DropDown.DrawIconsBar = false;
-         }
-      }
-
-      public override void OnMouseEnter(MouseEventArgs e)
-      {
-         base.OnMouseEnter(e);
-
-         if (RibbonDesigner.Current == null)
-         {
-            if (Owner.OrbDropDown.LastPoppedMenuItem != null)
+        {
+            if (DropDown != null)
             {
-               Owner.OrbDropDown.LastPoppedMenuItem.CloseDropDown();
+                DropDown.DrawIconsBar = false;
+            }
+        }
+
+        public override void OnMouseEnter(MouseEventArgs e)
+        {
+            base.OnMouseEnter(e);
+
+            if (RibbonDesigner.Current == null)
+            {
+                if (Owner.OrbDropDown.LastPoppedMenuItem != null)
+                {
+                    Owner.OrbDropDown.LastPoppedMenuItem.CloseDropDown();
+                }
+
+                if (Style == RibbonButtonStyle.DropDown || Style == RibbonButtonStyle.SplitDropDown)
+                {
+                    ShowDropDown();
+
+                    Owner.OrbDropDown.LastPoppedMenuItem = this;
+                }
+
             }
 
-            if (Style == RibbonButtonStyle.DropDown || Style == RibbonButtonStyle.SplitDropDown)
-            {
-               ShowDropDown();
+        }
 
-               Owner.OrbDropDown.LastPoppedMenuItem = this;
-            }
+        public override void OnMouseLeave(MouseEventArgs e)
+        {
+            base.OnMouseLeave(e);
+        }
 
-         }
+        internal override Point OnGetDropDownMenuLocation()
+        {
+            if (Owner == null) return base.OnGetDropDownMenuLocation();
 
-      }
+            Rectangle b = Owner.RectangleToScreen(Bounds);
+            Rectangle c = Owner.OrbDropDown.RectangleToScreen(Owner.OrbDropDown.ContentRecentItemsBounds);
 
-      public override void OnMouseLeave(MouseEventArgs e)
-      {
-         base.OnMouseLeave(e);
-      }
+            return new Point(b.Right, c.Top);
+        }
 
-      internal override Point OnGetDropDownMenuLocation()
-      {
-         if (Owner == null) return base.OnGetDropDownMenuLocation();
+        internal override Size OnGetDropDownMenuSize()
+        {
+            Rectangle r = Owner.OrbDropDown.ContentRecentItemsBounds;
+            r.Inflate(-1, -1);
+            return r.Size;
+        }
 
-         Rectangle b = Owner.RectangleToScreen(Bounds);
-         Rectangle c = Owner.OrbDropDown.RectangleToScreen(Owner.OrbDropDown.ContentRecentItemsBounds);
+        public override void OnClick(EventArgs e)
+        {
+            base.OnClick(e);
+        }
 
-         return new Point(b.Right, c.Top);
-      }
-
-      internal override Size OnGetDropDownMenuSize()
-      {
-         Rectangle r = Owner.OrbDropDown.ContentRecentItemsBounds;
-         r.Inflate(-1, -1);
-         return r.Size;
-      }
-
-      public override void OnClick(EventArgs e)
-      {
-          base.OnClick(e);
-      }
-
-      #endregion
-   }
+        #endregion
+    }
 }

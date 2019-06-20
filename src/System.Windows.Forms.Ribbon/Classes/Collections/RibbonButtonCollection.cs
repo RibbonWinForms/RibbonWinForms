@@ -69,7 +69,7 @@ namespace System.Windows.Forms
         /// <param name="items">Items to add</param>
         public override void AddRange(IEnumerable<RibbonItem> items)
         {
-            
+
 
             foreach (RibbonItem item in items)
             {

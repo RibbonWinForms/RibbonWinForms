@@ -19,91 +19,91 @@ namespace System.Windows.Forms
     /// </summary>
     public class RibbonCaptionButton
        : RibbonButton
-   {
-      #region Subclasses
+    {
+        #region Subclasses
 
-      /// <summary>
-      /// Defines the possible caption buttons
-      /// </summary>
-      public enum CaptionButton
-      {
-         Minimize,
-         Maximize,
-         Restore,
-         Close
-      }
-      #endregion
+        /// <summary>
+        /// Defines the possible caption buttons
+        /// </summary>
+        public enum CaptionButton
+        {
+            Minimize,
+            Maximize,
+            Restore,
+            Close
+        }
+        #endregion
 
-      #region Static
+        #region Static
 
-      public const string WindowsIconsFont = "Marlett";
+        public const string WindowsIconsFont = "Marlett";
 
-      /// <summary>
-      /// Gets the character to render the specified button type
-      /// </summary>
-      /// <param name="type">type of button</param>
-      /// <returns>Character to use with "Marlett" font in Windows, some other representative characters when in other O.S.</returns>
-      public static string GetCharFor(CaptionButton type)
-      {
-          if (WinApi.IsWindows)
-         {
+        /// <summary>
+        /// Gets the character to render the specified button type
+        /// </summary>
+        /// <param name="type">type of button</param>
+        /// <returns>Character to use with "Marlett" font in Windows, some other representative characters when in other O.S.</returns>
+        public static string GetCharFor(CaptionButton type)
+        {
+            if (WinApi.IsWindows)
+            {
+                switch (type)
+                {
+                    case CaptionButton.Minimize:
+                        return "0";
+                    case CaptionButton.Maximize:
+                        return "1";
+                    case CaptionButton.Restore:
+                        return "2";
+                    case CaptionButton.Close:
+                        return "r";
+                    default:
+                        return "?";
+                }
+            }
+
             switch (type)
             {
-               case CaptionButton.Minimize:
-                  return "0";
-               case CaptionButton.Maximize:
-                  return "1";
-               case CaptionButton.Restore:
-                  return "2";
-               case CaptionButton.Close:
-                  return "r";
-               default:
-                  return "?";
+                case CaptionButton.Minimize:
+                    return "_";
+                case CaptionButton.Maximize:
+                    return "+";
+                case CaptionButton.Restore:
+                    return "^";
+                case CaptionButton.Close:
+                    return "X";
+                default:
+                    return "?";
             }
-         }
+        }
+        #endregion
 
-          switch (type)
-          {
-              case CaptionButton.Minimize:
-                  return "_";
-              case CaptionButton.Maximize:
-                  return "+";
-              case CaptionButton.Restore:
-                  return "^";
-              case CaptionButton.Close:
-                  return "X";
-              default:
-                  return "?";
-          }
-      }
-      #endregion
+        #region Fields
 
-      #region Fields
+        #endregion
 
-       #endregion
+        #region Ctor
+        /// <summary>
+        /// Creates a new CaptionButton
+        /// </summary>
+        /// <param name="buttonType"></param>
+        public RibbonCaptionButton(CaptionButton buttonType)
+        {
+            SetCaptionButtonType(buttonType);
+        }
+        #endregion
 
-      #region Ctor
-      /// <summary>
-      /// Creates a new CaptionButton
-      /// </summary>
-      /// <param name="buttonType"></param>
-      public RibbonCaptionButton(CaptionButton buttonType)
-      {
-         SetCaptionButtonType(buttonType);
-      }
-      #endregion
+        #region Prop
+        /// <summary>
+        /// Gets the type of caption button this is
+        /// </summary>
+        public CaptionButton CaptionButtonType { get; private set; }
 
-      #region Prop
-      /// <summary>
-      /// Gets the type of caption button this is
-      /// </summary>
-      public CaptionButton CaptionButtonType { get; private set; }
+        #endregion
 
-       #endregion
+        #region Methods
 
-      #region Methods
-
-      public override void OnClick(EventArgs e)
+        public override void OnClick(EventArgs e)
         {
             base.OnClick(e);
 
@@ -119,13 +119,13 @@ namespace System.Windows.Forms
                 case CaptionButton.Maximize:
                     if (f.WindowState == FormWindowState.Normal)
                     {
-                       f.WindowState = FormWindowState.Maximized;
-                       f.Refresh();
+                        f.WindowState = FormWindowState.Maximized;
+                        f.Refresh();
                     }
                     else
                     {
-                       f.WindowState = FormWindowState.Normal;
-                       f.Refresh();
+                        f.WindowState = FormWindowState.Normal;
+                        f.Refresh();
                     }
                     break;
                 case CaptionButton.Restore:
@@ -139,24 +139,24 @@ namespace System.Windows.Forms
             }
         }
 
-      /// <summary>
-      /// Sets value to the type of caption button
-      /// </summary>
-      /// <param name="buttonType"></param>
-      internal void SetCaptionButtonType(CaptionButton buttonType)
-      {
-         Text = GetCharFor(buttonType);
-         CaptionButtonType = buttonType;
-      }
+        /// <summary>
+        /// Sets value to the type of caption button
+        /// </summary>
+        /// <param name="buttonType"></param>
+        internal void SetCaptionButtonType(CaptionButton buttonType)
+        {
+            Text = GetCharFor(buttonType);
+            CaptionButtonType = buttonType;
+        }
 
-      internal override Rectangle OnGetTextBounds(RibbonElementSizeMode sMode, Rectangle bounds)
-      {
+        internal override Rectangle OnGetTextBounds(RibbonElementSizeMode sMode, Rectangle bounds)
+        {
 
-         Rectangle r = bounds;
-         r.X = bounds.Left + 3;
-         return r;
-      }
+            Rectangle r = bounds;
+            r.X = bounds.Left + 3;
+            return r;
+        }
 
-      #endregion
-   }
+        #endregion
+    }
 }

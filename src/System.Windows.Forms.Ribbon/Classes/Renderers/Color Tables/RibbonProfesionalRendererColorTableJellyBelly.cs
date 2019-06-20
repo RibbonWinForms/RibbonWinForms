@@ -135,14 +135,14 @@ namespace System.Windows.Forms
             DropDownGripLight = FromHex("#C5C5C5");
             DropDownCheckedButtonGlyphBg = FromHex("#FCF1C2");
             DropDownCheckedButtonGlyphBorder = FromHex("#F29536");
-        
+
             SeparatorLight = FromHex("#FAFBFD");
             SeparatorDark = FromHex("#484848");
             QATSeparatorLight = FromHex("#FAFBFD");
             QATSeparatorDark = FromHex("#484848");
             SeparatorBg = FromHex("#C5C5C5");
             SeparatorLine = FromHex("#C5C5C5");
-          
+
             TextBoxUnselectedBg = FromHex("#C5C5C5");
             TextBoxBorder = FromHex("#FFFFFF");
             ToolTipContentNorth = FromHex("#B7B7B7");

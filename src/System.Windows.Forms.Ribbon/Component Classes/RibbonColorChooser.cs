@@ -125,7 +125,7 @@ namespace System.Windows.Forms
             Rectangle colorFill = Rectangle.FromLTRB(
                     ImageBounds.Left,
                     ImageBounds.Bottom - h,
-                    ImageBounds.Right, 
+                    ImageBounds.Right,
                     ImageBounds.Bottom
                     );
             SmoothingMode sm = e.Graphics.SmoothingMode;

@@ -32,6 +32,6 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets the bounds of the content (without scrolling controls)
         /// </summary>
-        Rectangle ContentBounds { get;}
+        Rectangle ContentBounds { get; }
     }
 }

@@ -155,7 +155,7 @@ namespace System.Windows.Forms
         internal static bool FeedMouseWheel(MouseEventArgs e)
         {
             RibbonDropDown dd = LastPopup as RibbonDropDown;
-            
+
             if (dd != null)
             {
                 foreach (RibbonItem item in dd.Items)
@@ -178,23 +178,23 @@ namespace System.Windows.Forms
                             return true;
                         }
                     }
-                    
+
                 }
             }
-           //kevin carbis - added scrollbar support to dropdowns so we need to feed the mouse wheel to the 
-           //actual dropdown item if it was not intended for a child item.
+            //kevin carbis - added scrollbar support to dropdowns so we need to feed the mouse wheel to the 
+            //actual dropdown item if it was not intended for a child item.
             if (dd != null)
             {
-               if (e.Delta < 0)
-               {
-                  dd.ScrollDown();
-               }
-               else
-               {
-                  dd.ScrollUp();
-               }
+                if (e.Delta < 0)
+                {
+                    dd.ScrollDown();
+                }
+                else
+                {
+                    dd.ScrollUp();
+                }
 
-               return true;
+                return true;
             }
             return false;
         }

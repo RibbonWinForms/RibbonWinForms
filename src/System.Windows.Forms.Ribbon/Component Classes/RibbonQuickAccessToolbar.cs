@@ -70,8 +70,8 @@ namespace System.Windows.Forms
 
             if (renderer != null)
             {
-               dk = renderer.ColorTable.Arrow;
-               lt = renderer.ColorTable.ArrowLight;
+                dk = renderer.ColorTable.Arrow;
+                lt = renderer.ColorTable.ArrowLight;
             }
 
             using (Graphics g = Graphics.FromImage(bmp))
@@ -92,7 +92,7 @@ namespace System.Windows.Forms
                 {
 
                     g.DrawLine(p, x, y, x + 4, y);
-                    g.FillPolygon(b, new[] { 
+                    g.FillPolygon(b, new[] {
                             new Point(x, y + 3),
                             new Point(x + 5, y + 3),
                             new Point(x + 2, y + 6)
@@ -109,7 +109,7 @@ namespace System.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string Name
         {
-           get => base.Name;
+            get => base.Name;
             set => base.Name = value;
         }
 
@@ -202,7 +202,7 @@ namespace System.Windows.Forms
 
                 foreach (RibbonItem item in Items)
                 {
-                    if ( item.Visible )
+                    if (item.Visible)
                         item.OnPaint(this, new RibbonElementPaintEventArgs(item.Bounds, e.Graphics, RibbonElementSizeMode.Compact));
                 }
             }

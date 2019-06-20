@@ -28,7 +28,7 @@ namespace System.Windows.Forms
                 Point edge = _behaviorService.ControlToAdornerWindow(_ribbon);
                 if (!_ribbon.CaptionBarVisible || !_ribbon.QuickAccessToolbar.Visible)
                 {
-                   return Rectangle.Empty;
+                    return Rectangle.Empty;
                 }
 
                 if (_ribbon.RightToLeft == RightToLeft.No)
@@ -57,18 +57,18 @@ namespace System.Windows.Forms
 
         public override void Paint(PaintEventArgs pe)
         {
-           if (_ribbon.CaptionBarVisible && _ribbon.QuickAccessToolbar.Visible)
-           {
-              SmoothingMode smbuff = pe.Graphics.SmoothingMode;
-              pe.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-              using (SolidBrush b = new SolidBrush(Color.FromArgb(50, Color.Blue)))
-              {
-                 pe.Graphics.FillEllipse(b, Bounds);
-              }
-              StringFormat sf = StringFormatFactory.Center();
-              pe.Graphics.DrawString("+", SystemFonts.DefaultFont, Brushes.White, Bounds, sf);
-              pe.Graphics.SmoothingMode = smbuff;
-           }
+            if (_ribbon.CaptionBarVisible && _ribbon.QuickAccessToolbar.Visible)
+            {
+                SmoothingMode smbuff = pe.Graphics.SmoothingMode;
+                pe.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                using (SolidBrush b = new SolidBrush(Color.FromArgb(50, Color.Blue)))
+                {
+                    pe.Graphics.FillEllipse(b, Bounds);
+                }
+                StringFormat sf = StringFormatFactory.Center();
+                pe.Graphics.DrawString("+", SystemFonts.DefaultFont, Brushes.White, Bounds, sf);
+                pe.Graphics.SmoothingMode = smbuff;
+            }
         }
     }
 
@@ -84,7 +84,7 @@ namespace System.Windows.Forms
             _ribbon = ribbon;
         }
 
-        
+
 
         public override bool OnMouseUp(Glyph g, MouseButtons button)
         {

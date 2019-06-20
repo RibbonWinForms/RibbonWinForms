@@ -165,10 +165,13 @@ namespace System.Windows.Forms
                 {
                     int left;
                     int right;
-                    if (WinApi.IsWin10) {
+                    if (WinApi.IsWin10)
+                    {
                         left = 0;
                         right = Form.Width;
-                    } else {
+                    }
+                    else
+                    {
                         left = Margins.Left - 0;
                         right = Form.Width - Margins.Right - 0;
                     }
@@ -241,7 +244,8 @@ namespace System.Windows.Forms
         protected virtual void Form_Load(object sender, EventArgs e)
         {
             if (DesignMode) return;
-            if (Ribbon == null) {
+            if (Ribbon == null)
+            {
                 throw new ArgumentNullException("Ribbon Control was not placed to RibbonForm");
             }
             WinApi.MARGINS dwmMargins = new WinApi.MARGINS(

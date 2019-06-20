@@ -14,23 +14,23 @@ using System.ComponentModel.Design;
 
 namespace System.Windows.Forms
 {
-   public class RibbonItemCollectionEditor
-       : CollectionEditor
-   {
-      public RibbonItemCollectionEditor()
-         : base(typeof(RibbonItemCollection))
-      {
+    public class RibbonItemCollectionEditor
+        : CollectionEditor
+    {
+        public RibbonItemCollectionEditor()
+           : base(typeof(RibbonItemCollection))
+        {
 
-      }
+        }
 
-      protected override Type CreateCollectionItemType()
-      {
-         return typeof(RibbonButton);
-      }
+        protected override Type CreateCollectionItemType()
+        {
+            return typeof(RibbonButton);
+        }
 
-      protected override Type[] CreateNewItemTypes()
-      {
-         return new[] {
+        protected override Type[] CreateNewItemTypes()
+        {
+            return new[] {
             typeof(RibbonButton),
             typeof(RibbonButtonList),
             typeof(RibbonItemGroup),
@@ -44,6 +44,6 @@ namespace System.Windows.Forms
             typeof(RibbonLabel),
             typeof(RibbonHost)
          };
-      }
-   }
+        }
+    }
 }

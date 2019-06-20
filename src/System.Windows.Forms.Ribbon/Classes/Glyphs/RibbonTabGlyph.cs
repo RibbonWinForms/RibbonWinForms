@@ -89,7 +89,7 @@ namespace System.Windows.Forms
         {
             _designer = designer;
         }
-        
+
         public override bool OnMouseUp(Glyph g, MouseButtons button)
         {
             _designer.AddTabVerb(this, EventArgs.Empty);

@@ -2,7 +2,7 @@
 
 // Added on 13 Jan 2013
 // Used to handle ribbon theme coloring
- 
+
 // But I think this enum can also be used by other components too.
 // Therefore the name of this enum "RibbonColorPart" has the potential 
 // to be changed to a more common or generic name in future - by adriancs (21 Aug 2013)

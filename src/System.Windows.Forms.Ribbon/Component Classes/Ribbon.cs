@@ -173,7 +173,8 @@ namespace System.Windows.Forms
             RibbonPopupManager.PopupRegistered += OnPopupRegistered;
             RibbonPopupManager.PopupUnRegistered += OnPopupUnregistered;
             Control parent = null;
-            ParentChanged += (o1, e1) => {
+            ParentChanged += (o1, e1) =>
+            {
                 if (parent != null)
                 {
                     parent.KeyUp -= Ribbon_KeyUp;
@@ -190,7 +191,8 @@ namespace System.Windows.Forms
 
                     form.KeyPreview = true;
 
-                    form.FormClosing += (o, e) => {
+                    form.FormClosing += (o, e) =>
+                    {
                         Application.RemoveMessageFilter(this);
                     };
                 }

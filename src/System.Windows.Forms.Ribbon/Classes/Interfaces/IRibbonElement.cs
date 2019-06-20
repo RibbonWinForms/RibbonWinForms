@@ -42,7 +42,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets the bounds of the item
         /// </summary>
-        Rectangle Bounds { get;}
+        Rectangle Bounds { get; }
 
         /// <summary>
         /// Gets the Ribbon owner of this item.

@@ -26,7 +26,7 @@ namespace System.Windows.Forms
         : Component, IRibbonElement
     {
         #region Fields
-        
+
         private string _text;
         private Color _glowColor;
 
@@ -96,7 +96,7 @@ namespace System.Windows.Forms
                 {
                     if (_visible)
                     {
-                        if (ContextualTabsCount > 0) 
+                        if (ContextualTabsCount > 0)
                             Owner.ActiveTab = ContextualTabs[0];
                     }
                     else
@@ -163,7 +163,7 @@ namespace System.Windows.Forms
                 }
                 return total;
             }
-        }  
+        }
 
         /// <summary>
         /// Gets the Ribbon that owns this context
@@ -215,7 +215,7 @@ namespace System.Windows.Forms
             Owner = null;
             OnOwnerChanged(EventArgs.Empty);
         }
-          
+
         /// <summary>
         /// Measures the size of the context.
         /// </summary>

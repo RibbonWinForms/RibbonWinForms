@@ -35,18 +35,18 @@ namespace System.Windows.Forms
                 //If has panels
                 if (_tab.Panels.Count > 0)
                 {
-                   //Place glyph next to the last panel
-                   RibbonPanel p = _tab.Panels[_tab.Panels.Count - 1];
-                   if (_tab.Owner.RightToLeft == RightToLeft.No)
-                     pnl.X = p.Bounds.Right + 5;
-                   else
-                      pnl.X = p.Bounds.Left - 5 - size.Width;
+                    //Place glyph next to the last panel
+                    RibbonPanel p = _tab.Panels[_tab.Panels.Count - 1];
+                    if (_tab.Owner.RightToLeft == RightToLeft.No)
+                        pnl.X = p.Bounds.Right + 5;
+                    else
+                        pnl.X = p.Bounds.Left - 5 - size.Width;
                 }
 
-               return new Rectangle(
-                    edge.X + pnl.X,
-                    edge.Y + pnl.Y,
-                    size.Width, size.Height);
+                return new Rectangle(
+                     edge.X + pnl.X,
+                     edge.Y + pnl.Y,
+                     size.Width, size.Height);
             }
         }
 
@@ -89,7 +89,7 @@ namespace System.Windows.Forms
             _designer = designer;
             _tab = tab;
         }
-        
+
         public override bool OnMouseUp(Glyph g, MouseButtons button)
         {
             _designer.AddPanel(this, EventArgs.Empty);

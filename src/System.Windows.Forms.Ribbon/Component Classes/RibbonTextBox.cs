@@ -221,7 +221,7 @@ namespace System.Windows.Forms
 
             _actualTextBox.SelectAll();
             _actualTextBox.Focus();
-            
+
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace System.Windows.Forms
             _actualTextBox.VisibleChanged += _actualTextBox_VisibleChanged;
             _actualTextBox.Validating += _actualTextbox_Validating;
             _actualTextBox.Validated += _actualTextbox_Validated;
-            
+
             _actualTextBox.PasswordChar = PasswordChar;
 
             _actualTextBox.Visible = true;
@@ -379,7 +379,7 @@ namespace System.Windows.Forms
 
             //foreach (var item in this.OwnerPanel.GetItems())
             //{
-                
+
             //    if (item == this)
             //    {
             //        next = true;
@@ -501,13 +501,13 @@ namespace System.Windows.Forms
 
             using (StringFormat f = StringFormatFactory.NearCenterNoWrap(StringTrimming.None))
             {
-               Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, TextBoxTextBounds, TextBoxText, f));
+                Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, TextBoxTextBounds, TextBoxText, f));
 
-               if (LabelVisible)
-               {
-                  f.Alignment = (StringAlignment)TextAlignment;
-                  Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, LabelBounds, Text, f));
-               }
+                if (LabelVisible)
+                {
+                    f.Alignment = (StringAlignment)TextAlignment;
+                    Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, LabelBounds, Text, f));
+                }
             }
         }
 
@@ -653,7 +653,7 @@ namespace System.Windows.Forms
                 else
                 {
                     Owner.Cursor = Cursors.Default;
-                } 
+                }
             }
         }
 

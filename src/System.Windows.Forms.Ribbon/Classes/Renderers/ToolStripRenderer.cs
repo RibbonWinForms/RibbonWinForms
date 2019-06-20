@@ -305,7 +305,7 @@ namespace System.Windows.Forms
 
                 using (SolidBrush b = new SolidBrush(Theme.Standard.RendererColorTable.ButtonSelected_2013))
                 {
-                   using (SolidBrush sb = new SolidBrush(Theme.Standard.RendererColorTable.ButtonBorderIn))
+                    using (SolidBrush sb = new SolidBrush(Theme.Standard.RendererColorTable.ButtonBorderIn))
                     {
                         e.Graphics.FillRectangle(sb, rectBorder);
                     }
@@ -383,14 +383,14 @@ namespace System.Windows.Forms
 
         private void RenderItemBackgroundPressed(ToolStripItemRenderEventArgs e)
         {
-           if (Theme.Standard.Style == RibbonOrbStyle.Office_2013)
+            if (Theme.Standard.Style == RibbonOrbStyle.Office_2013)
             {
                 Rectangle rectBorder = new Rectangle(1, 1, e.Item.Width - 1, e.Item.Height - 1);
                 Rectangle rect = new Rectangle(2, 2, e.Item.Width - 2, e.Item.Height - 2);
 
                 using (SolidBrush b = new SolidBrush(Theme.Standard.RendererColorTable.ButtonPressed_2013))
                 {
-                   using (SolidBrush sb = new SolidBrush(Theme.Standard.RendererColorTable.ButtonBorderOut))
+                    using (SolidBrush sb = new SolidBrush(Theme.Standard.RendererColorTable.ButtonBorderOut))
                     {
                         e.Graphics.FillRectangle(sb, rectBorder);
                     }
@@ -468,7 +468,7 @@ namespace System.Windows.Forms
 
         private void RenderItemBackgroundDefault(ToolStripItemRenderEventArgs e)
         {
-           if (Theme.Standard.Style == RibbonOrbStyle.Office_2013)
+            if (Theme.Standard.Style == RibbonOrbStyle.Office_2013)
             {
                 Rectangle rect = new Rectangle(0, 0, e.Item.Width, e.Item.Height);
 
@@ -502,22 +502,22 @@ namespace System.Windows.Forms
                         {
                             if (e.Item is ToolStripButton)
                             {
-                                if ((e.Item.Selected | e.Item.Pressed) &  !((ToolStripButton)e.Item).Checked)
+                                if ((e.Item.Selected | e.Item.Pressed) & !((ToolStripButton)e.Item).Checked)
                                 {
-                                   e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextPressed_2013;
+                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextPressed_2013;
                                 }
                                 else if ((!e.Item.Selected & !e.Item.Pressed) & !((ToolStripButton)e.Item).Checked)
                                 {
-                                   e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText_2013;
+                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText_2013;
                                 }
                                 else if (((ToolStripButton)e.Item).Checked)
                                 {
-                                   e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextSelected_2013;
+                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextSelected_2013;
                                 }
                             }
                             else if (e.Item is ToolStripLabel)
                             {
-                               e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText_2013;
+                                e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText_2013;
                             }
                         }
                         else
@@ -539,20 +539,20 @@ namespace System.Windows.Forms
                             {
                                 if ((e.Item.Selected | e.Item.Pressed) & !((ToolStripButton)e.Item).Checked)
                                 {
-                                   e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextPressed;
+                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextPressed;
                                 }
                                 else if ((!e.Item.Selected & !e.Item.Pressed) & !((ToolStripButton)e.Item).Checked)
                                 {
-                                   e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText;
+                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText;
                                 }
                                 else if (((ToolStripButton)e.Item).Checked)
                                 {
-                                   e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextSelected;
+                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextSelected;
                                 }
                             }
                             else if (e.Item is ToolStripLabel)
                             {
-                               e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText;
+                                e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText;
                             }
                         }
                         else

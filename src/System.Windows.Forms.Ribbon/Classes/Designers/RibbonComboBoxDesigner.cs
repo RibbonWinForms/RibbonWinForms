@@ -22,7 +22,7 @@ namespace System.Windows.Forms
                 {
                     return box.Owner;
                 }
-                return null; 
+                return null;
             }
         }
 
@@ -34,7 +34,7 @@ namespace System.Windows.Forms
                 {
                     return box.DropDownItems;
                 }
-                return null; 
+                return null;
             }
         }
     }

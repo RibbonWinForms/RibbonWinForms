@@ -12,13 +12,13 @@
 
 namespace System.Windows.Forms
 {
-   public class RibbonItemEventArgs : EventArgs
-   {
-       public RibbonItemEventArgs( RibbonItem item)
-       {
-         Item = item;
-      }
+    public class RibbonItemEventArgs : EventArgs
+    {
+        public RibbonItemEventArgs(RibbonItem item)
+        {
+            Item = item;
+        }
 
-      public RibbonItem Item { get; set; }
-   }
+        public RibbonItem Item { get; set; }
+    }
 }

@@ -43,8 +43,8 @@ namespace System.Windows.Forms
                 Point edge = _behaviorService.ControlToAdornerWindow(_ribbon);
                 return new Rectangle(
                     edge.X + _ribbon.OrbBounds.Left,
-                    edge.Y + _ribbon.OrbBounds.Top, 
-                    _ribbon.OrbBounds.Height, 
+                    edge.Y + _ribbon.OrbBounds.Top,
+                    _ribbon.OrbBounds.Height,
                     _ribbon.OrbBounds.Height);
             }
         }
@@ -68,14 +68,14 @@ namespace System.Windows.Forms
             //{
             //    pe.Graphics.FillEllipse(b, Bounds);
             //}
-            
+
         }
         #endregion
     }
 
     public class RibbonOrbAdornerGlyphBehavior
         : Behavior
-	{
+    {
 
-	}
+    }
 }

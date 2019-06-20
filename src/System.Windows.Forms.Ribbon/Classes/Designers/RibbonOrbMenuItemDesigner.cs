@@ -42,7 +42,7 @@ namespace System.Windows.Forms
 
         protected override DesignerVerbCollection OnGetVerbs()
         {
-            return new DesignerVerbCollection(new[] { 
+            return new DesignerVerbCollection(new[] {
                 new DesignerVerb("Add DescriptionMenuItem", AddDescriptionMenuItem),
                 new DesignerVerb("Add Separator", AddSeparator)
             });

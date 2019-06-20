@@ -44,16 +44,16 @@ namespace System.Windows.Forms
                 s.Width += 100;
                 s.Height += 100;
                 Size = s;
-                
+
             }
 
             foreach (RibbonItem item in panel.Items)
             {
                 item.SetCanvas(this);
             }
-        } 
+        }
         #endregion
-        
+
         #region Props
 
         public RibbonMouseSensor Sensor { get; }
@@ -138,16 +138,16 @@ namespace System.Windows.Forms
             Panel.Owner.ResumeSensor();
 
             Panel.PopupShowed = false;
-            
+
             Panel.Owner.RedrawArea(Panel.Bounds);
             base.OnClosed(e);
-        } 
+        }
 
         #endregion
 
         #region Shadow
 
-        
+
 
 
         #endregion

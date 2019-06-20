@@ -17,7 +17,7 @@ namespace System.Windows.Forms
             : base(owner, g, clip, item, bounds)
         {
             Text = text;
-            Style =  FontStyle.Regular;
+            Style = FontStyle.Regular;
             Format = new StringFormat();
             Color = Color.Empty;
         }
@@ -40,8 +40,8 @@ namespace System.Windows.Forms
             Color = Color.Empty;
         }
 
-        public RibbonTextEventArgs(Ribbon owner, Graphics g, Rectangle clip, RibbonItem item, Rectangle bounds, 
-            string text, Color color, FontStyle style,  StringFormat format)
+        public RibbonTextEventArgs(Ribbon owner, Graphics g, Rectangle clip, RibbonItem item, Rectangle bounds,
+            string text, Color color, FontStyle style, StringFormat format)
             : base(owner, g, clip, item, bounds)
         {
             Text = text;

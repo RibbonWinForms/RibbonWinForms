@@ -23,7 +23,7 @@ namespace System.Windows.Forms
     /// </summary>
     //[Designer("System.Windows.Forms.RibbonQuickAccessToolbarDesigner")]
     [Designer(typeof(RibbonItemGroupDesigner))]
-    public class RibbonItemGroup : RibbonItem, 
+    public class RibbonItemGroup : RibbonItem,
         IContainsSelectableRibbonItems, IContainsRibbonComponents
     {
         #region Fields
@@ -46,13 +46,13 @@ namespace System.Windows.Forms
 
         protected override void Dispose(bool disposing)
         {
-           if (disposing && RibbonDesigner.Current == null)
-           {
-              foreach (RibbonItem ri in Items)
-                 ri.Dispose();
-           }
+            if (disposing && RibbonDesigner.Current == null)
+            {
+                foreach (RibbonItem ri in Items)
+                    ri.Dispose();
+            }
 
-           base.Dispose(disposing);
+            base.Dispose(disposing);
         }
         #endregion
 
@@ -114,7 +114,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets the collection of items of this group
         /// </summary>
-        [DesignerSerializationVisibility( DesignerSerializationVisibility.Content)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public RibbonItemGroupItemCollection Items { get; }
 
         #endregion
@@ -123,7 +123,7 @@ namespace System.Windows.Forms
 
         protected override bool ClosesDropDownAt(Point p)
         {
-           return false;
+            return false;
         }
 
         public override void SetBounds(Rectangle bounds)
@@ -156,17 +156,17 @@ namespace System.Windows.Forms
 
             if (DrawBackground)
             {
-                Owner.Renderer.OnRenderRibbonItemBorder(new RibbonItemRenderEventArgs(Owner, e.Graphics, e.Clip, this)); 
+                Owner.Renderer.OnRenderRibbonItemBorder(new RibbonItemRenderEventArgs(Owner, e.Graphics, e.Clip, this));
             }
         }
 
         public override Size MeasureSize(object sender, RibbonElementMeasureSizeEventArgs e)
         {
-			  if (!Visible && !Owner.IsDesignMode())
-           {
-              SetLastMeasuredSize(new Size(0, 0));
-              return LastMeasuredSize;
-           }
+            if (!Visible && !Owner.IsDesignMode())
+            {
+                SetLastMeasuredSize(new Size(0, 0));
+                return LastMeasuredSize;
+            }
 
             ///For RibbonItemGroup, size is always compact, and it's designed to be on an horizontal flow
             ///tab panel.
@@ -228,14 +228,14 @@ namespace System.Windows.Forms
 
         internal override void ClearOwner()
         {
-           List<RibbonItem> oldItems = new List<RibbonItem>(Items);
-           
-           base.ClearOwner();
+            List<RibbonItem> oldItems = new List<RibbonItem>(Items);
 
-           foreach (RibbonItem item in oldItems)
-           {
-              item.ClearOwner();
-           }
+            base.ClearOwner();
+
+            foreach (RibbonItem item in oldItems)
+            {
+                item.ClearOwner();
+            }
         }
 
         internal override void SetSizeMode(RibbonElementSizeMode sizeMode)
@@ -251,7 +251,7 @@ namespace System.Windows.Forms
         public override string ToString()
         {
             return "Group: " + Items.Count + " item(s)";
-        } 
+        }
         #endregion
 
         #region IContainsRibbonItems Members

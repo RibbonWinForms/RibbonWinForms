@@ -29,7 +29,7 @@ namespace System.Windows.Forms
 
         public override RibbonItemCollection Collection
         {
-            get 
+            get
             {
                 if (Component is RibbonItemGroup @group)
                 {

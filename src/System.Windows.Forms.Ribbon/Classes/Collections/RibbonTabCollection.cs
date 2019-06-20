@@ -34,12 +34,12 @@ namespace System.Windows.Forms
 
         internal override void SetOwner(RibbonTab item)
         {
-           item.SetOwner(Owner);
+            item.SetOwner(Owner);
         }
 
         internal override void ClearOwner(RibbonTab item)
         {
-           item.ClearOwner();
+            item.ClearOwner();
         }
 
         internal override void UpdateRegions()

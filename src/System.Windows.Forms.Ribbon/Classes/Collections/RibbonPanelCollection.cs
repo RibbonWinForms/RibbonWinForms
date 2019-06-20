@@ -46,13 +46,13 @@ namespace System.Windows.Forms
 
         internal override void SetOwner(RibbonPanel item)
         {
-           item.SetOwner(Owner);
-           item.SetOwnerTab(OwnerTab);
+            item.SetOwner(Owner);
+            item.SetOwnerTab(OwnerTab);
         }
 
         internal override void ClearOwner(RibbonPanel item)
         {
-           item.ClearOwner();
+            item.ClearOwner();
         }
 
         /// <summary>
@@ -80,11 +80,11 @@ namespace System.Windows.Forms
         /// </summary>
         internal override void SetOwner(Ribbon owner)
         {
-           base.SetOwner(owner);
-           foreach (RibbonPanel panel in this)
-           {
-              panel.SetOwner(owner);
-           }
+            base.SetOwner(owner);
+            foreach (RibbonPanel panel in this)
+            {
+                panel.SetOwner(owner);
+            }
         }
 
         /// <summary>
