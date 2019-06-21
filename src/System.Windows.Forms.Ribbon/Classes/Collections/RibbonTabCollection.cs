@@ -25,7 +25,7 @@ namespace System.Windows.Forms
         /// Creates a new RibbonTabCollection
         /// </summary>
         /// <param name="owner">|</param>
-        /// <exception cref="AgrumentNullException">owner is null</exception>
+        /// <exception cref="ArgumentNullException">owner is null</exception>
         internal RibbonTabCollection(Ribbon owner)
            : base(owner)
         {

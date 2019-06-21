@@ -847,24 +847,24 @@ namespace System.Windows.Forms
                         //Set the bounds of the panel to let it know it's height
                         panel.SetBounds(new Rectangle(0, 0, 1, TabContentBounds.Height - Owner.PanelPadding.Vertical));
 
-                        ///Size of the panel
+                        //Size of the panel
                         Size size = panel.MeasureSize(this, new RibbonElementMeasureSizeEventArgs(g, sMode));
 
-                        ///Creates the bounds of the panel
+                        //Creates the bounds of the panel
                         Rectangle bounds = new Rectangle(
                              curRight, panelsTop,
                              size.Width, size.Height);
 
-                        ///Set the bounds of the panel
+                        //Set the bounds of the panel
                         panel.SetBounds(bounds);
 
-                        ///Let the panel know what size we have decided for it
+                        //Let the panel know what size we have decided for it
                         panel.SetSizeMode(sMode);
 
-                        ///Update curRight
+                        //Update curRight
                         curRight = bounds.Right + Owner.PanelSpacing;
 
-                        ///Update panelsVisibles
+                        //Update panelsVisibles
                         panelsVisibles += 1;
                     }
                     else if (panel.Visible && Owner.RightToLeft == RightToLeft.Yes)
@@ -874,26 +874,26 @@ namespace System.Windows.Forms
                         //Set the bounds of the panel to let it know it's height
                         panel.SetBounds(new Rectangle(0, 0, 1, TabContentBounds.Height - Owner.PanelPadding.Vertical));
 
-                        ///Size of the panel
+                        //Size of the panel
                         Size size = panel.MeasureSize(this, new RibbonElementMeasureSizeEventArgs(g, sMode));
 
                         curLeft -= size.Width + Owner.PanelSpacing;
 
-                        ///Creates the bounds of the panel
+                        //Creates the bounds of the panel
                         Rectangle bounds = new Rectangle(
                              curLeft, panelsTop,
                              size.Width, size.Height);
 
-                        ///Set the bounds of the panel
+                        //Set the bounds of the panel
                         panel.SetBounds(bounds);
 
-                        ///Let the panel know what size we have decided for it
+                        //Let the panel know what size we have decided for it
                         panel.SetSizeMode(sMode);
 
-                        ///Update curLeft
+                        //Update curLeft
                         curLeft = bounds.Left - 1 - Owner.PanelSpacing;
 
-                        ///Update panelsVisibles
+                        //Update panelsVisibles
                         panelsVisibles += 1;
                     }
                     else
@@ -904,7 +904,7 @@ namespace System.Windows.Forms
 
                 if (!Owner.IsDesignMode())
                 {
-                    ///check if there are visible panels
+                    //check if there are visible panels
                     if (panelsVisibles > 0)
                     {
                         while (curRight > TabContentBounds.Right && !AllPanelsOverflow())
@@ -926,10 +926,10 @@ namespace System.Windows.Forms
 
                             #endregion
 
-                            ///Reset x-axis reminder
+                            //Reset x-axis reminder
                             curRight = TabContentBounds.Left + Owner.PanelPadding.Left;
 
-                            ///Re-arrange location because of the new bounds
+                            //Re-arrange location because of the new bounds
                             foreach (RibbonPanel panel in Panels)
                             {
                                 Size s = panel.Bounds.Size;
@@ -941,7 +941,7 @@ namespace System.Windows.Forms
                     }
                 }
 
-                ///Update regions of all panels
+                //Update regions of all panels
                 foreach (RibbonPanel panel in Panels)
                 {
                     panel.UpdateItemsRegions(g, panel.SizeMode);

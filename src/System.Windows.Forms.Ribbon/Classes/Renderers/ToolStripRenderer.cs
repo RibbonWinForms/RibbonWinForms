@@ -118,8 +118,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets the corners to round on the specified button
         /// </summary>
-        /// <param name="r"></param>
-        /// <param name="button"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
         private Corners ToolStripItemCorners(ToolStripItem item)
         {

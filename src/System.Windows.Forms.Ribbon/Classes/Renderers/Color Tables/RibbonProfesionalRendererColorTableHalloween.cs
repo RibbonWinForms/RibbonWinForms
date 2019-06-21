@@ -184,10 +184,10 @@ namespace System.Windows.Forms
 
             clrVerBG_Shadow = Color.FromArgb(255, 181, 190, 206);
 
-            /// <summary>
-            /// 2013 Colors
-            /// Office 2013 Dark Theme
-            /// </summary>
+            ///// <summary>
+            ///// 2013 Colors
+            ///// Office 2013 Dark Theme
+            ///// </summary>
             ButtonChecked_2013 = FromHex("#CDE6F7");
             ButtonPressed_2013 = FromHex("#92C0E0");
             ButtonSelected_2013 = FromHex("#CDE6F7");

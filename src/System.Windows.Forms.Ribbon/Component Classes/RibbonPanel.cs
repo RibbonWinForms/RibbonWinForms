@@ -111,6 +111,7 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="text">Text of the panel</param>
         /// <param name="flowsTo">Flow direction of the content items</param>
+        /// <param name="items">content items</param>
         public RibbonPanel(string text, RibbonPanelFlowDirection flowsTo, IEnumerable<RibbonItem> items)
             : this()
         {
@@ -757,7 +758,7 @@ namespace System.Windows.Forms
                     break;
             }
 
-            ///Center items on the panel
+            //Center items on the panel
             CenterItems();
         }
 
@@ -772,17 +773,17 @@ namespace System.Windows.Forms
             int lastBottom = 0;
             List<RibbonItem> lastColumn = new List<RibbonItem>();
 
-            ///Iterate thru items on panel
+            //Iterate thru items on panel
             foreach (RibbonItem item in Items)
             {
-                ///Gets the last measured size (to avoid re-measuring calculations)
+                //Gets the last measured size (to avoid re-measuring calculations)
                 Size itemSize;
                 if (item.Visible || Owner.IsDesignMode())
                     itemSize = item.LastMeasuredSize;
                 else
                     itemSize = new Size(0, 0);
 
-                ///If not enough space available, reset curBottom and advance curRight
+                //If not enough space available, reset curBottom and advance curRight
                 if (curBottom + itemSize.Height > ContentBounds.Bottom)
                 {
                     curBottom = ContentBounds.Top + Owner.ItemPadding.Vertical + 0;
@@ -791,21 +792,21 @@ namespace System.Windows.Forms
                     lastColumn.Clear();
                 }
 
-                ///Set the item's bounds
+                //Set the item's bounds
                 item.SetBounds(new Rectangle(curRight, curBottom, itemSize.Width, itemSize.Height));
 
-                ///save last right and bottom
+                //save last right and bottom
                 lastRight = Math.Max(item.Bounds.Right, lastRight);
                 lastBottom = item.Bounds.Bottom;
 
-                ///update current bottom
+                //update current bottom
                 curBottom = item.Bounds.Bottom + Owner.ItemPadding.Vertical + 1;
 
-                ///Add to the collection of items of the last column
+                //Add to the collection of items of the last column
                 lastColumn.Add(item);
             }
 
-            ///Center the items vertically on the last column 
+            //Center the items vertically on the last column 
             Items.CenterItemsVerticallyInto(lastColumn, ContentBounds);
         }
 
@@ -820,19 +821,19 @@ namespace System.Windows.Forms
             int lastBottom = 0;
             List<RibbonItem> lastColumn = new List<RibbonItem>();
 
-            ///Iterate thru items on panel
+            //Iterate thru items on panel
             for (int i = Items.Count - 1; i >= 0; i--)
             {
                 RibbonItem item = Items[i];
 
-                ///Gets the last measured size (to avoid re-measuring calculations)
+                //Gets the last measured size (to avoid re-measuring calculations)
                 Size itemSize;
                 if (item.Visible)
                     itemSize = item.LastMeasuredSize;
                 else
                     itemSize = new Size(0, 0);
 
-                ///If not enough space available, reset curBottom and advance curRight
+                //If not enough space available, reset curBottom and advance curRight
                 if (curBottom + itemSize.Height > ContentBounds.Bottom)
                 {
                     curBottom = ContentBounds.Top + Owner.ItemPadding.Vertical + 0;
@@ -841,21 +842,21 @@ namespace System.Windows.Forms
                     lastColumn.Clear();
                 }
 
-                ///Set the item's bounds
+                //Set the item's bounds
                 item.SetBounds(new Rectangle(curRight, curBottom, itemSize.Width, itemSize.Height));
 
-                ///save last right and bottom
+                //save last right and bottom
                 lastRight = Math.Max(item.Bounds.Right, lastRight);
                 lastBottom = item.Bounds.Bottom;
 
-                ///update current bottom
+                //update current bottom
                 curBottom = item.Bounds.Bottom + Owner.ItemPadding.Vertical + 1;
 
-                ///Add to the collection of items of the last column
+                //Add to the collection of items of the last column
                 lastColumn.Add(item);
             }
 
-            ///Center the items vertically on the last column 
+            //Center the items vertically on the last column 
             Items.CenterItemsVerticallyInto(lastColumn, Items.GetItemsBounds());
         }
 
@@ -890,37 +891,37 @@ namespace System.Windows.Forms
 
             List<RibbonItem> list = new List<RibbonItem>(array);
 
-            ///Attend elements, deleting every attended element from the list
+            //Attend elements, deleting every attended element from the list
             while (list.Count > 0)
             {
-                ///Extract item and delete it
+                //Extract item and delete it
                 RibbonItem item = list[0];
                 list.Remove(item);
 
-                ///If not enough space left, reset left and advance top
+                //If not enough space left, reset left and advance top
                 if (curLeft + item.LastMeasuredSize.Width > ContentBounds.Right)
                 {
                     curLeft = ContentBounds.Left;
                     curTop = maxBottom + Owner.ItemPadding.Vertical + 1 + padding;
                 }
 
-                ///Set item's bounds
+                //Set item's bounds
                 item.SetBounds(new Rectangle(new Point(curLeft, curTop), item.LastMeasuredSize));
 
-                ///Increment reminders
+                //Increment reminders
                 curLeft += item.Bounds.Width + Owner.ItemPadding.Horizontal;
                 maxBottom = Math.Max(maxBottom, item.Bounds.Bottom);
 
-                ///Check available space after placing item
+                //Check available space after placing item
                 int spaceAvailable = ContentBounds.Right - curLeft;
 
-                ///Check for elements that fit on available space
+                //Check for elements that fit on available space
                 for (int i = 0; i < list.Count; i++)
                 {
-                    ///If item fits on the available space
+                    //If item fits on the available space
                     if (list[i].LastMeasuredSize.Width < spaceAvailable)
                     {
-                        ///Place the item there and reset the counter to check for further items
+                        //Place the item there and reset the counter to check for further items
                         list[i].SetBounds(new Rectangle(new Point(curLeft, curTop), list[i].LastMeasuredSize));
                         curLeft += list[i].Bounds.Width + Owner.ItemPadding.Horizontal;
                         maxBottom = Math.Max(maxBottom, list[i].Bounds.Bottom);
@@ -961,7 +962,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Sets the value of the ButtonMorePressed property
         /// </summary>
-        /// <param name="bounds">property value</param>
+        /// <param name="pressed">property value</param>
         internal void SetMorePressed(bool pressed)
         {
             ButtonMorePressed = pressed;
@@ -970,7 +971,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Sets the value of the ButtonMoreSelected property
         /// </summary>
-        /// <param name="bounds">property value</param>
+        /// <param name="selected">property value</param>
         internal void SetMoreSelected(bool selected)
         {
             ButtonMoreSelected = selected;

@@ -69,10 +69,10 @@ namespace System.Windows.Forms
         /// <summary>
         /// Creates a new button
         /// </summary>
-        /// <param name="image">Image of the button (32 x 32 suggested)</param>
-        /// <param name="smallImage">Image of the button when in medium of compact mode (16 x 16 suggested)</param>
-        /// <param name="style">Style of the button</param>
-        /// <param name="text">Text of the button</param>
+        ///// <param name="image">Image of the button (32 x 32 suggested)</param>
+        ///// <param name="smallImage">Image of the button when in medium of compact mode (16 x 16 suggested)</param>
+        ///// <param name="style">Style of the button</param>
+        ///// <param name="text">Text of the button</param>
         public RibbonButton()
         {
             _style = RibbonButtonStyle.Normal;
@@ -198,7 +198,7 @@ namespace System.Windows.Forms
         public bool DrawDropDownIconsBar { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating if the <see cref="Checked"/> property should be toggled
+        /// Gets or sets a value indicating if the <see cref="RibbonItem.Checked"/> property should be toggled
         /// when button is clicked
         /// </summary>
         [DefaultValue(false)]
@@ -402,7 +402,7 @@ namespace System.Windows.Forms
         #region Methods
 
         /// <summary>
-        /// Sets the value of the <see cref="DropDownMargin"/> property
+        /// Sets the value of the <see cref="_dropDownMargin"/> property
         /// </summary>
         /// <param name="p"></param>
         protected void SetDropDownMargin(Padding p)

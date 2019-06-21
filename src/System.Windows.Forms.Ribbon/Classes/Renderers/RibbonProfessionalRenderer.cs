@@ -258,8 +258,9 @@ namespace System.Windows.Forms
         /// Draws an arrow on the specified bounds
         /// </summary>
         /// <param name="g"></param>
-        /// <param name="bounds"></param>
+        /// <param name="b"></param>
         /// <param name="c"></param>
+        /// <param name="d"></param>
         public void DrawArrow(Graphics g, Rectangle b, Color c, RibbonArrowDirection d)
         {
             GraphicsPath path = new GraphicsPath();
@@ -384,7 +385,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Creates the path of the tab and its contents
         /// </summary>
-        /// <param name="tab"></param>
+        /// <param name="t"></param>
         /// <returns></returns>
         public GraphicsPath CreateCompleteTabPath_2007(RibbonTab t)
         {
@@ -441,7 +442,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Creates the path of the tab and its contents
         /// </summary>
-        /// <param name="tab"></param>
+        /// <param name="t"></param>
         /// <returns></returns>
         public GraphicsPath CreateCompleteTopTabPath_2010(RibbonTab t)
         {
@@ -482,7 +483,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Creates the path of the tab and its contents
         /// </summary>
-        /// <param name="tab"></param>
+        /// <param name="t"></param>
         /// <returns></returns>
         public GraphicsPath CreateCompleteTabPath_2013(RibbonTab t)
         {
@@ -506,7 +507,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Creates the path of the tab and its contents
         /// </summary>
-        /// <param name="tab"></param>
+        /// <param name="t"></param>
         /// <returns></returns>
         public GraphicsPath CreateTabPath_2010(RibbonTab t)
         {
@@ -527,7 +528,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Creates the path of the tab and its contents
         /// </summary>
-        /// <param name="tab"></param>
+        /// <param name="t"></param>
         /// <returns></returns>
         public GraphicsPath CreateTabPath_2013(RibbonTab t)
         {
@@ -2102,7 +2103,6 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets the corners to round on the specified button
         /// </summary>
-        /// <param name="r"></param>
         /// <param name="button"></param>
         /// <returns></returns>
         private Corners ButtonCorners(RibbonButton button)
@@ -2210,8 +2210,9 @@ namespace System.Windows.Forms
         /// <summary>
         /// Draws a regular button in normal state
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="button"></param>
+        /// <param name="g"></param>
+        /// <param name="bounds"></param>
+        /// <param name="corners"></param>
         public void DrawButton(Graphics g, Rectangle bounds, Corners corners)
         {
             if (bounds.Height <= 0 || bounds.Width <= 0) return;
@@ -2335,6 +2336,7 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="g"></param>
         /// <param name="button"></param>
+        /// <param name="textLayout"></param>
         public void DrawButtonDropDownArrow(Graphics g, RibbonButton button, Rectangle textLayout)
         {
             Rectangle bounds = Rectangle.Empty;
@@ -2360,8 +2362,9 @@ namespace System.Windows.Forms
         /// <summary>
         /// Draws a regular button in disabled state
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="button"></param>
+        /// <param name="g"></param>
+        /// <param name="bounds"></param>
+        /// <param name="corners"></param>
         public void DrawButtonDisabled(Graphics g, Rectangle bounds, Corners corners)
         {
             if (bounds.Height <= 0 || bounds.Width <= 0) return;
@@ -2453,8 +2456,10 @@ namespace System.Windows.Forms
         /// <summary>
         /// Draws a regular button in pressed state
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="button"></param>
+        /// <param name="g"></param>
+        /// <param name="bounds"></param>
+        /// <param name="corners"></param>
+        /// <param name="ribbon"></param>
         public void DrawButtonPressed(Graphics g, Rectangle bounds, Corners corners, Ribbon ribbon)
         {
             //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
@@ -2547,8 +2552,10 @@ namespace System.Windows.Forms
         /// <summary>
         /// Draws a regular buttton in selected state
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="button"></param>
+        /// <param name="g"></param>
+        /// <param name="bounds"></param>
+        /// <param name="corners"></param>
+        /// <param name="ribbon"></param>
         public void DrawButtonSelected(Graphics g, Rectangle bounds, Corners corners, Ribbon ribbon)
         {
             if (bounds.Height <= 0 || bounds.Width <= 0) return;
@@ -2643,6 +2650,7 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="g"></param>
         /// <param name="button"></param>
+        /// <param name="ribbon"></param>
         public void DrawButtonPressed(Graphics g, RibbonButton button, Ribbon ribbon)
         {
             DrawButtonPressed(g, button.Bounds, ButtonCorners(button), ribbon);
@@ -2653,6 +2661,7 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="g"></param>
         /// <param name="button"></param>
+        /// <param name="ribbon"></param>
         public void DrawButtonChecked(Graphics g, RibbonButton button, Ribbon ribbon)
         {
             DrawButtonChecked(g, button.Bounds, ButtonCorners(button), ribbon);
@@ -2663,6 +2672,7 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="g"></param>
         /// <param name="button"></param>
+        /// <param name="ribbon"></param>
         public void DrawButtonCheckedSelected(Graphics g, RibbonButton button, Ribbon ribbon)
         {
             DrawButtonCheckedSelected(g, button.Bounds, ButtonCorners(button), ribbon);
@@ -2672,7 +2682,9 @@ namespace System.Windows.Forms
         /// Draws the button as checked
         /// </summary>
         /// <param name="g"></param>
-        /// <param name="button"></param>
+        /// <param name="bounds"></param>
+        /// <param name="corners"></param>
+        /// <param name="ribbon"></param>
         public void DrawButtonChecked(Graphics g, Rectangle bounds, Corners corners, Ribbon ribbon)
         {
             if (bounds.Height <= 0 || bounds.Width <= 0) return;
@@ -2775,8 +2787,10 @@ namespace System.Windows.Forms
         /// <summary>
         /// Draws a regular button in the Checked and Selected state
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="button"></param>
+        /// <param name="g"></param>
+        /// <param name="bounds"></param>
+        /// <param name="corners"></param>
+        /// <param name="ribbon"></param>
         public void DrawButtonCheckedSelected(Graphics g, Rectangle bounds, Corners corners, Ribbon ribbon)
         {
             #region Office_2007_2010
@@ -2877,6 +2891,7 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="g"></param>
         /// <param name="button"></param>
+        /// <param name="ribbon"></param>
         public void DrawButtonSelected(Graphics g, RibbonButton button, Ribbon ribbon)
         {
             DrawButtonSelected(g, button.Bounds, ButtonCorners(button), ribbon);
@@ -3031,7 +3046,7 @@ namespace System.Windows.Forms
         /// Draws the background of the specified  RibbonItemGroup
         /// </summary>
         /// <param name="e"></param>
-        /// <param name="?"></param>
+        /// <param name="grp"></param>
         public void DrawItemGroup(RibbonItemRenderEventArgs e, RibbonItemGroup grp)
         {
 
@@ -3080,7 +3095,7 @@ namespace System.Windows.Forms
         /// Draws the background of the specified  RibbonItemGroup
         /// </summary>
         /// <param name="e"></param>
-        /// <param name="?"></param>
+        /// <param name="grp"></param>
         public void DrawItemGroupBorder(RibbonItemRenderEventArgs e, RibbonItemGroup grp)
         {
 
@@ -3703,9 +3718,9 @@ namespace System.Windows.Forms
             }
             else
             {
-                ///   a-----b    a-----b
-                ///  |     z    |       z
-                ///   c---d      c-----d
+                //   a-----b    a-----b
+                //  |     z    |       z
+                //   c---d      c-----d
                 path.AddLine(d, c);
                 path.AddArc(new Rectangle(a.X - bounds.Height / 2, a.Y, bounds.Height, bounds.Height), 90, 180);
                 path.AddLine(a, b);
@@ -3728,8 +3743,8 @@ namespace System.Windows.Forms
         /// Draws the orb on the specified state
         /// </summary>
         /// <param name="g">Device to draw</param>
-        /// <param name="ribbon">Ribbon that the orb belongs to</param>
         /// <param name="r">Layout rectangle for the orb</param>
+        /// <param name="image"></param>
         /// <param name="selected">Specifies if the orb should be drawn as selected</param>
         /// <param name="pressed">Specifies if the orb should be drawn as pressed</param>
         public void DrawOrb(Graphics g, Rectangle r, Image image, bool selected, bool pressed)
@@ -3911,7 +3926,7 @@ namespace System.Windows.Forms
             //    g.FillPath(Brushes.White, p);
             //}
 
-            ///Upper shine
+            //Upper shine
             using (GraphicsPath p = new GraphicsPath())
             {
                 sweep = 160;
@@ -3980,7 +3995,6 @@ namespace System.Windows.Forms
         /// Draws the orb button in a normal state
         /// </summary>
         /// <param name="e"></param>
-        /// <param name="button"></param>
         public void DrawOrbNormal(RibbonRenderEventArgs e)
         {
             //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
@@ -4037,7 +4051,6 @@ namespace System.Windows.Forms
         /// Draws the orb button in a selected state
         /// </summary>
         /// <param name="e"></param>
-        /// <param name="button"></param>
         public void DrawOrbSelected(RibbonRenderEventArgs e)
         {
             //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
@@ -4093,7 +4106,6 @@ namespace System.Windows.Forms
         /// Draws the orb button in pressed state
         /// </summary>
         /// <param name="e"></param>
-        /// <param name="button"></param>
         public void DrawOrbPressed(RibbonRenderEventArgs e)
         {
             //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
@@ -4315,9 +4327,9 @@ namespace System.Windows.Forms
 
         public override void OnRenderRibbonQuickAccessToolbarBackground(RibbonRenderEventArgs e)
         {
-            /// a-----b    a-----b
-            ///  z    |   z       |
-            ///   c---d    c-----d
+            // a-----b    a-----b
+            //  z    |   z       |
+            //   c---d    c-----d
             Rectangle bounds = e.Ribbon.QuickAccessToolbar.Bounds;
             Padding padding = e.Ribbon.QuickAccessToolbar.Padding;
             Padding margin = e.Ribbon.QuickAccessToolbar.Margin;
@@ -4330,9 +4342,9 @@ namespace System.Windows.Forms
             bool aero = e.Ribbon.ActualBorderMode == RibbonWindowMode.NonClientAreaGlass && RibbonDesigner.Current == null;
             if (e.Ribbon.RightToLeft == RightToLeft.Yes)
             {
-                ///   a-----b    a-----b
-                ///  |     z    |       z
-                ///   c---d      c-----d
+                //   a-----b    a-----b
+                //  |     z    |       z
+                //   c---d      c-----d
                 a = new Point(bounds.Left + padding.Left, bounds.Top);
                 b = new Point(bounds.Right + (e.Ribbon.OrbVisible ? margin.Right : 0), bounds.Top);
                 c = new Point(a.X, bounds.Bottom);

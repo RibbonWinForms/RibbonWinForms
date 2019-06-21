@@ -73,7 +73,7 @@ namespace System.Windows.Forms
         /// Calculate the new horizontal position for a Point against a given reference Rectangle.
         /// </summary>
         /// <param name="reference"></param>
-        /// <param name="point"></param>
+        /// <param name="rect"></param>
         /// <param name="type"></param>
         /// <param name="distance"></param>
         /// <returns></returns>

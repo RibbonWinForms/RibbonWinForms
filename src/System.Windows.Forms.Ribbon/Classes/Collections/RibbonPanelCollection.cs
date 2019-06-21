@@ -56,7 +56,7 @@ namespace System.Windows.Forms
         }
 
         /// <summary>
-        /// Notifies the <see cref="OwnerTab"/> and <see cref="OwnerPanel"/> about changes in the <see cref="RibbonItemCollection"/>.
+        /// Notifies the <see cref="OwnerTab"/> and <see cref="Owner"/> about changes in the <see cref="RibbonItemCollection"/>.
         /// </summary>
         internal override void UpdateRegions()
         {

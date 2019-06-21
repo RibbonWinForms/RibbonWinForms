@@ -134,14 +134,14 @@ namespace System.Windows.Forms.RibbonHelpers
 
         #region Properties
 
-        /// <summary>
-        /// Gets the type of this hook
-        /// </summary>
+        ///// <summary>
+        ///// Gets the type of this hook
+        ///// </summary>
         //public HookTypes HookType { get { return _hookType; } }
 
-        /// <summary>
-        /// Gets the handle of the hook
-        /// </summary>
+        ///// <summary>
+        ///// Gets the handle of the hook
+        ///// </summary>
         //public IntPtr Handle { get { return _handle; } }
 
         #endregion
@@ -263,7 +263,7 @@ namespace System.Windows.Forms.RibbonHelpers
         /// <summary>
         /// Recieves the actual unsafe mouse hook procedure
         /// </summary>
-        /// <param name="nCode"></param>
+        /// <param name="code"></param>
         /// <param name="wParam"></param>
         /// <param name="lParam"></param>
         /// <returns></returns>
@@ -421,7 +421,7 @@ namespace System.Windows.Forms.RibbonHelpers
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         private void InstallHook()
         {
-            /// Error check
+            // Error check
             if (_handle != IntPtr.Zero) throw new Exception("Hook is already installed");
 
             #region htype
@@ -440,15 +440,15 @@ namespace System.Windows.Forms.RibbonHelpers
             }
             #endregion
 
-            /// Delegate to recieve message
+            // Delegate to recieve message
             _HookProc = HookProc;
 
-            /// Hook
-            /// Ed Obeda suggestion for .net 4.0
+            // Hook
+            // Ed Obeda suggestion for .net 4.0
             //_hHook = WinApi.SetWindowsHookEx(htype, _HookProc, Marshal.GetHINSTANCE(Assembly.GetExecutingAssembly().GetModules()[0]), 0);
             _handle = WinApi.SetWindowsHookEx(htype, _HookProc, Process.GetCurrentProcess().MainModule.BaseAddress, 0);
             int lastWin32Error = Marshal.GetLastWin32Error();
-            /// Error check
+            // Error check
             if (_handle == IntPtr.Zero) throw new Win32Exception(lastWin32Error);
         }
 

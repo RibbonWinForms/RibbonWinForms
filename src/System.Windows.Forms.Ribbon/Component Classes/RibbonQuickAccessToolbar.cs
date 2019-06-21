@@ -210,9 +210,9 @@ namespace System.Windows.Forms
 
         public override Size MeasureSize(object sender, RibbonElementMeasureSizeEventArgs e)
         {
-            ///For RibbonItemGroup, size is always compact, and it's designed to be on an horizontal flow
-            ///tab panel.
-            ///
+            //For RibbonItemGroup, size is always compact, and it's designed to be on an horizontal flow
+            //tab panel.
+            //
             if (!Visible || !Owner.CaptionBarVisible)
             {
                 SetLastMeasuredSize(new Size(0, 0));

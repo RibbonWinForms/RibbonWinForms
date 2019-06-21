@@ -308,9 +308,9 @@ namespace System.Windows.Forms
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Rectangle DownButtonBounds { get; private set; }
 
-        /// <summary>
-        /// Overriden.
-        /// </summary>
+        ///// <summary>
+        ///// Overriden.
+        ///// </summary>
         //[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         //public override Rectangle TextBoxTextBounds
         //{

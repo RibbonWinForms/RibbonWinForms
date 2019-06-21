@@ -168,9 +168,9 @@ namespace System.Windows.Forms
                 return LastMeasuredSize;
             }
 
-            ///For RibbonItemGroup, size is always compact, and it's designed to be on an horizontal flow
-            ///tab panel.
-            ///
+            //For RibbonItemGroup, size is always compact, and it's designed to be on an horizontal flow
+            //tab panel.
+            //
             int minWidth = 16;
             int widthSum = 0;
             int maxHeight = 16;
