@@ -44,6 +44,7 @@ namespace System.Windows.Forms
         #endregion
 
         #region Fields
+        private int _contextspace = 0;
         private bool? _isopeninvisualstudiodesigner; 
         internal bool ForceOrbMenu;
         private Size _lastSizeMeasured;
@@ -422,6 +423,19 @@ namespace System.Windows.Forms
 
         #region Props
 
+        [RefreshProperties(RefreshProperties.All)]
+        [DefaultValue(0)]
+        [Category("Behavior")]
+        public int ContextSpace
+        {
+            get => _contextspace;
+            set
+            {
+                _contextspace = value;
+                OrbStyle = OrbStyle;
+            }
+        }
+
         /// <summary>
         /// Gets or sets the key combination that activates this element when the Alt key was pressed
         /// </summary>
@@ -716,6 +730,7 @@ namespace System.Windows.Forms
             get => Theme.Style;
             set
             {
+                var changed = value != Theme.Style;
                 EnsureCustomThemeCreated(value, ThemeColor);
                 Theme.Style = value;
                 if (value == RibbonOrbStyle.Office_2007)
@@ -724,11 +739,11 @@ namespace System.Windows.Forms
                     OrbsPadding = new Padding(8, 4, 8, 4);
                     if (CaptionBarVisible)
                     {
-                        _tabsMargin = new Padding(12, CaptionBarHeight + 2, 20, 0);
+                        _tabsMargin = new Padding(12, CaptionBarHeight + 2 + ContextSpace, 20, 0);
                     }
                     else
                     {
-                        _tabsMargin = new Padding(12, 2, 20, 0);
+                        _tabsMargin = new Padding(12, 2 + ContextSpace, 20, 0);
                     }
                     TabContentMargin = new Padding(1, 0, 2, 2);
                     TabContentPadding = new Padding(0);
@@ -742,17 +757,18 @@ namespace System.Windows.Forms
                     ItemPadding = new Padding(1, 0, 1, 0);
                     ItemImageToTextSpacing = 4;
                 }
-                else if (value == RibbonOrbStyle.Office_2010)
+                else if ((value == RibbonOrbStyle.Office_2010) ||
+                         (value == RibbonOrbStyle.Office_2010_Extended))
                 {
                     TabsPadding = new Padding(10, 3, 7, 2);
                     OrbsPadding = new Padding(17, 4, 15, 4);
                     if (CaptionBarVisible)
                     {
-                        TabsMargin = new Padding(6, CaptionBarHeight + 2, 20, 0);
+                        TabsMargin = new Padding(6, CaptionBarHeight + 2 + ContextSpace, 20, 0);
                     }
                     else
                     {
-                        TabsMargin = new Padding(6, 2, 20, 0);
+                        TabsMargin = new Padding(6, 2 + ContextSpace, 20, 0);
                     }
                     TabContentMargin = new Padding(0, 0, 0, 2);
                     TabContentPadding = new Padding(0);
@@ -772,11 +788,11 @@ namespace System.Windows.Forms
                     OrbsPadding = new Padding(15, 3, 15, 3);
                     if (CaptionBarVisible)
                     {
-                        _tabsMargin = new Padding(5, CaptionBarHeight + 2, 20, 0);
+                        _tabsMargin = new Padding(5, CaptionBarHeight + 2 + ContextSpace, 20, 0);
                     }
                     else
                     {
-                        _tabsMargin = new Padding(5, 2, 20, 0);
+                        _tabsMargin = new Padding(5, 2 + ContextSpace, 20, 0);
                     }
                     TabContentMargin = new Padding(0, 0, 0, 2);
                     TabContentPadding = new Padding(0);
@@ -790,11 +806,15 @@ namespace System.Windows.Forms
                     ItemPadding = new Padding(1, 0, 1, 0);
                     ItemImageToTextSpacing = 11;
                 }
-
                 UpdateRegions();
                 Invalidate();
+                if (changed)
+                {
+                    OrbStyleChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
+        public event EventHandler OrbStyleChanged;
 
         /// <summary>
         /// Gets or sets the theme of the ribbon control
@@ -932,7 +952,7 @@ namespace System.Windows.Forms
                     return new Rectangle(Width - 4, 4, 0, 0);
                 }
 
-                if (OrbStyle == RibbonOrbStyle.Office_2010)//Kevin Carbis - office 2010 style orb
+                if ((OrbStyle == RibbonOrbStyle.Office_2010) || (OrbStyle == RibbonOrbStyle.Office_2010_Extended)) //Kevin Carbis - office 2010 style orb
                 {
                     //Measure the string size of the button text so we know how big to make the button
                     Size contentSize = _orbTextSize;
@@ -1501,12 +1521,12 @@ namespace System.Windows.Forms
             if (RightToLeft == RightToLeft.No)
                 if (OrbStyle == RibbonOrbStyle.Office_2007)
                     OrbDropDown.Show(PointToScreen(new Point(OrbBounds.X - 4, OrbBounds.Bottom - OrbDropDown.ContentMargin.Top + 2)));
-                else if (OrbStyle == RibbonOrbStyle.Office_2010 || OrbStyle == RibbonOrbStyle.Office_2013)//Michael Spradlin - 05/03/2013 Office 2013 Style Changes
+                else if (OrbStyle == RibbonOrbStyle.Office_2010 || OrbStyle == RibbonOrbStyle.Office_2010_Extended || OrbStyle == RibbonOrbStyle.Office_2013)//Michael Spradlin - 05/03/2013 Office 2013 Style Changes
                     OrbDropDown.Show(PointToScreen(new Point(OrbBounds.X - 4, OrbBounds.Bottom)));
                 else
                     if (OrbStyle == RibbonOrbStyle.Office_2007)
                     OrbDropDown.Show(PointToScreen(new Point(OrbBounds.Right + 4 - OrbDropDown.Width, OrbBounds.Bottom - OrbDropDown.ContentMargin.Top + 2)));
-                else if (OrbStyle == RibbonOrbStyle.Office_2010 || OrbStyle == RibbonOrbStyle.Office_2013) //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
+                else if (OrbStyle == RibbonOrbStyle.Office_2010 || OrbStyle == RibbonOrbStyle.Office_2010_Extended || OrbStyle == RibbonOrbStyle.Office_2013) //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
                     OrbDropDown.Show(PointToScreen(new Point(OrbBounds.Right + 4 - OrbDropDown.Width, OrbBounds.Bottom)));
         }
 
@@ -1701,7 +1721,7 @@ namespace System.Windows.Forms
                 QuickAccessToolbar.MeasureSize(this, new RibbonElementMeasureSizeEventArgs(g, RibbonElementSizeMode.Compact));
                 if (OrbStyle == RibbonOrbStyle.Office_2007)
                     QuickAccessToolbar.SetBounds(new Rectangle(new Point(OrbBounds.Right + QuickAccessToolbar.Margin.Left, OrbBounds.Top - 2), QuickAccessToolbar.LastMeasuredSize));
-                else if (OrbStyle == RibbonOrbStyle.Office_2010)//2010 - no need to offset for the orb
+                else if ((OrbStyle == RibbonOrbStyle.Office_2010) || (OrbStyle == RibbonOrbStyle.Office_2010_Extended)) //2010 - no need to offset for the orb
                     QuickAccessToolbar.SetBounds(new Rectangle(new Point(QuickAccessToolbar.Margin.Left, 0), QuickAccessToolbar.LastMeasuredSize));
                 else if (OrbStyle == RibbonOrbStyle.Office_2013) //Michael Spradlin - 05/03/2013 Office 2013 Style Changes : no need to offset for the orb
                     QuickAccessToolbar.SetBounds(new Rectangle(new Point(QuickAccessToolbar.Margin.Left, 0), QuickAccessToolbar.LastMeasuredSize));
@@ -1728,7 +1748,7 @@ namespace System.Windows.Forms
                 QuickAccessToolbar.MeasureSize(this, new RibbonElementMeasureSizeEventArgs(g, RibbonElementSizeMode.Compact));
                 if (OrbStyle == RibbonOrbStyle.Office_2007)
                     QuickAccessToolbar.SetBounds(new Rectangle(new Point(OrbBounds.Left - QuickAccessToolbar.Margin.Right - QuickAccessToolbar.LastMeasuredSize.Width, OrbBounds.Top - 2), QuickAccessToolbar.LastMeasuredSize));
-                else if (OrbStyle == RibbonOrbStyle.Office_2010) //2010 - no need to offset for the orb
+                else if ((OrbStyle == RibbonOrbStyle.Office_2010) || (OrbStyle == RibbonOrbStyle.Office_2010_Extended)) //2010 - no need to offset for the orb
                     QuickAccessToolbar.SetBounds(new Rectangle(new Point(ClientRectangle.Right - QuickAccessToolbar.Margin.Right - QuickAccessToolbar.LastMeasuredSize.Width, 0), QuickAccessToolbar.LastMeasuredSize));
                 else if (OrbStyle == RibbonOrbStyle.Office_2013)  //Michael Spradlin - 05/03/2013 Office 2013 Style Changes: no need to offset for the orb
                     QuickAccessToolbar.SetBounds(new Rectangle(new Point(ClientRectangle.Right - QuickAccessToolbar.Margin.Right - QuickAccessToolbar.LastMeasuredSize.Width, 0), QuickAccessToolbar.LastMeasuredSize));
@@ -2209,7 +2229,8 @@ namespace System.Windows.Forms
 
                 if (OrbVisible && !_expanded && !string.IsNullOrEmpty(OrbText))
                 {
-                    if (OrbStyle == RibbonOrbStyle.Office_2010)
+                    if ((OrbStyle == RibbonOrbStyle.Office_2010) ||
+                        (OrbStyle == RibbonOrbStyle.Office_2010_Extended))
                     {
                         //draw the divider line at the bottom of the ribbon
                         Pen p = new Pen(Theme.RendererColorTable.TabBorder);

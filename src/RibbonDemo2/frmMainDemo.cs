@@ -4,7 +4,7 @@ using RibbonDemo2.Properties;
 
 namespace RibbonDemo2
 {
-    public partial class frmMainDemo : Form
+    public partial class frmMainDemo : RibbonForm
     {
         public frmMainDemo()
         {
@@ -36,6 +36,10 @@ namespace RibbonDemo2
                 ribbonPanel_Theme.Items.Add(rb);
             }
         }
+        private void Ribbon1_OrbStyleChanged(object sender, EventArgs e)
+        {
+
+        }
 
         private void frmMainDemo_Load(object sender, EventArgs e)
         {
@@ -51,7 +55,20 @@ namespace RibbonDemo2
 
         private void rbOrbStyle_Click(object sender, EventArgs e)
         {
-            ribbon1.OrbStyle = (RibbonOrbStyle)Enum.Parse(typeof(RibbonOrbStyle), ((RibbonButton)sender).Text);
+            var style = (RibbonOrbStyle)Enum.Parse(typeof(RibbonOrbStyle), ((RibbonButton)sender).Text);
+            if (style == RibbonOrbStyle.Office_2007)
+            {
+                ribbon1.ContextSpace = 23;
+            }
+            else if (style == RibbonOrbStyle.Office_2010_Extended)
+            {
+                ribbon1.ContextSpace = 10;
+            }
+            else
+            {
+                ribbon1.ContextSpace = 18;
+            }
+            ribbon1.OrbStyle = style;
             ribbon1.Refresh();
             Refresh();
         }
@@ -91,6 +108,5 @@ namespace RibbonDemo2
 
             GC.Collect();
         }
-
     }
 }

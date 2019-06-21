@@ -8,7 +8,8 @@
 //
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
-
+using System.Diagnostics;
+using System.ComponentModel;
 using System.Security.Permissions;
 using System.Windows.Forms.RibbonHelpers;
 
@@ -19,27 +20,52 @@ namespace System.Windows.Forms
     {
 
         #region Fields
-
+        private bool? _isopeninvisualstudiodesigner;
         #endregion
 
         #region Ctor
 
-        public RibbonForm()
+        public RibbonForm():
+            base()
         {
-            if (WinApi.IsWindows && !WinApi.IsGlassEnabled)
+            if (!IsOpenInVisualStudioDesigner())
             {
-                FormBorderStyle = FormBorderStyle.None;
-                SetStyle(ControlStyles.ResizeRedraw, true);
-                SetStyle(ControlStyles.Opaque, WinApi.IsGlassEnabled);
-                SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-                DoubleBuffered = true;
+                if (WinApi.IsWindows && !WinApi.IsGlassEnabled)
+                {
+                    FormBorderStyle = FormBorderStyle.None;
+                    SetStyle(ControlStyles.ResizeRedraw, true);
+                    SetStyle(ControlStyles.Opaque, WinApi.IsGlassEnabled);
+                    SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+                    DoubleBuffered = true;
+                }
+                Helper = new RibbonFormHelper(this);
             }
-            Helper = new RibbonFormHelper(this);
         }
-
         #endregion
 
         #region Overrides
+        protected bool IsOpenInVisualStudioDesigner()
+        {
+            if (!_isopeninvisualstudiodesigner.HasValue)
+            {
+                _isopeninvisualstudiodesigner = LicenseManager.UsageMode == LicenseUsageMode.Designtime ||
+                                                this.DesignMode;
+                if (!_isopeninvisualstudiodesigner.Value)
+                {
+                    try
+                    {
+                        using (var process = Process.GetCurrentProcess())
+                        {
+                            _isopeninvisualstudiodesigner = process.ProcessName.ToLowerInvariant().Contains("devenv");
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            return _isopeninvisualstudiodesigner.Value;
+        }
 
         /// <summary>
         /// Just for debugging messages
@@ -57,7 +83,11 @@ namespace System.Windows.Forms
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         protected override void WndProc(ref Message m)
         {
-            if (!Helper.WndProc(ref m))
+            if (IsOpenInVisualStudioDesigner())
+            {
+                base.WndProc(ref m);
+            }
+            else if (!Helper.WndProc(ref m))
             {
                 base.WndProc(ref m);
             }
@@ -69,10 +99,13 @@ namespace System.Windows.Forms
             get
             {
                 CreateParams cp = base.CreateParams;
-                if (WinApi.IsWindows && !WinApi.IsGlassEnabled)
+                if (!IsOpenInVisualStudioDesigner())
                 {
-                    cp.Style |= 0x20000 | 0x80000 | 0x40000; //WS_MINIMIZEBOX | WS_SYSMENU | WS_SIZEBOX;
-                                                             //cp.ClassStyle |= 0x8 | 0x20000; //CS_DBLCLKS | CS_DROPSHADOW;
+                    if (WinApi.IsWindows && !WinApi.IsGlassEnabled)
+                    {
+                        cp.Style |= 0x20000 | 0x80000 | 0x40000; //WS_MINIMIZEBOX | WS_SYSMENU | WS_SIZEBOX;
+                                                                 //cp.ClassStyle |= 0x8 | 0x20000; //CS_DBLCLKS | CS_DROPSHADOW;
+                    }
                 }
                 return cp;
             }
@@ -80,8 +113,15 @@ namespace System.Windows.Forms
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            // override OnPaint and do NOT call base, otherwise problems as MDI parent occur
-            Helper.Form_Paint(this, e);
+            if (IsOpenInVisualStudioDesigner())
+            {
+                base.OnPaint(e);
+            }
+            else
+            {
+                // override OnPaint and do NOT call base, otherwise problems as MDI parent occur
+                Helper.Form_Paint(this, e);
+            }
         }
 
         #endregion
