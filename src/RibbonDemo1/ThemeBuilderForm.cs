@@ -394,6 +394,8 @@ namespace RibbonDemo
                 ribbon1.OrbStyle = RibbonOrbStyle.Office_2007;
             if (cboOfficeStyle.Text == "Office 2010")
                 ribbon1.OrbStyle = RibbonOrbStyle.Office_2010;
+            if (cboOfficeStyle.Text == "Office 2010 Extended")
+                ribbon1.OrbStyle = RibbonOrbStyle.Office_2010_Extended;
             if (cboOfficeStyle.Text == "Office 2013")
                 ribbon1.OrbStyle = RibbonOrbStyle.Office_2013;
 

@@ -20,12 +20,9 @@ namespace System.Windows.Forms
         : RibbonTextBox, IContainsRibbonComponents, IDropDownRibbonItem
     {
         #region Fields
-
         // Steve
         private RibbonItem _selectedItem;
-
         private readonly Set<RibbonItem> _assignedHandlers = new Set<RibbonItem>();
-
         #endregion
 
         #region Events
@@ -168,6 +165,44 @@ namespace System.Windows.Forms
                 }
             }
         }
+
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int SelectedIndex
+        {
+            get
+            {
+                if (_selectedItem != null)
+                {
+                    return DropDownItems.IndexOf(_selectedItem);
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            set
+            {
+                if (value == -1)
+                {
+                    SelectedItem = null;
+                }
+                else
+                {
+                    if ((DropDownItems.Count > 0) &&
+                        (value >= 0) &&
+                        (value < DropDownItems.Count))
+                    {
+                        SelectedItem = DropDownItems[value];
+                    }
+                    else
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
+                }
+            }
+        }
+
         // Kevin
         /// <summary>
         /// Gets or sets the value of selected item on the dropdown.
@@ -189,7 +224,7 @@ namespace System.Windows.Forms
             {
                 foreach (RibbonItem item in DropDownItems)
                 {
-                    if (item.Value == value)
+                    if (String.Compare(item.Value, value, false) == 0)
                     {
                         if (_selectedItem != item)
                         {

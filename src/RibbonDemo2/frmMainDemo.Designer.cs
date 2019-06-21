@@ -33,6 +33,7 @@ namespace RibbonDemo2
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainDemo));
             this.ribbon1 = new System.Windows.Forms.Ribbon();
+            this.ribbonContext1 = new System.Windows.Forms.RibbonContext();
             this.ribbonOrbMenuItem9 = new System.Windows.Forms.RibbonOrbMenuItem();
             this.ribbonOrbMenuItem10 = new System.Windows.Forms.RibbonOrbMenuItem();
             this.ribbonOrbMenuItem11 = new System.Windows.Forms.RibbonOrbMenuItem();
@@ -64,10 +65,15 @@ namespace RibbonDemo2
             this.ribbonOrbRecentItem2 = new System.Windows.Forms.RibbonOrbRecentItem();
             this.ribbonOrbRecentItem3 = new System.Windows.Forms.RibbonOrbRecentItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ribbonButton1 = new System.Windows.Forms.RibbonButton();
+            this.ribbonButton2 = new System.Windows.Forms.RibbonButton();
+            this.ribbonButton3 = new System.Windows.Forms.RibbonButton();
             this.SuspendLayout();
             // 
             // ribbon1
             // 
+            this.ribbon1.Contexts.Add(this.ribbonContext1);
+            this.ribbon1.ContextSpace = 18;
             this.ribbon1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ribbon1.Location = new System.Drawing.Point(0, 0);
             this.ribbon1.Minimized = false;
@@ -91,14 +97,29 @@ namespace RibbonDemo2
             this.ribbon1.OrbDropDown.OptionItems.Add(this.ribbonButton19);
             this.ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 248);
             this.ribbon1.OrbDropDown.TabIndex = 0;
+            this.ribbon1.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2010;
             this.ribbon1.OrbText = "File";
+            // 
+            // 
+            // 
+            this.ribbon1.QuickAccessToolbar.Items.Add(this.ribbonButton1);
+            this.ribbon1.QuickAccessToolbar.Items.Add(this.ribbonButton2);
+            this.ribbon1.QuickAccessToolbar.Items.Add(this.ribbonButton3);
             this.ribbon1.RibbonTabFont = new System.Drawing.Font("Trebuchet MS", 9F);
-            this.ribbon1.Size = new System.Drawing.Size(944, 144);
+            this.ribbon1.Size = new System.Drawing.Size(944, 162);
             this.ribbon1.TabIndex = 0;
             this.ribbon1.Tabs.Add(this.ribbonTab1);
             this.ribbon1.Tabs.Add(this.ribbonTab2);
-            this.ribbon1.TabsMargin = new System.Windows.Forms.Padding(12, 26, 20, 0);
+            this.ribbon1.TabSpacing = 3;
             this.ribbon1.Text = "ribbon1";
+            this.ribbon1.ThemeColor = System.Windows.Forms.RibbonTheme.Blue_2010;
+            this.ribbon1.OrbStyleChanged += new System.EventHandler(this.Ribbon1_OrbStyleChanged);
+            // 
+            // ribbonContext1
+            // 
+            this.ribbonContext1.GlowColor = System.Drawing.Color.Orange;
+            this.ribbonContext1.Text = "Test";
+            this.ribbonContext1.Visible = true;
             // 
             // ribbonOrbMenuItem9
             // 
@@ -182,6 +203,7 @@ namespace RibbonDemo2
             // 
             // ribbonTab1
             // 
+            this.ribbonTab1.Context = this.ribbonContext1;
             this.ribbonTab1.Name = "ribbonTab1";
             this.ribbonTab1.Panels.Add(this.ribbonPanel3);
             this.ribbonTab1.Panels.Add(this.ribbonPanel_OrbStyle);
@@ -341,10 +363,37 @@ namespace RibbonDemo2
             // panel1
             // 
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 144);
+            this.panel1.Location = new System.Drawing.Point(0, 162);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(944, 282);
+            this.panel1.Size = new System.Drawing.Size(944, 264);
             this.panel1.TabIndex = 1;
+            // 
+            // ribbonButton1
+            // 
+            this.ribbonButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.Image")));
+            this.ribbonButton1.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.LargeImage")));
+            this.ribbonButton1.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact;
+            this.ribbonButton1.Name = "ribbonButton1";
+            this.ribbonButton1.SmallImage = global::RibbonDemo2.Properties.Resources.bold16;
+            this.ribbonButton1.Text = "ribbonButton1";
+            // 
+            // ribbonButton2
+            // 
+            this.ribbonButton2.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.Image")));
+            this.ribbonButton2.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton2.LargeImage")));
+            this.ribbonButton2.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact;
+            this.ribbonButton2.Name = "ribbonButton2";
+            this.ribbonButton2.SmallImage = global::RibbonDemo2.Properties.Resources.casing16;
+            this.ribbonButton2.Text = "ribbonButton2";
+            // 
+            // ribbonButton3
+            // 
+            this.ribbonButton3.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton3.Image")));
+            this.ribbonButton3.LargeImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton3.LargeImage")));
+            this.ribbonButton3.MaxSizeMode = System.Windows.Forms.RibbonElementSizeMode.Compact;
+            this.ribbonButton3.Name = "ribbonButton3";
+            this.ribbonButton3.SmallImage = global::RibbonDemo2.Properties.Resources.copy16;
+            this.ribbonButton3.Text = "ribbonButton3";
             // 
             // frmMainDemo
             // 
@@ -396,5 +445,9 @@ namespace RibbonDemo2
         private Panel panel1;
         private RibbonPanel ribbonPanel_OrbStyle;
         private RibbonPanel ribbonPanel_Theme;
+        private RibbonContext ribbonContext1;
+        private RibbonButton ribbonButton1;
+        private RibbonButton ribbonButton2;
+        private RibbonButton ribbonButton3;
     }
 }

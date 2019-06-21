@@ -22,6 +22,7 @@
     {
         Office_2007,
         Office_2010,
+        Office_2010_Extended,
         Office_2013 //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
     }
 

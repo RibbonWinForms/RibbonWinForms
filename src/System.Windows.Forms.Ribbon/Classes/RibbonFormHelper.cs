@@ -64,9 +64,17 @@ namespace System.Windows.Forms
             Form = f;
             Form.Load += Form_Load;
             Form.ResizeEnd += _form_ResizeEnd;
+            Form.MinimumSizeChanged += _form_ResizeEnd;
+            Form.MaximumSizeChanged += _form_ResizeEnd; 
             Form.Layout += _form_Layout;
+            Form.TextChanged += _form_TextChanged;
         }
-
+        private void _form_TextChanged(object sender, EventArgs e)
+        {
+            UpdateRibbonConditions();
+            Form.Refresh();
+            Form.Update();
+        }
         private void _form_Layout(object sender, LayoutEventArgs e)
         {
             if (_lastState == Form.WindowState)
@@ -103,7 +111,19 @@ namespace System.Windows.Forms
         public Ribbon Ribbon
         {
             get => _ribbon;
-            set { _ribbon = value; UpdateRibbonConditions(); }
+            set
+            {
+                if (_ribbon != null)
+                {
+                    _ribbon.OrbStyleChanged -= RibbonOrbStyleChanged;
+                }
+                _ribbon = value;
+                if (_ribbon != null)
+                {
+                    _ribbon.OrbStyleChanged += RibbonOrbStyleChanged;
+                }
+                UpdateRibbonConditions();
+            }
         }
 
         /// <summary>
@@ -236,6 +256,15 @@ namespace System.Windows.Forms
             }
         }
 
+        private void RibbonOrbStyleChanged(object sender, EventArgs e)
+        {
+            if (_frameExtended)
+            {
+                _frameExtended = false;
+                Form_Load(sender, e);
+            }
+        }
+
         /// <summary>
         /// Called when helped form is activated
         /// </summary>
@@ -248,12 +277,24 @@ namespace System.Windows.Forms
             {
                 throw new ArgumentNullException("Ribbon Control was not placed to RibbonForm");
             }
-            WinApi.MARGINS dwmMargins = new WinApi.MARGINS(
-                Margins.Left,
-                Margins.Right,
-                Margins.Bottom + ((Ribbon.OrbStyle == RibbonOrbStyle.Office_2007) ? Ribbon.CaptionBarHeight : Ribbon.CaptionBarHeight + Ribbon.TabsMargin.Top),
-                Margins.Bottom);
+            WinApi.MARGINS dwmMargins;
 
+            if (Ribbon.CaptionBarVisible)
+            {
+                dwmMargins = new WinApi.MARGINS(
+                    Margins.Left,
+                    Margins.Right,
+                    Margins.Bottom + Ribbon.ContextSpace + ((Ribbon.OrbStyle == RibbonOrbStyle.Office_2007) ? Ribbon.CaptionBarHeight : Ribbon.CaptionBarHeight + Ribbon.TabsMargin.Top),
+                    Margins.Bottom);
+            }
+            else
+            {
+                dwmMargins = new WinApi.MARGINS(
+                    Margins.Left,
+                    Margins.Right,
+                    Margins.Bottom + Ribbon.ContextSpace + ((Ribbon.OrbStyle == RibbonOrbStyle.Office_2007) ? 0 : Ribbon.TabsMargin.Top),
+                    Margins.Bottom);
+            }
             if (WinApi.IsWin10)
             {
                 dwmMargins.cxLeftWidth = 0;
@@ -287,7 +328,14 @@ namespace System.Windows.Forms
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         public virtual bool WndProc(ref Message m)
         {
-            if (DesignMode) return false;
+            if (DesignMode)
+            {
+                return false;
+            }
+            if (Ribbon == null)
+            {
+                return false;
+            }
 
             bool handled = false;
 
@@ -342,7 +390,9 @@ namespace System.Windows.Forms
                     //             * setting the client area to some other value, e.g. descrease the size of the client area by one pixel will
                     //               cause windows to render the caption bar a glass - not correct but the lesser of the two evils
                     if (Screen.AllScreens.Length > 1 && WinApi.IsGlassEnabled)
+                    {
                         nccsp.rect0.Bottom -= 1;
+                    }
                     #endregion
 
                     Marshal.StructureToPtr(nccsp, m.LParam, false);
@@ -408,7 +458,6 @@ namespace System.Windows.Forms
         ///// <param name="lparam">Lparam of</param>
         public virtual NonClientHitTestResult NonClientHitTest(Point hitPoint)
         {
-
             int leftX = 0;
             int rightX = 0;
             if (WinApi.IsWin10)
@@ -471,10 +520,8 @@ namespace System.Windows.Forms
         private void SetMargins(Padding p)
         {
             Margins = p;
-
             Padding formPadding = p;
             formPadding.Top = p.Bottom - 1;
-
             if (!DesignMode)
             {
                 if (WinApi.IsWin10)
@@ -483,11 +530,9 @@ namespace System.Windows.Forms
                     formPadding.Right = 0;
                     formPadding.Bottom = 0;
                 }
-
                 Form.Padding = formPadding;
             }
         }
-
         #endregion
     }
 }
