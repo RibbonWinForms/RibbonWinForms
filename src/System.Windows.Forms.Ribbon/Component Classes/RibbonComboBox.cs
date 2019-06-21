@@ -147,7 +147,12 @@ namespace System.Windows.Forms
             //Steve
             set
             {
-                if (value.GetType().BaseType == typeof(RibbonItem))
+                if (value == null)
+                {
+                    _selectedItem = null;
+                    TextBoxText = String.Empty;
+                }
+                else if (value.GetType().BaseType == typeof(RibbonItem))
                 {
                     if (DropDownItems.Contains(value))
                     {

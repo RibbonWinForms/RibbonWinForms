@@ -52,8 +52,18 @@ namespace System.Windows.Forms
         {
             if (disposing && RibbonDesigner.Current == null)
             {
-                foreach (RibbonItem item in _items)
-                    item.Dispose();
+                try
+                {
+                    foreach (RibbonItem item in _items)
+                        item.Dispose();
+                }
+                catch(InvalidOperationException)
+                {
+                    if (!IsOpenInVisualStudioDesigner())
+                    {
+                        throw;
+                    }
+                }
                 _dropDownButton.Dispose();
                 _sensor.Dispose();
             }

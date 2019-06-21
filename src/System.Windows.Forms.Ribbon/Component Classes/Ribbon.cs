@@ -44,6 +44,7 @@ namespace System.Windows.Forms
         #endregion
 
         #region Fields
+        private bool? _isopeninvisualstudiodesigner; 
         internal bool ForceOrbMenu;
         private Size _lastSizeMeasured;
         private Padding _tabsMargin;
@@ -331,12 +332,44 @@ namespace System.Windows.Forms
             //Invalidate();
         }
 
+        protected bool IsOpenInVisualStudioDesigner()
+        {
+            if (!_isopeninvisualstudiodesigner.HasValue)
+            {
+                _isopeninvisualstudiodesigner = LicenseManager.UsageMode == LicenseUsageMode.Designtime ||
+                                                this.DesignMode;
+                if (!_isopeninvisualstudiodesigner.Value)
+                {
+                    try
+                    {
+                        using (var process = System.Diagnostics.Process.GetCurrentProcess())
+                        {
+                            _isopeninvisualstudiodesigner = process.ProcessName.ToLowerInvariant().Contains("devenv");
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            return _isopeninvisualstudiodesigner.Value;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing && RibbonDesigner.Current == null)
             {
-                foreach (RibbonTab tab in Tabs)
-                    tab.Dispose();
+                try
+                {
+                    foreach (RibbonTab tab in Tabs)
+                        tab.Dispose();
+                }
+                catch(InvalidOperationException)
+                {
+                    if (!IsOpenInVisualStudioDesigner())
+                    {
+                        throw;
+                    }
+                }
                 OrbDropDown.Dispose();
                 QuickAccessToolbar.Dispose();
                 MinimizeButton.Dispose();
@@ -689,7 +722,14 @@ namespace System.Windows.Forms
                 {
                     TabsPadding = new Padding(8, 4, 8, 4);
                     OrbsPadding = new Padding(8, 4, 8, 4);
-                    _tabsMargin = new Padding(12, CaptionBarHeight + 2, 20, 0);
+                    if (CaptionBarVisible)
+                    {
+                        _tabsMargin = new Padding(12, CaptionBarHeight + 2, 20, 0);
+                    }
+                    else
+                    {
+                        _tabsMargin = new Padding(12, 2, 20, 0);
+                    }
                     TabContentMargin = new Padding(1, 0, 2, 2);
                     TabContentPadding = new Padding(0);
                     TabSpacing = 6;
@@ -706,7 +746,14 @@ namespace System.Windows.Forms
                 {
                     TabsPadding = new Padding(10, 3, 7, 2);
                     OrbsPadding = new Padding(17, 4, 15, 4);
-                    TabsMargin = new Padding(6, CaptionBarHeight + 2, 20, 0);
+                    if (CaptionBarVisible)
+                    {
+                        TabsMargin = new Padding(6, CaptionBarHeight + 2, 20, 0);
+                    }
+                    else
+                    {
+                        TabsMargin = new Padding(6, 2, 20, 0);
+                    }
                     TabContentMargin = new Padding(0, 0, 0, 2);
                     TabContentPadding = new Padding(0);
                     TabSpacing = 3;
@@ -723,7 +770,14 @@ namespace System.Windows.Forms
                 {
                     TabsPadding = new Padding(8, 4, 8, 1);
                     OrbsPadding = new Padding(15, 3, 15, 3);
-                    _tabsMargin = new Padding(5, CaptionBarHeight + 2, 20, 0);
+                    if (CaptionBarVisible)
+                    {
+                        _tabsMargin = new Padding(5, CaptionBarHeight + 2, 20, 0);
+                    }
+                    else
+                    {
+                        _tabsMargin = new Padding(5, 2, 20, 0);
+                    }
                     TabContentMargin = new Padding(0, 0, 0, 2);
                     TabContentPadding = new Padding(0);
                     TabSpacing = 4;
@@ -1175,8 +1229,7 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets a value indicating the external spacing of tabs
         /// </summary>
-        //[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Browsable(false)]
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Padding TabsMargin
         {
             get => _tabsMargin;
@@ -1265,22 +1318,7 @@ namespace System.Windows.Forms
             set
             {
                 _CaptionBarVisible = value;
-
-                if (CaptionBarVisible)
-                {
-                    Padding tm = TabsMargin;
-                    tm.Top = CaptionBarHeight + 2;
-                    TabsMargin = tm;
-                }
-                else
-                {
-                    Padding tm = TabsMargin;
-                    tm.Top = 2;
-                    TabsMargin = tm;
-                }
-
-                UpdateRegions();
-                Invalidate();
+                OrbStyle = OrbStyle;
             }
         }
 
