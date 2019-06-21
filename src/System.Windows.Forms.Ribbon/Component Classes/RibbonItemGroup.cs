@@ -48,8 +48,18 @@ namespace System.Windows.Forms
         {
             if (disposing && RibbonDesigner.Current == null)
             {
-                foreach (RibbonItem ri in Items)
-                    ri.Dispose();
+                try
+                {
+                    foreach (RibbonItem ri in Items)
+                        ri.Dispose();
+                }
+                catch(InvalidOperationException)
+                {
+                    if (!IsOpenInVisualStudioDesigner())
+                    {
+                        throw;
+                    }
+                }
             }
 
             base.Dispose(disposing);

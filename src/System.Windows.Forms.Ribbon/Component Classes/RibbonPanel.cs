@@ -22,6 +22,7 @@ namespace System.Windows.Forms
         Component, IRibbonElement, IContainsSelectableRibbonItems, IContainsRibbonComponents
     {
         #region Fields
+        private bool? _isopeninvisualstudiodesigner; 
         private bool _enabled;
         private Image _image;
         private string _text;
@@ -120,12 +121,44 @@ namespace System.Windows.Forms
             Items.AddRange(items);
         }
 
+        protected bool IsOpenInVisualStudioDesigner()
+        {
+            if (!_isopeninvisualstudiodesigner.HasValue)
+            {
+                _isopeninvisualstudiodesigner = LicenseManager.UsageMode == LicenseUsageMode.Designtime ||
+                                                this.DesignMode;
+                if (!_isopeninvisualstudiodesigner.Value)
+                {
+                    try
+                    {
+                        using (var process = System.Diagnostics.Process.GetCurrentProcess())
+                        {
+                            _isopeninvisualstudiodesigner = process.ProcessName.ToLowerInvariant().Contains("devenv");
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            return _isopeninvisualstudiodesigner.Value;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing && RibbonDesigner.Current == null)
             {
-                foreach (RibbonItem ri in Items)
-                    ri.Dispose();
+                try
+                {
+                    foreach (RibbonItem ri in Items)
+                        ri.Dispose();
+                }
+                catch(InvalidOperationException)
+                {
+                    if (!IsOpenInVisualStudioDesigner())
+                    {
+                        throw;
+                    }
+                }
             }
 
             base.Dispose(disposing);

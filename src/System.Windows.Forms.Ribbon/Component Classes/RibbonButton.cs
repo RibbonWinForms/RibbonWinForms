@@ -104,10 +104,12 @@ namespace System.Windows.Forms
             if (disposing && RibbonDesigner.Current == null)
             {
                 RemoveHandlers();
-                if (SmallImage != null)
-                    SmallImage.Dispose();
-                if (FlashSmallImage != null)
-                    FlashSmallImage.Dispose();
+
+                //Dont Dispose Image, could be an Ressource Image
+                //if (SmallImage != null)
+                //    SmallImage.Dispose();
+                //if (FlashSmallImage != null)
+                //    FlashSmallImage.Dispose();
             }
             base.Dispose(disposing);
         }

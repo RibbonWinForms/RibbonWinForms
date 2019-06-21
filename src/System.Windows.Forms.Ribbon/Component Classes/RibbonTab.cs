@@ -24,6 +24,7 @@ namespace System.Windows.Forms
     public class RibbonTab : Component, IRibbonElement, IRibbonToolTip, IContainsRibbonComponents
     {
         #region Fields
+        private bool? _isopeninvisualstudiodesigner; 
         private bool _enabled;
         private bool _pressed;
         private bool _selected;
@@ -86,6 +87,28 @@ namespace System.Windows.Forms
         {
         }
 
+        protected bool IsOpenInVisualStudioDesigner()
+        {
+            if (!_isopeninvisualstudiodesigner.HasValue)
+            {
+                _isopeninvisualstudiodesigner = LicenseManager.UsageMode == LicenseUsageMode.Designtime ||
+                                                this.DesignMode;
+                if (!_isopeninvisualstudiodesigner.Value)
+                {
+                    try
+                    {
+                        using (var process = System.Diagnostics.Process.GetCurrentProcess())
+                        {
+                            _isopeninvisualstudiodesigner = process.ProcessName.ToLowerInvariant().Contains("devenv");
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            return _isopeninvisualstudiodesigner.Value;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing && RibbonDesigner.Current == null)
@@ -94,8 +117,18 @@ namespace System.Windows.Forms
                 _TT.Popup -= _TT_Popup;
 
                 _TT.Dispose();
-                foreach (RibbonPanel p in Panels)
-                    p.Dispose();
+                try
+                {
+                    foreach (RibbonPanel p in Panels)
+                        p.Dispose();
+                }
+                catch(InvalidOperationException)
+                {
+                    if (!IsOpenInVisualStudioDesigner())
+                    {
+                        throw;
+                    }
+                }
             }
 
             base.Dispose(disposing);
