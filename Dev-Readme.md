@@ -51,4 +51,4 @@ For building the setup it is neccessary to install the Wix Toolset VisualStudio 
 
 ## Release Versions
 
-- 5.0.1.0 release published.
+- 5.0.1.0 release published by adriancs2, UTC time: Sunday, June 23, 2019, 14:03
