@@ -46,9 +46,9 @@ namespace System.Windows.Forms
         {
             DoubleBuffered = true;
             Ribbon = ribbon;
-            MenuItems = new RibbonItemCollection();
-            RecentItems = new RibbonItemCollection();
-            OptionItems = new RibbonItemCollection();
+            MenuItems = new RibbonOrbMenuItemCollection();
+            RecentItems = new RibbonOrbRecentItemCollection();
+            OptionItems = new RibbonOrbOptionButtonCollection();
 
             MenuItems.SetOwner(Ribbon);
             RecentItems.SetOwner(Ribbon);
@@ -227,13 +227,13 @@ namespace System.Windows.Forms
         /// Gets the collection of items shown in the menu area
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public RibbonItemCollection MenuItems { get; }
+        public RibbonOrbMenuItemCollection MenuItems { get; }
 
         /// <summary>
         /// Gets the collection of items shown in the options area (bottom)
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public RibbonItemCollection OptionItems { get; }
+        public RibbonOrbOptionButtonCollection OptionItems { get; }
 
         [DefaultValue(6)]
         [Description("Spacing between option buttons (those on the bottom)")]
@@ -243,7 +243,7 @@ namespace System.Windows.Forms
         /// Gets the collection of items shown in the recent items area
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public RibbonItemCollection RecentItems { get; }
+        public RibbonOrbRecentItemCollection RecentItems { get; }
 
         /// <summary>
         /// Gets or Sets the caption for the Recent Items area
