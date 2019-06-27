@@ -112,6 +112,10 @@ namespace System.Windows.Forms
             }
         }
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -199,7 +203,7 @@ namespace System.Windows.Forms
             {
                 if (value > ScrollMaximum || value < ScrollMinimum)
                 {
-                    throw new IndexOutOfRangeException("Scroll value must exist between ScrollMinimum and Scroll Maximum");
+                    throw new ArgumentOutOfRangeException(nameof(ScrollValue), "Scroll value must exist between ScrollMinimum and Scroll Maximum");
                 }
 
                 _thumbBounds.Y = value;

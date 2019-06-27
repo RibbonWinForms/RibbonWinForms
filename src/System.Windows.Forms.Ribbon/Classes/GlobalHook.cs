@@ -124,10 +124,6 @@ namespace System.Windows.Forms.RibbonHelpers
         ~GlobalHook()
         {
             Dispose(false);
-            //if (Handle != IntPtr.Zero)
-            //{
-            //    Unhook();
-            //}
         }
 
         #endregion
@@ -281,7 +277,7 @@ namespace System.Windows.Forms.RibbonHelpers
                 case HookTypes.Keyboard:
                     return KeyboardProc(code, wParam, lParam);
                 default:
-                    throw new Exception("HookType not supported");
+                    throw new ArgumentException("HookType not supported");
             }
         }
 
@@ -422,7 +418,8 @@ namespace System.Windows.Forms.RibbonHelpers
         private void InstallHook()
         {
             // Error check
-            if (_handle != IntPtr.Zero) throw new Exception("Hook is already installed");
+            if (_handle != IntPtr.Zero)
+                throw new InvalidOperationException("Hook is already installed");
 
             #region htype
             int htype = 0;
@@ -436,7 +433,7 @@ namespace System.Windows.Forms.RibbonHelpers
                     htype = WinApi.WH_KEYBOARD_LL;
                     break;
                 default:
-                    throw new Exception("HookType is not supported");
+                    throw new ArgumentException("HookType is not supported");
             }
             #endregion
 
@@ -490,16 +487,19 @@ namespace System.Windows.Forms.RibbonHelpers
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-            //if (Handle != IntPtr.Zero)
-            //{
-            //    Unhook();
-            //}
         }
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (_handle != IntPtr.Zero)

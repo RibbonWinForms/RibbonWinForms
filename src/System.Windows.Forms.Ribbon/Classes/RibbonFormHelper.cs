@@ -275,7 +275,7 @@ namespace System.Windows.Forms
             if (DesignMode) return;
             if (Ribbon == null)
             {
-                throw new ArgumentNullException("Ribbon Control was not placed to RibbonForm");
+                throw new ArgumentNullException(nameof(Ribbon), "Ribbon Control was not placed to RibbonForm");
             }
             WinApi.MARGINS dwmMargins;
 

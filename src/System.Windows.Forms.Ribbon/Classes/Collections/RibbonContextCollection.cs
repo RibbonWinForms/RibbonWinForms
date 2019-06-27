@@ -45,7 +45,7 @@ namespace System.Windows.Forms
 
         public new int RemoveAll(Predicate<RibbonContext> predicate)
         {
-            throw new ApplicationException("RibbonContextCollectin.RemoveAll function is not supported");
+            throw new NotSupportedException("RibbonContextCollectin.RemoveAll function is not supported");
         }
 
         public new void RemoveAt(int index)
@@ -62,7 +62,7 @@ namespace System.Windows.Forms
 
         public new void RemoveRange(int index, int count)
         {
-            throw new ApplicationException("RibbonContextCollection.RemoveRange function is not supported");
+            throw new NotSupportedException("RibbonContextCollection.RemoveRange function is not supported");
         }
 
         internal override void SetOwner(RibbonContext item)

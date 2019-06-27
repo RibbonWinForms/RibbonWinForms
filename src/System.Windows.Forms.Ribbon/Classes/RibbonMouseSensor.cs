@@ -230,7 +230,7 @@ namespace System.Windows.Forms
         {
             if (Control == null)
             {
-                throw new ApplicationException("Control is Null, cant Add RibbonMouseSensor Handles");
+                throw new ArgumentNullException(nameof(Control), "Control is Null, cant Add RibbonMouseSensor Handles");
             }
 
             Control.MouseMove += Control_MouseMove;
@@ -729,12 +729,19 @@ namespace System.Windows.Forms
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

@@ -295,7 +295,7 @@ namespace System.Windows.Forms
                         int.Parse(hex.Substring(6, 2), NumberStyles.HexNumber));
 
                 default:
-                    throw new Exception("Color not valid");
+                    throw new ArgumentException("Color not valid");
             }
         }
 
@@ -1031,7 +1031,7 @@ namespace System.Windows.Forms
             }
             else
             {
-                throw new Exception("Unrecognized end line delimeter.");
+                throw new ArgumentException("Unrecognized end line delimeter.");
             }
 
             Dictionary<string, RibbonColorPart> dic1 = new Dictionary<string, RibbonColorPart>();

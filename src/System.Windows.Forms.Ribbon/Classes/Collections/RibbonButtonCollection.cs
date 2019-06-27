@@ -35,13 +35,13 @@ namespace System.Windows.Forms
         private void CheckRestrictions(RibbonButton button)
         {
             if (button == null)
-                throw new ApplicationException("The RibbonButtonList only accepts button in the Buttons collection");
+                throw new ArgumentNullException(nameof(button), "The RibbonButtonList only accepts button in the Buttons collection");
 
             //if (!string.IsNullOrEmpty(button.Text))
-            //    throw new ApplicationException("The buttons on the RibbonButtonList should have no text");
+            //    throw new ArgumentException("The buttons on the RibbonButtonList should have no text");
 
             if (button.Style != RibbonButtonStyle.Normal)
-                throw new ApplicationException("The only style supported by the RibbonButtonList is Normal");
+                throw new ArgumentException("The only style supported by the RibbonButtonList is Normal");
         }
 
         /// <inheritdoc />

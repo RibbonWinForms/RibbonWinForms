@@ -50,6 +50,10 @@ namespace System.Windows.Forms
             _disableTextboxCursor = true;
         }
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -197,7 +201,7 @@ namespace System.Windows.Forms
                     }
                     else
                     {
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException(nameof(SelectedIndex));
                     }
                 }
             }

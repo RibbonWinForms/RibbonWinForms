@@ -45,6 +45,10 @@ namespace System.Windows.Forms
             Current = this;
         }
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -54,14 +58,6 @@ namespace System.Windows.Forms
             }
         }
         //Finalize is called by base class "System.ComponentModel.Design.ComponentDesigner"
-        //Finalize should normally used to dispose unmanaged resources 
-        //~RibbonDesigner()
-        //{
-        //    if (Current == this)
-        //    {
-        //        Current = null;
-        //    }
-        //}
 
         #endregion
 

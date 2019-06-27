@@ -99,6 +99,10 @@ namespace System.Windows.Forms
             SmallImage = smallImage;
         }
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && RibbonDesigner.Current == null)
@@ -881,7 +885,7 @@ namespace System.Windows.Forms
                     heightSum += simg.Height;
                     break;
                 default:
-                    throw new ApplicationException("SizeMode not supported: " + e.SizeMode);
+                    throw new ArgumentException("SizeMode not supported: " + e.SizeMode);
             }
 
             //if (theSize == RibbonElementSizeMode.DropDown)
@@ -925,7 +929,7 @@ namespace System.Windows.Forms
         /// <param name="pressed">Value that indicates if the dropdown button is pressed</param>
         internal void SetDropDownPressed(bool pressed)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -935,7 +939,7 @@ namespace System.Windows.Forms
         internal void SetDropDownSelected(bool selected)
         {
             //Dont use, an overflow occours
-            throw new Exception();
+            throw new NotSupportedException();
         }
 
         /// <summary>

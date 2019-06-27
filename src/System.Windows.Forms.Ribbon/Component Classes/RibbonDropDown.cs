@@ -194,7 +194,7 @@ namespace System.Windows.Forms
             {
                 if (value > ScrollMaximum || value < ScrollMinimum)
                 {
-                    throw new IndexOutOfRangeException("Scroll value must exist between ScrollMinimum and Scroll Maximum");
+                    throw new ArgumentOutOfRangeException(nameof(ScrollValue), "Scroll value must exist between ScrollMinimum and Scroll Maximum");
                 }
 
                 _thumbBounds.Y = value;

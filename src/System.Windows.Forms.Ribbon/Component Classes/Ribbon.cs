@@ -45,7 +45,7 @@ namespace System.Windows.Forms
 
         #region Fields
         private int _contextspace = 0;
-        private bool? _isopeninvisualstudiodesigner; 
+        private bool? _isopeninvisualstudiodesigner;
         internal bool ForceOrbMenu;
         private Size _lastSizeMeasured;
         private Padding _tabsMargin;
@@ -333,6 +333,9 @@ namespace System.Windows.Forms
             //Invalidate();
         }
 
+        /// <summary>
+        /// Ribbon is open in Visual Studio Designer
+        /// </summary>
         protected bool IsOpenInVisualStudioDesigner()
         {
             if (!_isopeninvisualstudiodesigner.HasValue)
@@ -355,6 +358,11 @@ namespace System.Windows.Forms
             }
             return _isopeninvisualstudiodesigner.Value;
         }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && RibbonDesigner.Current == null)
@@ -364,7 +372,7 @@ namespace System.Windows.Forms
                     foreach (RibbonTab tab in Tabs)
                         tab.Dispose();
                 }
-                catch(InvalidOperationException)
+                catch (InvalidOperationException)
                 {
                     if (!IsOpenInVisualStudioDesigner())
                     {
@@ -1229,7 +1237,7 @@ namespace System.Windows.Forms
             get => _renderer;
             set
             {
-                _renderer = value ?? throw new ApplicationException("Null renderer!");
+                _renderer = value ?? throw new ArgumentNullException(nameof(Renderer), "Null renderer!");
                 Invalidate();
             }
         }

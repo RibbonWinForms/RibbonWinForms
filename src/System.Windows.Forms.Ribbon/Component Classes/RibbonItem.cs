@@ -104,6 +104,9 @@ namespace System.Windows.Forms
             _TT.Popup += _TT_Popup;
         }
 
+        /// <summary>
+        /// RibbonItem is open in Visual Studio Designer
+        /// </summary>
         protected bool IsOpenInVisualStudioDesigner()
         {
             if (!_isopeninvisualstudiodesigner.HasValue)
@@ -126,6 +129,11 @@ namespace System.Windows.Forms
             }
             return _isopeninvisualstudiodesigner.Value;
         }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && RibbonDesigner.Current == null)

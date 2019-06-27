@@ -22,7 +22,7 @@ namespace System.Windows.Forms
         Component, IRibbonElement, IContainsSelectableRibbonItems, IContainsRibbonComponents
     {
         #region Fields
-        private bool? _isopeninvisualstudiodesigner; 
+        private bool? _isopeninvisualstudiodesigner;
         private bool _enabled;
         private Image _image;
         private string _text;
@@ -121,6 +121,9 @@ namespace System.Windows.Forms
             Items.AddRange(items);
         }
 
+        /// <summary>
+        /// RibbonPanel is open in Visual Studio Designer
+        /// </summary>
         protected bool IsOpenInVisualStudioDesigner()
         {
             if (!_isopeninvisualstudiodesigner.HasValue)
@@ -143,6 +146,11 @@ namespace System.Windows.Forms
             }
             return _isopeninvisualstudiodesigner.Value;
         }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && RibbonDesigner.Current == null)
@@ -152,7 +160,7 @@ namespace System.Windows.Forms
                     foreach (RibbonItem ri in Items)
                         ri.Dispose();
                 }
-                catch(InvalidOperationException)
+                catch (InvalidOperationException)
                 {
                     if (!IsOpenInVisualStudioDesigner())
                     {
