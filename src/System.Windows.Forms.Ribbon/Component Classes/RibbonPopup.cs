@@ -53,6 +53,7 @@ namespace System.Windows.Forms
         {
             SetStyle(ControlStyles.Opaque, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.Selectable, false);
             BorderRoundness = 3;
         }

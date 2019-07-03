@@ -27,6 +27,7 @@ namespace System.Windows.Forms
         #region Ctor
         internal RibbonPanelPopup(RibbonPanel panel)
         {
+            SetStyle(ControlStyles.Opaque, false);
             DoubleBuffered = true;
 
             Sensor = new RibbonMouseSensor(this, panel.Owner, panel.Items)
@@ -41,8 +42,8 @@ namespace System.Windows.Forms
             {
                 panel.overflowBoundsBuffer = panel.Bounds;
                 Size s = panel.SwitchToSize(this, g, GetSizeMode(panel));
-                s.Width += 100;
-                s.Height += 100;
+                //s.Width += 100;
+                //s.Height += 100;
                 Size = s;
 
             }
@@ -119,6 +120,7 @@ namespace System.Windows.Forms
                 item.OnPaint(this, new RibbonElementPaintEventArgs(e.ClipRectangle, e.Graphics, RibbonElementSizeMode.Large));
             }
 
+            Panel.Owner.Renderer.OnRenderRibbonPanelBackground(new RibbonPanelRenderEventArgs(Panel.Owner, e.Graphics, e.ClipRectangle, Panel, this));
             Panel.Owner.Renderer.OnRenderRibbonPanelText(new RibbonPanelRenderEventArgs(Panel.Owner, e.Graphics, e.ClipRectangle, Panel, this));
 
         }
