@@ -63,19 +63,21 @@ namespace System.Windows.Forms
         {
             Form = f;
             Form.Load += Form_Load;
-            Form.ResizeEnd += _form_ResizeEnd;
-            Form.MinimumSizeChanged += _form_ResizeEnd;
-            Form.MaximumSizeChanged += _form_ResizeEnd; 
-            Form.Layout += _form_Layout;
-            Form.TextChanged += _form_TextChanged;
+            Form.ResizeEnd += Form_ResizeEnd;
+            Form.MinimumSizeChanged += Form_ResizeEnd;
+            Form.MaximumSizeChanged += Form_ResizeEnd; 
+            Form.Layout += Form_Layout;
+            Form.TextChanged += Form_TextChanged;
         }
-        private void _form_TextChanged(object sender, EventArgs e)
+
+        private void Form_TextChanged(object sender, EventArgs e)
         {
             UpdateRibbonConditions();
             Form.Refresh();
             Form.Update();
         }
-        private void _form_Layout(object sender, LayoutEventArgs e)
+
+        private void Form_Layout(object sender, LayoutEventArgs e)
         {
             if (_lastState == Form.WindowState)
             {
@@ -95,7 +97,7 @@ namespace System.Windows.Forms
             _lastState = Form.WindowState;
         }
 
-        private void _form_ResizeEnd(object sender, EventArgs e)
+        private void Form_ResizeEnd(object sender, EventArgs e)
         {
             UpdateRibbonConditions();
             Form.Refresh();
@@ -227,9 +229,7 @@ namespace System.Windows.Forms
                 {
                     if (Ribbon != null && Ribbon.ActualBorderMode == RibbonWindowMode.NonClientAreaCustomDrawn)
                     {
-                        RibbonProfessionalRenderer renderer = Ribbon.Renderer as RibbonProfessionalRenderer;
-
-                        if (renderer != null)
+                        if (Ribbon.Renderer is RibbonProfessionalRenderer renderer)
                         {
                             e.Graphics.Clear(renderer.ColorTable.RibbonBackground);  // draw the Form border explicitly, otherwise problems as MDI parent occur
                             using (SolidBrush p = new SolidBrush(renderer.ColorTable.Caption1))
@@ -272,7 +272,9 @@ namespace System.Windows.Forms
         /// <param name="e">Event data</param>
         protected virtual void Form_Load(object sender, EventArgs e)
         {
-            if (DesignMode) return;
+            if (DesignMode)
+                return;
+
             if (Ribbon == null)
             {
                 throw new ArgumentNullException(nameof(Ribbon), "Ribbon Control was not placed to RibbonForm");
@@ -342,8 +344,7 @@ namespace System.Windows.Forms
             if (WinApi.IsVista)
             {
                 #region Checks if DWM processes the message
-                IntPtr result;
-                int dwmHandled = WinApi.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out result);
+                int dwmHandled = WinApi.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out IntPtr result);
 
                 if (dwmHandled == 1)
                 {

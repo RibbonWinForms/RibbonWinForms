@@ -1279,7 +1279,7 @@ namespace System.Windows.Forms.RibbonHelpers
             /// <summary>
             /// Init values of properties.
             /// </summary>
-            static void init()
+            private static void Init()
             {
                 RegistryKey reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
 
@@ -1304,7 +1304,7 @@ namespace System.Windows.Forms.RibbonHelpers
                 get
                 {
                     if (caption == null)
-                        init();
+                        Init();
                     return caption;
                 }
             }
@@ -1317,7 +1317,7 @@ namespace System.Windows.Forms.RibbonHelpers
                 get
                 {
                     if (version == null)
-                        init();
+                        Init();
                     return version;
                 }
             }
@@ -1330,7 +1330,7 @@ namespace System.Windows.Forms.RibbonHelpers
                 get
                 {
                     if (id == null)
-                        init();
+                        Init();
                     return id;
                 }
             }
@@ -1596,7 +1596,7 @@ namespace System.Windows.Forms.RibbonHelpers
             }
         }
 
-        private static int[] mfFlags = { MF_GRAYED, MF_ENABLED };
+        private static readonly int[] mfFlags = { MF_GRAYED, MF_ENABLED };
 
         public static void ShowSystemMenu(Form form, int xMouse, int yMouse)
         {
@@ -1621,36 +1621,35 @@ namespace System.Windows.Forms.RibbonHelpers
 
             FormBorderStyle formBorderStyle = form.FormBorderStyle;
             FormWindowState windowState = form.WindowState;
+
             if (formBorderStyle == FormBorderStyle.FixedSingle ||
-                    formBorderStyle == FormBorderStyle.Sizable ||
-                    formBorderStyle == FormBorderStyle.FixedToolWindow ||
-                    formBorderStyle == FormBorderStyle.SizableToolWindow)
+                formBorderStyle == FormBorderStyle.Sizable ||
+                formBorderStyle == FormBorderStyle.FixedToolWindow ||
+                formBorderStyle == FormBorderStyle.SizableToolWindow)
             {
                 UpdateItem(SC_RESTORE, windowState != FormWindowState.Normal, true);
                 UpdateItem(SC_MOVE, windowState != FormWindowState.Maximized);
                 UpdateItem(SC_SIZE, (windowState != FormWindowState.Maximized) &&
-
-                  (formBorderStyle == FormBorderStyle.Sizable || formBorderStyle == FormBorderStyle.SizableToolWindow));
-                UpdateItem(SC_MINIMIZE, form.MinimizeBox &&
-                  (formBorderStyle == FormBorderStyle.FixedSingle || formBorderStyle == FormBorderStyle.Sizable));
+                    (formBorderStyle == FormBorderStyle.Sizable || formBorderStyle == FormBorderStyle.SizableToolWindow));
+                UpdateItem(SC_MINIMIZE, form.MinimizeBox && 
+                    (formBorderStyle == FormBorderStyle.FixedSingle || formBorderStyle == FormBorderStyle.Sizable));
                 UpdateItem(SC_MAXIMIZE, form.MaximizeBox &&
-                  (formBorderStyle == FormBorderStyle.FixedSingle || formBorderStyle == FormBorderStyle.Sizable) &&
-                  (windowState != FormWindowState.Maximized), true);
+                    (formBorderStyle == FormBorderStyle.FixedSingle || formBorderStyle == FormBorderStyle.Sizable) && (windowState != FormWindowState.Maximized), true);
             }
+
             SetMenuDefaultItem(menu, SC_CLOSE, MF_BYCOMMAND);
-            cmd = UIntPtr.Zero;
-            cmd = (UIntPtr)(TrackPopupMenuEx(menu, (uint)(TPM_RETURNCMD |
-              GetSystemMetrics(SystemMetric.SM_MENUDROPALIGNMENT)), xMouse,
-              yMouse, form.Handle, IntPtr.Zero));
+
+            cmd = (UIntPtr)TrackPopupMenuEx(menu, (uint)(TPM_RETURNCMD | GetSystemMetrics(SystemMetric.SM_MENUDROPALIGNMENT)), xMouse, yMouse, form.Handle, IntPtr.Zero);
+
             if (cmd == UIntPtr.Zero)
                 return;
+
             PostMessage(form.Handle, WinApi.WM_SYSCOMMAND, cmd, IntPtr.Zero);
         }
 
         public static void ShowSystemMenu(Form form)
         {
-            POINT mousePos;
-            if (GetCursorPos(out mousePos))
+            if (GetCursorPos(out POINT mousePos))
             {
                 ShowSystemMenu(form, mousePos.x, mousePos.y);
             }
