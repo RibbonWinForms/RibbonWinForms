@@ -1,4 +1,4 @@
-﻿/*
+/*
  
  //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
  * Copied from original class of RibbonTabRenderEventArgs just changed what i needed for a ribbon Button.

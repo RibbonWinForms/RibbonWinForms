@@ -1,4 +1,4 @@
-﻿
+
 
 // Added on 13 Jan 2013
 // Used to handle ribbon theme coloring

@@ -1,4 +1,4 @@
-﻿/*
+/*
  
  2011 Thomas Koglbauer
  * 
