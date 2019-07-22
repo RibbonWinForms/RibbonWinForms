@@ -125,10 +125,7 @@ namespace System.Windows.Forms
         /// <param name="e"></param>
         protected virtual void OnOpening(CancelEventArgs e)
         {
-            if (Opening != null)
-            {
-                Opening(this, e);
-            }
+            Opening?.Invoke(this, e);
         }
 
         /// <summary>
@@ -168,10 +165,7 @@ namespace System.Windows.Forms
         /// <param name="e"></param>
         protected virtual void OnClosing(ToolStripDropDownClosingEventArgs e)
         {
-            if (Closing != null)
-            {
-                Closing(this, e);
-            }
+            Closing?.Invoke(this, e);
         }
 
         /// <summary>
@@ -183,10 +177,7 @@ namespace System.Windows.Forms
         {
             RibbonPopupManager.Unregister(this);
 
-            if (Closed != null)
-            {
-                Closed(this, e);
-            }
+            Closed?.Invoke(this, e);
 
             //if (NextPopup != null)
             //{
@@ -206,10 +197,7 @@ namespace System.Windows.Forms
         /// <param name="e"></param>
         protected virtual void OnShowed(EventArgs e)
         {
-            if (Showed != null)
-            {
-                Showed(this, e);
-            }
+            Showed?.Invoke(this, e);
         }
 
         /// <summary>
