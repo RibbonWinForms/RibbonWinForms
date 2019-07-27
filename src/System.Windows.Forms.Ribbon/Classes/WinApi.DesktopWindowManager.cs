@@ -53,7 +53,7 @@ namespace System.Windows.Forms.RibbonHelpers
         public static bool IsGlassEnabled {
             get {
                 //Check is windows vista
-                if (IsVista)
+                if (IsWindowsVistaOrGreater)
                 {
                     //Check what DWM says about composition
                     int enabled = 0;

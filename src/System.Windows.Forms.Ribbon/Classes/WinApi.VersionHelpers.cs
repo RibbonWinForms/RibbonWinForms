@@ -19,62 +19,51 @@ namespace System.Windows.Forms.RibbonHelpers
         #region OsVersion class
 
         /// <summary>
-        /// Informations about OS.
+        /// Static class that mimics <see href="https://docs.microsoft.com/de-de/windows/win32/sysinfo/version-helper-apis">
+        /// Version Helper APIs</see> the get the operating system version the application is running under.
+        /// 
+        /// Note by @tajbender: However, as far as I can see for now (07/27/19), there is currently no reliable way to
+        /// distinguish Windows 8.1 and 10 versions (and above) without adding a manifest file and/or read out registry values.
+        /// 
+        /// That's why the test for windows 10 checks for version 6.3 what in fact means to test for v8.1 and above. Take a
+        /// look at <seealso href="https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_osversioninfoexa">
+        /// OSVERSIONINFOEXA structure</seealso>.
+        /// 
+        /// So, someone should care and take a look at this in the future.
         /// </summary>
-        private static class OSVersion
+        public static class OSVersion
         {
             /// <summary>
             /// Init values of properties.
             /// </summary>
-            private static void Init()
+            static OSVersion()
             {
-                RegistryKey reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
-
-                string productName = (string)reg.GetValue("ProductName");
-                string currentVersion = (string)reg.GetValue("CurrentVersion");
-                string currentBuild = (string)reg.GetValue("CurrentBuild");
-                string releaseId = (string)reg.GetValue("ReleaseId");
-                caption = string.IsNullOrEmpty(productName) ? "Unknown" : productName;
-                id = string.IsNullOrEmpty(releaseId) ? string.Empty : releaseId;
-                version = new Version((string.IsNullOrEmpty(currentVersion) ? "0.0" : currentVersion + "." + (string.IsNullOrEmpty(currentBuild) ? "0" : currentBuild) + ".0"));
+                using (RegistryKey reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
+                {
+                    string productName = (string)reg.GetValue("ProductName");
+                    string currentVersion = (string)reg.GetValue("CurrentVersion");
+                    string currentBuild = (string)reg.GetValue("CurrentBuild");
+                    string releaseId = (string)reg.GetValue("ReleaseId");
+                    Caption = string.IsNullOrEmpty(productName) ? "Unknown" : productName;
+                    ReleaseId = string.IsNullOrEmpty(releaseId) ? string.Empty : releaseId;
+                    Version = new Version((string.IsNullOrEmpty(currentVersion) ? "0.0" : currentVersion + "." + (string.IsNullOrEmpty(currentBuild) ? "0" : currentBuild) + ".0"));
+                }
             }
-
-            static string id = null;
-            static string caption = null;
-            static Version version = null;
 
             /// <summary>
             /// The name of Operating system.
             /// </summary>
-            public static string Caption {
-                get {
-                    if (caption == null)
-                        Init();
-                    return caption;
-                }
-            }
+            public static string Caption { get; private set; } = null;
 
             /// <summary>
             /// Versionsnumber of OS.
             /// </summary>
-            public static Version Version {
-                get {
-                    if (version == null)
-                        Init();
-                    return version;
-                }
-            }
+            public static Version Version { get; private set; } = null;
 
             /// <summary>
             /// ReleaseId of OS. (Example Id = 1803 = Win10 Build in 03.2018)
             /// </summary>
-            public static string ReleaseId {
-                get {
-                    if (id == null)
-                        Init();
-                    return id;
-                }
-            }
+            public static string ReleaseId { get; private set; } = null;
         }
 
         #endregion
@@ -87,12 +76,12 @@ namespace System.Windows.Forms.RibbonHelpers
         /// <summary>
         /// Gets a value indicating if operating system is vista or higher
         /// </summary>
-        public static bool IsVista => IsWindows && Environment.OSVersion.Version.Major >= 6;
+        public static bool IsWindowsVistaOrGreater => IsWindows && Environment.OSVersion.Version.Major >= 6;
 
         /// <summary>
         /// Gets a value indicating if operating system is xp or higher
         /// </summary>
-        public static bool IsXP => IsWindows && Environment.OSVersion.Version.Major >= 5;
+        public static bool IsWindowsXPOrGreater => IsWindows && Environment.OSVersion.Version.Major >= 5;
 
         /// <summary>
         /// Gets a value indicating ReleaseId
@@ -102,6 +91,6 @@ namespace System.Windows.Forms.RibbonHelpers
         /// <summary>
         /// Gets a value indicating if operating system is Win10
         /// </summary>
-        public static bool IsWin10 => IsWindows && OSVersion.Version.Major == 6 && OSVersion.Version.Minor == 3;
+        public static bool IsWindows10OrGreater => IsWindows && OSVersion.Version.Major == 6 && OSVersion.Version.Minor == 3;
     }
 }

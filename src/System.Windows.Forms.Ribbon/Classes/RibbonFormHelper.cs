@@ -187,7 +187,7 @@ namespace System.Windows.Forms
                 {
                     int left;
                     int right;
-                    if (WinApi.IsWin10)
+                    if (WinApi.IsWindows10OrGreater)
                     {
                         left = 0;
                         right = Form.Width;
@@ -297,7 +297,7 @@ namespace System.Windows.Forms
                     Margins.Bottom + Ribbon.ContextSpace + ((Ribbon.OrbStyle == RibbonOrbStyle.Office_2007) ? 0 : Ribbon.TabsMargin.Top),
                     Margins.Bottom);
             }
-            if (WinApi.IsWin10)
+            if (WinApi.IsWindows10OrGreater)
             {
                 dwmMargins.cxLeftWidth = 0;
                 dwmMargins.cxRightWidth = 0;
@@ -306,7 +306,7 @@ namespace System.Windows.Forms
                 // https://docs.microsoft.com/en-us/windows/desktop/api/dwmapi/nf-dwmapi-dwmextendframeintoclientarea
             }
 
-            if (WinApi.IsVista && !_frameExtended)
+            if (WinApi.IsWindowsVistaOrGreater && !_frameExtended)
             {
                 WinApi.DwmExtendFrameIntoClientArea(Form.Handle, ref dwmMargins);
                 _frameExtended = true;
@@ -341,7 +341,7 @@ namespace System.Windows.Forms
 
             bool handled = false;
 
-            if (WinApi.IsVista)
+            if (WinApi.IsWindowsVistaOrGreater)
             {
                 #region Checks if DWM processes the message
                 int dwmHandled = WinApi.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out IntPtr result);
@@ -377,7 +377,7 @@ namespace System.Windows.Forms
 
                         MarginsChecked = true;
                     }
-                    if (WinApi.IsWin10)
+                    if (WinApi.IsWindows10OrGreater)
                     {
                         nccsp.rect0.Left += Margins.Left;
                         nccsp.rect0.Right -= Margins.Right;
@@ -408,7 +408,7 @@ namespace System.Windows.Forms
                     if (m.WParam == IntPtr.Zero)  // if could be removed because result is ignored if WParam is TRUE
                         m.Result = (IntPtr)1;
                 }
-                else if ((m.Msg == WinApi.WM_ACTIVATE || m.Msg == WinApi.WM_PAINT) && WinApi.IsVista) //0x06 - 0x000F
+                else if ((m.Msg == WinApi.WM_ACTIVATE || m.Msg == WinApi.WM_PAINT) && WinApi.IsWindowsVistaOrGreater) //0x06 - 0x000F
                 {
                     m.Result = (IntPtr)1; handled = false;
                 }
@@ -461,7 +461,7 @@ namespace System.Windows.Forms
         {
             int leftX = 0;
             int rightX = 0;
-            if (WinApi.IsWin10)
+            if (WinApi.IsWindows10OrGreater)
             {
                 leftX = -Margins.Left;
                 rightX = -Margins.Right;
@@ -525,7 +525,7 @@ namespace System.Windows.Forms
             formPadding.Top = p.Bottom - 1;
             if (!DesignMode)
             {
-                if (WinApi.IsWin10)
+                if (WinApi.IsWindows10OrGreater)
                 {
                     formPadding.Left = 0;
                     formPadding.Right = 0;

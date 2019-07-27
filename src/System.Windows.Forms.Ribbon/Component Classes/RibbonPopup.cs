@@ -227,7 +227,7 @@ namespace System.Windows.Forms
             {
                 CreateParams cp = base.CreateParams;
 
-                if (WinApi.IsXP)
+                if (WinApi.IsWindowsXPOrGreater)
                 {
                     cp.ClassStyle |= WinApi.CS_DROPSHADOW;
 
