@@ -44,11 +44,11 @@
     <Compile Include="BlackForm.Designer.cs">
       <DependentUpon>BlackForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="RibbonDemo1Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="RibbonDemo1Form.Designer.cs">
+      <DependentUpon>RibbonDemo1Form.cs</DependentUpon>
     </Compile>
     <Compile Include="FormClassResult.cs">
       <SubType>Form</SubType>
@@ -92,8 +92,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>BlackForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="RibbonDemo1Form.resx">
+      <DependentUpon>RibbonDemo1Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormClassResult.resx">
       <DependentUpon>FormClassResult.cs</DependentUpon>
