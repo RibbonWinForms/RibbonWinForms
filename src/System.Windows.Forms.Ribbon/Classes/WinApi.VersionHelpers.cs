@@ -74,23 +74,29 @@ namespace System.Windows.Forms.RibbonHelpers
         public static bool IsWindows => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
         /// <summary>
-        /// Gets a value indicating if operating system is vista or higher
+        /// Gets a value indicating if operating system is Windows XP or higher
+        /// </summary>
+        public static bool IsWindowsXPOrGreater => IsWindows && Environment.OSVersion.Version.Major >= 5;
+
+        /// <summary>
+        /// Gets a value indicating if operating system is Windows Vista or higher
         /// </summary>
         public static bool IsWindowsVistaOrGreater => IsWindows && Environment.OSVersion.Version.Major >= 6;
 
         /// <summary>
-        /// Gets a value indicating if operating system is xp or higher
+        /// Gets a value indicating if operating system is Windows 8 or higher
         /// </summary>
-        public static bool IsWindowsXPOrGreater => IsWindows && Environment.OSVersion.Version.Major >= 5;
+        public static bool IsWindows8OrGreater => IsWindows && ((Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor >= 2) || (Environment.OSVersion.Version.Major > 6));
+
+        /// <summary>
+        /// Gets a value indicating if operating system is Windows 10 or higher
+        /// </summary>
+        public static bool IsWindows10OrGreater => IsWindows && ((OSVersion.Version.Major == 6 && OSVersion.Version.Minor == 3) || (OSVersion.Version.Major > 6));    // TODO: Do we really need to go through registry hacks for windows 10?
 
         /// <summary>
         /// Gets a value indicating ReleaseId
         /// </summary>
         public static string ReleaseID => OSVersion.ReleaseId;
 
-        /// <summary>
-        /// Gets a value indicating if operating system is Win10
-        /// </summary>
-        public static bool IsWindows10OrGreater => IsWindows && OSVersion.Version.Major == 6 && OSVersion.Version.Minor == 3;
     }
 }

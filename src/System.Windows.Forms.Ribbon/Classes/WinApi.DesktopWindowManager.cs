@@ -48,18 +48,22 @@ namespace System.Windows.Forms.RibbonHelpers
         internal static extern int DwmIsCompositionEnabled(ref int pfEnabled);
 
         /// <summary>
-        /// Gets if computer is glass capable and enabled
+        /// Examine if current Operating System uses Aero Glass effects for Window Frames by default.
+        /// 
+        /// That's the case for Windows Vista and Windows 7, but not for Windows 8 or higher.
         /// </summary>
         public static bool IsGlassEnabled {
             get {
-                //Check is windows vista
-                if (IsWindowsVistaOrGreater)
+                // Check for Windows Vista or Windows 7, but exclude Windows 8 and higher
+                if (IsWindowsVistaOrGreater && (!IsWindows8OrGreater))
                 {
                     //Check what DWM says about composition
                     int enabled = 0;
                     int response = DwmIsCompositionEnabled(ref enabled);
 
-                    return enabled > 0;
+                    // response is HRESULT, (HRESULT == 0) equals HRESULT.S_OK
+                    if ((response == 0) && (enabled > 0))
+                        return true;
                 }
 
                 return false;
