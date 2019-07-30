@@ -284,7 +284,8 @@ namespace RibbonDemo
             this.Controls.Add(this.button1);
             this.Controls.Add(this.ribbon1);
             this.Name = "TestForm";
-            this.Text = "TestForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Test Form";
             this.Load += new System.EventHandler(this.TestForm_Load);
             this.ResumeLayout(false);
 

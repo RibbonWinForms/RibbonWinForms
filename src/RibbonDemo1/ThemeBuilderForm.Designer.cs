@@ -150,7 +150,7 @@ namespace RibbonDemo
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit(); // 07/30/19: tajbender - Removed cause SuspendLayout is called
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -1246,6 +1246,7 @@ namespace RibbonDemo
             this.Controls.Add(this.ribbon1);
             this.KeyPreview = true;
             this.Name = "ThemeBuilderForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ThemeBuilderForm";
             this.Load += new System.EventHandler(this.ThemeBuilderForm_Load);
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -1258,7 +1259,7 @@ namespace RibbonDemo
             this.groupBox1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            //((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();  // 07/30/19: tajbender - Removed cause SuspendLayout is called
             this.splitContainer1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);

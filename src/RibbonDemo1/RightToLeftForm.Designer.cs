@@ -129,7 +129,8 @@ namespace RibbonDemo
             this.ClientSize = new System.Drawing.Size(557, 262);
             this.Controls.Add(this.ribbon1);
             this.Name = "RightToLeftForm";
-            this.Text = "Form2";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Right to left Form";
             this.ResumeLayout(false);
 
         }

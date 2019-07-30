@@ -51,7 +51,7 @@ namespace RibbonDemo
            this.btMainForm.Name = "btMainForm";
            this.btMainForm.Size = new System.Drawing.Size(213, 23);
            this.btMainForm.TabIndex = 3;
-           this.btMainForm.Text = "MainForm";
+           this.btMainForm.Text = "Ribbon Demo Form";
            this.btMainForm.UseVisualStyleBackColor = true;
            this.btMainForm.Click += new System.EventHandler(this.btMainForm_Click);
            // 
@@ -75,7 +75,7 @@ namespace RibbonDemo
            this.btHostForm.Name = "btHostForm";
            this.btHostForm.Size = new System.Drawing.Size(213, 23);
            this.btHostForm.TabIndex = 6;
-           this.btHostForm.Text = "HostForm";
+           this.btHostForm.Text = "Control Hosting Examples";
            this.btHostForm.UseVisualStyleBackColor = true;
            this.btHostForm.Click += new System.EventHandler(this.btHostForm_Click);
            // 
@@ -173,7 +173,7 @@ namespace RibbonDemo
            this.Controls.Add(this.btMainForm);
            this.Name = "Form1";
            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-           this.Text = "Form1";
+           this.Text = "Ribbon Demo #1";
            this.ResumeLayout(false);
            this.PerformLayout();
 

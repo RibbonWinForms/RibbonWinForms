@@ -300,6 +300,7 @@ namespace RibbonDemo
             this.Controls.Add(this.ribbon1);
             this.KeyPreview = true;
             this.Name = "HostForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Control Hosting Examples";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

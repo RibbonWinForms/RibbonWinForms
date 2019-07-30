@@ -176,7 +176,8 @@ namespace RibbonDemo
          this.IsMdiContainer = true;
          this.KeyPreview = true;
          this.Name = "MDIForm";
-         this.Text = "MDIForm";
+		 this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+         this.Text = "MDI Form";
          this.ResumeLayout(false);
 
       }
