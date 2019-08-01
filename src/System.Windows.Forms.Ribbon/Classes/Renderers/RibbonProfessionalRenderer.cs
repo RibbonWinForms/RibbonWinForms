@@ -103,9 +103,9 @@ namespace System.Windows.Forms
 
             if ((0.0F < correctionFactor) && (correctionFactor < 1.0F))
             {
-                red = red + ((255 - red) * correctionFactor);
-                green = green + ((255 - green) * correctionFactor);
-                blue = blue + ((255 - blue) * correctionFactor);
+                red += ((255 - red) * correctionFactor);
+                green += ((255 - green) * correctionFactor);
+                blue += ((255 - blue) * correctionFactor);
             }
             return Color.FromArgb(color.A, (int)red, (int)green, (int)blue);
         }
@@ -129,9 +129,9 @@ namespace System.Windows.Forms
 
             if ((0.0F < correctionFactor) && (correctionFactor < 1.0F))
             {
-                red = red - (red * correctionFactor);
-                green = green - (green * correctionFactor);
-                blue = blue - (blue * correctionFactor);
+                red -= (red * correctionFactor);
+                green -= (green * correctionFactor);
+                blue -= (blue * correctionFactor);
             }
 
             return Color.FromArgb(color.A, (int)red, (int)green, (int)blue);
@@ -5341,9 +5341,8 @@ namespace System.Windows.Forms
 
         public override void OnRenderPanelPopupBackground(RibbonCanvasEventArgs e)
         {
-            RibbonPanel pnl = e.RelatedObject as RibbonPanel;
-
-            if (pnl == null) return;
+            if (!(e.RelatedObject is RibbonPanel pnl))
+                return;
 
             Rectangle darkBorder = Rectangle.FromLTRB(
                  e.Bounds.Left,
@@ -5459,9 +5458,7 @@ namespace System.Windows.Forms
 
         public override void OnRenderDropDownDropDownImageSeparator(RibbonItem item, RibbonCanvasEventArgs e)
         {
-            RibbonDropDown dd = e.Canvas as RibbonDropDown;
-
-            if (dd != null && dd.DrawIconsBar)
+            if (e.Canvas is RibbonDropDown dd && dd.DrawIconsBar)
             {
                 Rectangle imgsR = new Rectangle(item.Bounds.Left, item.Bounds.Top, 26, item.Bounds.Height);
 
