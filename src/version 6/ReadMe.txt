@@ -1,16 +1,14 @@
 Aug 05, 2019, adriancs
 ================
-As suggested by Thorsten Jung,  he had sunk into the codebase for the last days and it's very, very hard to do even minor changes. There are many side effects to take care. As far I can say now, it's nearly impossible to maintain the code in its current state, as 'everything' has been thrown into one single class file, the ProfessionalRenderer.
+Dear programmers, Version 6 is planned to be a brand new release.
 
-Some of the minor suggestion:
+Discussion: "New development of Ribbon: Version 6"
+https://github.com/RibbonWinForms/RibbonWinForms/issues/40
 
-He would suggest creating a new branch for a new release, why not call it v5.9, and concentrate on these things:
+tajbender (https://github.com/tajbender) has made a study on the code of current project where he has some findings as follow:
 
-1.       Add ImageList-Support
-2.       Work on these Win10-Issues, including Tab-Text & DPI-Awareness,
-3.       The Application Menu (Or Orb Menu).
-4.       Runtime-Customization-Support.
+Back to the early stages, there were a few conditions to be considered, but as time went by and across several Windows Operating System, there were far too many things and conditions to be taken care and this resulting too many if else statements and hacking here and there, and this resulting a code base which is high restricted it's potential to do further improvement. It is currently hardly maintainable.
 
-For the Orb Menu, there are two Variants depending in the Office-Version, and the one that is just an Menu. Suggestion is to work on an normal Menu, but revise its Render Style.
+It is suggested to do a brand new release. I personally agreed with tajbender.
 
-And hence, this version will be called as version 6 - Alpha stage.
+I have restructured the repository and created a new folder called "Version 6". From here, a new code will start to evolve from here. As for this new repository, we will try to make it compatible across different platform, such as MONO, Net Core, Net Standard, etc.
