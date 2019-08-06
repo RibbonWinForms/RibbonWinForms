@@ -5,8 +5,8 @@ An Office Ribbon Control for .NET WinForms
 https://github.com/RibbonWinForms/RibbonWinForms/releases
 
 ## Install via Nuget
-https://www.nuget.org/packages/RibbonWinForm <br />
-PM> Install-Package RibbonWinForm
+https://www.nuget.org/packages/RibbonWinForms <br />
+PM> Install-Package RibbonWinForms
 
 ## Screenshots
 2007 Style<br />
