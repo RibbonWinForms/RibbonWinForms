@@ -31,8 +31,6 @@ This project is a result of contributions from many named and unnamed C# program
 
 Jase Menendez Poo is back with us in this repository :)
 
-by adriancs, Nov 23 2017
-
 # Introduction
 *Below is the original introductory message written by Jose Menedez Poo on May 10th, 2008*
 
