@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Windows.Forms.Ribbon", "System.Windows.Forms.Ribbon\System.Windows.Forms.Ribbon.csproj", "{46A18A55-5AE8-49CE-91CD-C7421B642E7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RibbonDemo1", "RibbonDemo1\RibbonDemo1.csproj", "{B72F4D92-C1BB-4466-A2A1-CF1F30B0BBBE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{171881B4-4978-4264-A31D-26DEDA797CEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RibbonDemo2", "RibbonDemo2\RibbonDemo2.csproj", "{C0BDF8B3-9D53-4C62-8A72-3C3555CC4C4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RibbonDemo1", "..\examples\RibbonDemo1\RibbonDemo1.csproj", "{B72F4D92-C1BB-4466-A2A1-CF1F30B0BBBE}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VbDemo", "VbDemo\VbDemo.vbproj", "{B959B91E-4C2A-4725-B04E-69C803C03AC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RibbonDemo2", "..\examples\RibbonDemo2\RibbonDemo2.csproj", "{C0BDF8B3-9D53-4C62-8A72-3C3555CC4C4C}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VbDemo", "..\examples\VbDemo\VbDemo.vbproj", "{B959B91E-4C2A-4725-B04E-69C803C03AC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B72F4D92-C1BB-4466-A2A1-CF1F30B0BBBE} = {171881B4-4978-4264-A31D-26DEDA797CEF}
+		{C0BDF8B3-9D53-4C62-8A72-3C3555CC4C4C} = {171881B4-4978-4264-A31D-26DEDA797CEF}
+		{B959B91E-4C2A-4725-B04E-69C803C03AC2} = {171881B4-4978-4264-A31D-26DEDA797CEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {572B2495-2A9B-4870-8948-881ABD912361}

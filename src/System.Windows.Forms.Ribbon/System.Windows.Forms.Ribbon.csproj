@@ -272,9 +272,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Updates.txt" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="CHANGELOG.md" />
     <None Include="WinFormsRibbon.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -108,7 +108,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System.Windows.Forms.Ribbon\System.Windows.Forms.Ribbon.csproj">
+    <ProjectReference Include="..\..\src\System.Windows.Forms.Ribbon\System.Windows.Forms.Ribbon.csproj">
       <Project>{46A18A55-5AE8-49CE-91CD-C7421B642E7E}</Project>
       <Name>System.Windows.Forms.Ribbon</Name>
     </ProjectReference>

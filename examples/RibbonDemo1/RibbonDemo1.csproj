@@ -377,7 +377,7 @@
     <None Include="Resources\unchecked16.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System.Windows.Forms.Ribbon\System.Windows.Forms.Ribbon.csproj">
+    <ProjectReference Include="..\..\src\System.Windows.Forms.Ribbon\System.Windows.Forms.Ribbon.csproj">
       <Project>{46a18a55-5ae8-49ce-91cd-c7421b642e7e}</Project>
       <Name>System.Windows.Forms.Ribbon</Name>
     </ProjectReference>
