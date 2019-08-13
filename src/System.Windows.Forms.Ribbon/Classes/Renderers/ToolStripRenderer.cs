@@ -262,6 +262,12 @@ namespace System.Windows.Forms
             DrawText(e, e.Graphics);
         }
 
+        protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
+        {
+            e.ArrowColor = Theme.Standard.RendererColorTable.Arrow;
+            base.OnRenderArrow(e);
+        }
+
         protected override void OnRenderLabelBackground(ToolStripItemRenderEventArgs e)
         {
             base.OnRenderLabelBackground(e);
@@ -274,22 +280,22 @@ namespace System.Windows.Forms
         private void RenderBackground(ToolStripItemRenderEventArgs e)
         {
             //IF ITEM IS SELECTED OR CHECKED
-            if (e.Item.Selected | ((ToolStripButton)e.Item).Checked)
+            var button = e.Item as ToolStripButton;
+            if (e.Item.Selected || (button != null && button.Checked))
             {
                 RenderItemBackgroundSelected(e);
+                return;
             }
 
             //IF ITEM IS PRESSED
             if (e.Item.Pressed)
             {
                 RenderItemBackgroundPressed(e);
+                return;
             }
 
             //DEFAULT BACKGROUND
-            if (e.Item.Selected == false & e.Item.Pressed == false & ((ToolStripButton)e.Item).Checked == false)
-            {
-                RenderItemBackgroundDefault(e);
-            }
+            RenderItemBackgroundDefault(e);
         }
 
         private void RenderItemBackgroundSelected(ToolStripItemRenderEventArgs e)
@@ -499,19 +505,20 @@ namespace System.Windows.Forms
                     {
                         if (e.Item.Enabled)
                         {
-                            if (e.Item is ToolStripButton)
+                            var button = e.Item as ToolStripButton;
+                            if (button != null)
                             {
-                                if ((e.Item.Selected | e.Item.Pressed) & !((ToolStripButton)e.Item).Checked)
+                                if (button.Checked)
                                 {
-                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextPressed_2013;
+                                    button.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextSelected_2013;
                                 }
-                                else if ((!e.Item.Selected & !e.Item.Pressed) & !((ToolStripButton)e.Item).Checked)
+                                else if (button.Selected || button.Pressed)
                                 {
-                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText_2013;
+                                    button.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextPressed_2013;
                                 }
-                                else if (((ToolStripButton)e.Item).Checked)
+                                else
                                 {
-                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextSelected_2013;
+                                    button.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText_2013;
                                 }
                             }
                             else if (e.Item is ToolStripLabel)
@@ -530,26 +537,27 @@ namespace System.Windows.Forms
                 }
                 else
                 {
-                    if (e.Item.Text != string.Empty)
+                    if (!string.IsNullOrEmpty(e.Item.Text))
                     {
                         if (e.Item.Enabled)
                         {
-                            if (e.Item is ToolStripButton)
+                            var button = e.Item as ToolStripButton;
+                            if (button != null)
                             {
-                                if ((e.Item.Selected | e.Item.Pressed) & !((ToolStripButton)e.Item).Checked)
+                                if (button.Checked)
                                 {
-                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextPressed;
+                                    button.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextSelected;
                                 }
-                                else if ((!e.Item.Selected & !e.Item.Pressed) & !((ToolStripButton)e.Item).Checked)
+                                else if (button.Selected || button.Pressed)
                                 {
-                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText;
+                                    button.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextPressed;
                                 }
-                                else if (((ToolStripButton)e.Item).Checked)
+                                else
                                 {
-                                    e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemTextSelected;
+                                    button.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText;
                                 }
                             }
-                            else if (e.Item is ToolStripLabel)
+                            else
                             {
                                 e.Item.ForeColor = Theme.Standard.RendererColorTable.ToolStripItemText;
                             }

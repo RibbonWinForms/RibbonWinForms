@@ -194,6 +194,11 @@ namespace System.Windows.Forms
 
         [DefaultValue(true)]
         [Category("Behavior")]
+        [Description("Sets if changes to this panel's Enabled flag should be cascaded to its children")]
+        public bool CascadeEnabledFlag { get; set; } = true;
+
+		[DefaultValue(true)]
+		[Category("Behavior")]
         [Description("Sets if the panel should be enabled")]
         public bool Enabled
         {
@@ -210,13 +215,15 @@ namespace System.Windows.Forms
             {
                 _enabled = value;
                 Owner.Invalidate();
-
+                if (CascadeEnabledFlag)
+                {
                 foreach (RibbonItem item in Items)
                 {
                     item.Enabled = value;
                 }
             }
         }
+		}
 
         [DefaultValue(true)]
         [Category("Behavior")]

@@ -222,6 +222,10 @@ namespace System.Windows.Forms
 
         public Color TextBoxUnselectedBg = FromHexStr("#EAF2FB");
         public Color TextBoxBorder = FromHexStr("#ABC1DE");
+        public Color TextBoxSelectedBg = SystemColors.Window;
+        public Color TextBoxSelectedBorder = FromHexStr("#ABC1DE");
+        public Color TextBoxDisabledBg = SystemColors.Control;
+        public Color TextBoxDisabledBorder = FromHexStr("#ABC1DE");
 
         public Color ToolTipContentNorth = Color.FromArgb(250, 252, 254);// SystemColors.MenuBar;// FromHex("#C8D9ED");
         public Color ToolTipContentSouth = Color.FromArgb(206, 220, 241);// SystemColors.MenuBar;// FromHex("#E7F2FF");
@@ -232,6 +236,7 @@ namespace System.Windows.Forms
         public Color ToolStripItemTextPressed = FromHexStr("#444444");
         public Color ToolStripItemTextSelected = FromHexStr("#444444");
         public Color ToolStripItemText = FromHexStr("#444444");
+        public Color ToolStripitemTextDisabled = Color.DarkGray;
 
         public Color clrVerBG_Shadow = Color.FromArgb(255, 181, 190, 206);
 
