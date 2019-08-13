@@ -40,6 +40,7 @@ namespace System.Windows.Forms
         #region Static
 
         public static int CaptionBarHeight = 24;
+        public static readonly string DefaultOrbText = @"File";
 
         #endregion
 
@@ -67,7 +68,7 @@ namespace System.Windows.Forms
         private bool _orbPressed;
         private bool _orbVisible;
         private Image _orbImage;
-        private string _orbText;
+        private string _orbText = DefaultOrbText;
         private Size _orbTextSize = Size.Empty;
 
         //private bool _quickAcessVisible;
@@ -875,7 +876,8 @@ namespace System.Windows.Forms
             get => _orbText;
             set
             {
-                _orbText = value;
+                // HACK 13/08/19 tajbender: For measurement purposes, OrbText mustn't be empty, so set to DefaultOrbText if no value given
+                _orbText = (string.IsNullOrEmpty(value) ? DefaultOrbText : value);
                 RecalculateOrbTextSize();
                 OnRegionsChanged();
                 Invalidate();
