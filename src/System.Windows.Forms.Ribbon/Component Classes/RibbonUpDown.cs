@@ -226,7 +226,7 @@ namespace System.Windows.Forms
 
             if (UpButtonBounds.Contains(e.Location))
             {
-                Owner.Cursor = Cursors.Default;
+                Canvas.Cursor = Cursors.Default;
                 mustRedraw = !UpButtonSelected || DownButtonSelected || DownButtonPressed;
                 UpButtonSelected = true;
                 DownButtonSelected = false;
@@ -234,7 +234,7 @@ namespace System.Windows.Forms
             }
             else if (DownButtonBounds.Contains(e.Location))
             {
-                Owner.Cursor = Cursors.Default;
+                Canvas.Cursor = Cursors.Default;
                 mustRedraw = !DownButtonSelected || UpButtonSelected || UpButtonPressed;
                 DownButtonSelected = true;
                 UpButtonSelected = false;
@@ -242,7 +242,7 @@ namespace System.Windows.Forms
             }
             else if (TextBoxBounds.Contains(e.X, e.Y))
             {
-                Owner.Cursor = Cursors.IBeam;
+                Canvas.Cursor = Cursors.IBeam;
                 mustRedraw = DownButtonSelected || DownButtonPressed || UpButtonSelected || UpButtonPressed;
                 UpButtonSelected = false;
                 UpButtonPressed = false;
@@ -251,7 +251,7 @@ namespace System.Windows.Forms
             }
             else
             {
-                Owner.Cursor = Cursors.Default;
+                Canvas.Cursor = Cursors.Default;
             }
 
             if (mustRedraw)

@@ -648,11 +648,11 @@ namespace System.Windows.Forms
             {
                 if (TextBoxBounds.Contains(e.X, e.Y) && AllowTextEdit)
                 {
-                    Owner.Cursor = Cursors.IBeam;
+                    Canvas.Cursor = Cursors.IBeam;
                 }
                 else
                 {
-                    Owner.Cursor = Cursors.Default;
+                    Canvas.Cursor = Cursors.Default;
                 }
             }
         }
