@@ -9,7 +9,6 @@
 // Original project from http://ribbon.codeplex.com/
 // Continue to support and maintain by http://officeribbon.codeplex.com/
 
-
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Windows.Forms.Design.Behavior;
@@ -17,13 +16,18 @@ using System.Windows.Forms.Design.Behavior;
 namespace System.Windows.Forms
 {
     public class RibbonTabDesigner
-        : ComponentDesigner
+      : System.ComponentModel.Design.ComponentDesigner
     {
         private Adorner _panelAdorner;
+        private const string _strAddPanel = "Add Panel";     // TODO: i18n (tajbender)
 
-        public override DesignerVerbCollection Verbs => new DesignerVerbCollection(new[] {
-          new DesignerVerb("Add Panel", AddPanel)
-      });
+        public override DesignerVerbCollection Verbs
+        {
+            get
+            {
+                return new DesignerVerbCollection(new[] { new DesignerVerb(_strAddPanel, this.AddPanel) });
+            }
+        }
 
         public RibbonTab Tab => Component as RibbonTab;
 
@@ -31,8 +35,6 @@ namespace System.Windows.Forms
         {
             if (GetService(typeof(IDesignerHost)) is IDesignerHost host && Tab != null)
             {
-
-
                 DesignerTransaction transaction = host.CreateTransaction("AddPanel" + Component.Site.Name);
                 MemberDescriptor member = TypeDescriptor.GetProperties(Component)["Panels"];
                 RaiseComponentChanging(member);

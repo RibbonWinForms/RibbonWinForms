@@ -1,3 +1,14 @@
+// *********************************
+// Message from Original Author:
+//
+// 2008 Jose Menendez Poo
+// Please give me credit if you use this code. It's all I ask.
+// Contact me for more info: menendezpoo@gmail.com
+// *********************************
+//
+// Original project from http://ribbon.codeplex.com/
+// Continue to support and maintain by http://officeribbon.codeplex.com/
+
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms.Design.Behavior;
@@ -5,15 +16,18 @@ using System.Windows.Forms.Design.Behavior;
 namespace System.Windows.Forms
 {
     public class RibbonTabGlyph
-        : Glyph
+      : System.Windows.Forms.Design.Behavior.Glyph
     {
         private readonly BehaviorService _behaviorService;
         private readonly Ribbon _ribbon;
-        private RibbonDesigner _componentDesigner;
-        private Rectangle _bounds;
+        private readonly RibbonDesigner _componentDesigner;
+        private readonly Size size = new Size(120, 16);      // TODO: HACK: Size is hard-coded (tajbender)
+        private const string _strAddTab = "Add Tab";         // TODO: i18n (tajbender)
 
-        public RibbonTabGlyph(BehaviorService behaviorService, RibbonDesigner designer, Ribbon ribbon)
-           : base(new RibbonTabGlyphBehavior(designer, ribbon))
+        public RibbonTabGlyph(BehaviorService behaviorService,
+                              RibbonDesigner designer,
+                              Ribbon ribbon)
+          : base(new RibbonTabGlyphBehavior(designer, ribbon))
         {
             _behaviorService = behaviorService;
             _componentDesigner = designer;
@@ -25,7 +39,7 @@ namespace System.Windows.Forms
             get
             {
                 Point edge = _behaviorService.ControlToAdornerWindow(_ribbon);
-                _bounds = new Rectangle(5, _ribbon.OrbBounds.Bottom + 5, 60, 16);
+                var _bounds = new Rectangle(5, _ribbon.OrbBounds.Bottom + 5, 120, 16);
 
                 //If ribbon has tabs
                 if (_ribbon.Tabs.Count > 0)
@@ -75,7 +89,7 @@ namespace System.Windows.Forms
                 }
             }
             StringFormat sf = StringFormatFactory.Center();
-            pe.Graphics.DrawString("Add Tab", SystemFonts.DefaultFont, Brushes.White, Bounds, sf);
+            pe.Graphics.DrawString(_strAddTab, SystemFonts.DefaultFont, Brushes.White, Bounds, sf);
             pe.Graphics.SmoothingMode = smbuff;
         }
     }

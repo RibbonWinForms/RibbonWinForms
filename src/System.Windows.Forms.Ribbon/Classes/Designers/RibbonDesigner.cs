@@ -22,11 +22,12 @@ namespace System.Windows.Forms
 {
     [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
     public class RibbonDesigner
-       : ControlDesigner
+      : ControlDesigner
     {
         #region Static
 
         internal static RibbonDesigner Current;
+        internal static readonly string MessageBoxCaption = "RibbonWinForms - Designer";
 
         #endregion
 
@@ -34,7 +35,7 @@ namespace System.Windows.Forms
 
         private IRibbonElement _selectedElement;
         private Adorner _quickAccessAdorner;
-        private Adorner _orbAdorner;
+//        private Adorner _orbAdorner;  // tajbender 15/08/19 Isn't used afaik
         private Adorner _tabAdorner;
 
         #endregion
@@ -182,19 +183,22 @@ namespace System.Windows.Forms
 
         private void SelectRibbon()
         {
-            if (GetService(typeof(ISelectionService)) is ISelectionService selector)
-                selector.SetSelectedComponents(new Component[] { Ribbon }, SelectionTypes.Primary);
-
+            if (this.GetService(typeof(ISelectionService)) is ISelectionService selector)
+            {
+                selector.SetSelectedComponents(new Component[] { this.Ribbon }, SelectionTypes.Primary);
+            }
         }
 
         public override DesignerVerbCollection Verbs
         {
             get
             {
-                DesignerVerbCollection verbs = new DesignerVerbCollection();
-
-                verbs.Add(new DesignerVerb("Add Tab", AddTabVerb));
-                verbs.Add(new DesignerVerb("Add Context", AddContextVerb));
+                DesignerVerbCollection verbs = new DesignerVerbCollection
+                {
+                    new DesignerVerb("Add Tab", this.AddTabVerb),
+                    new DesignerVerb("Add Context", this.AddContextVerb),
+                    new DesignerVerb("About RibbonWinForms", this.AboutRibbonWinFormsVerb)
+                };
 
                 return verbs;
             }
@@ -239,20 +243,30 @@ namespace System.Windows.Forms
             }
         }
 
+        public void AboutRibbonWinFormsVerb(object sender, EventArgs e)
+        {
+            if (Control is Ribbon)
+            {
+                MessageBox.Show("This is our about text for further copyright notices.",
+                    "RibbonWinForms - Information",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         protected override void WndProc(ref Message m)
         {
             if (m.HWnd == Control.Handle)
             {
                 switch (m.Msg)
                 {
-                    case 0x203: //WM_LBUTTONDBLCLK
+                    case WinApi.WM_LBUTTONDBLCLK:
                         AssignEventHandler();
                         break;
-                    case 0x201: //WM_LBUTTONDOWN
-                    case 0x204: //WM_RBUTTONDOWN
+                    case WinApi.WM_LBUTTONDOWN:
+                    case WinApi.WM_RBUTTONDOWN:
                         return;
-                    case 0x202: //WM_LBUTTONUP
-                    case 0x205: //WM_RBUTTONUP
+                    case WinApi.WM_LBUTTONUP:
+                    case WinApi.WM_RBUTTONUP:
                         HitOn(WinApi.LoWord((int)m.LParam), WinApi.HiWord((int)m.LParam));
                         return;
                     default:
@@ -260,9 +274,7 @@ namespace System.Windows.Forms
                 }
             }
 
-
             base.WndProc(ref m);
-
         }
 
         private void HitOn(int x, int y)
@@ -474,17 +486,22 @@ namespace System.Windows.Forms
         {
             base.Initialize(component);
 
-            IComponentChangeService changeService = GetService(typeof(IComponentChangeService)) as IComponentChangeService;
-            IDesignerEventService desigerEvt = GetService(typeof(IDesignerEventService)) as IDesignerEventService;
+            // 15/08/19: tajbender: desigerEvt isn't in use, afaik
+            //IDesignerEventService desigerEvt = this.GetService(typeof(IDesignerEventService)) as IDesignerEventService;
 
-            if (changeService != null) changeService.ComponentRemoved += changeService_ComponentRemoved;
+            if (this.GetService(typeof(IComponentChangeService)) is IComponentChangeService changeService)
+            {
+                changeService.ComponentRemoved += this.ChangeService_ComponentRemoved;
+            }
 
-            _orbAdorner = new Adorner();
-            _tabAdorner = new Adorner();
+            // this._orbAdorner = new Adorner(); // 15/08/19 tajbender Isn't used, afaik
+            this._tabAdorner = new Adorner();
 
             if (BehaviorService != null)
             {
-                BehaviorService.Adorners.AddRange(new[] { _orbAdorner, _tabAdorner });
+                //BehaviorService.Adorners.AddRange(new[] { _orbAdorner, _tabAdorner });    // 15/08/19 tajbender _orbAdorner: Isn't used, afaik
+                BehaviorService.Adorners.Add(this._tabAdorner);
+
                 if (Ribbon.QuickAccessToolbar.Visible)
                 {
                     _quickAccessAdorner = new Adorner();
@@ -506,46 +523,41 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void changeService_ComponentRemoved(object sender, ComponentEventArgs e)
+        public void ChangeService_ComponentRemoved(object sender, ComponentEventArgs e)
         {
-            RibbonTab tab = e.Component as RibbonTab;
-            RibbonContext context = e.Component as RibbonContext;
-            RibbonPanel panel = e.Component as RibbonPanel;
-            RibbonItem item = e.Component as RibbonItem;
+            IDesignerHost designerHost = GetService(typeof(IDesignerHost)) as IDesignerHost;
 
-            IDesignerHost designerService = GetService(typeof(IDesignerHost)) as IDesignerHost;
+            RemoveRecursive(e.Component as IContainsRibbonComponents, designerHost);
 
-            RemoveRecursive(e.Component as IContainsRibbonComponents, designerService);
-
-            if (tab != null && Ribbon != null)
+            if (e.Component is RibbonTab tab && Ribbon != null)
             {
-                Ribbon.Tabs.Remove(tab);
+                Ribbon.Tabs.Remove(tab);                                    // Remove RibbonTab
             }
-            else if (context != null)
+            else if (e.Component is RibbonContext context)
             {
-                Ribbon.Contexts.Remove(context);
+                Ribbon.Contexts.Remove(context);                            // Remove RibbonContext
             }
-            else if (panel != null)
+            else if (e.Component is RibbonPanel panel)
             {
-                panel.OwnerTab.Panels.Remove(panel);
+                panel.OwnerTab.Panels.Remove(panel);                        // Remove RibbonPanel
             }
-            else if (item != null)
+            else if (e.Component is RibbonItem item)
             {
                 if (item.Canvas is RibbonOrbDropDown)
                 {
-                    Ribbon.OrbDropDown.HandleDesignerItemRemoved(item);
+                    Ribbon.OrbDropDown.HandleDesignerItemRemoved(item);     // Remove RibbonItem from RibbonOrbDropDown
                 }
-                else if (item.OwnerItem is RibbonItemGroup @group)
+                else if (item.OwnerItem is RibbonItemGroup group)
                 {
-                    @group.Items.Remove(item);
+                    group.Items.Remove(item);                               // Remove RibbonItem from RibbonItemGroup
                 }
                 else if (item.OwnerPanel != null)
                 {
-                    item.OwnerPanel.Items.Remove(item);
+                    item.OwnerPanel.Items.Remove(item);                     // Remove RibbonItem from RibbonPanel
                 }
                 else if (Ribbon != null && Ribbon.QuickAccessToolbar.Items.Contains(item))
                 {
-                    Ribbon.QuickAccessToolbar.Items.Remove(item);
+                    Ribbon.QuickAccessToolbar.Items.Remove(item);           // Remove RibbonItem from RibbonQuickAccessToolbar
                 }
             }
 

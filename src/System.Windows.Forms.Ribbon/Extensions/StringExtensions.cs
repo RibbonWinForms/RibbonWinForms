@@ -12,7 +12,7 @@
 namespace System.Windows.Forms.Extensions
 {
 #if (NET20 || NET35)
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         /// <summary>
         /// Indicates whether a specified string is null, empty, or consists only of white-space characters.

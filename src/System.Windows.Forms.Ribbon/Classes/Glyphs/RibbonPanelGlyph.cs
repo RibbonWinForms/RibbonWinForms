@@ -5,20 +5,22 @@ using System.Windows.Forms.Design.Behavior;
 namespace System.Windows.Forms
 {
     public class RibbonPanelGlyph
-        : Glyph
+      : System.Windows.Forms.Design.Behavior.Glyph
     {
         private readonly BehaviorService _behaviorService;
         private readonly RibbonTab _tab;
-        private RibbonTabDesigner _componentDesigner;
-        private readonly Size size;
+        private readonly RibbonTabDesigner _componentDesigner;
+        private readonly Size size = new Size(120, 16);     // TODO: HACK: Size is hard-coded (tajbender)
+        private const string strAddPanel = "Add Panel";     // TODO: i18n (tajbender)
 
-        public RibbonPanelGlyph(BehaviorService behaviorService, RibbonTabDesigner designer, RibbonTab tab)
-            : base(new RibbonPanelGlyphBehavior(designer, tab))
+        public RibbonPanelGlyph(BehaviorService behaviorService,
+                                RibbonTabDesigner designer,
+                                RibbonTab tab)
+          : base(new RibbonPanelGlyphBehavior(designer, tab))
         {
-            _behaviorService = behaviorService;
-            _componentDesigner = designer;
-            _tab = tab;
-            size = new Size(60, 16);
+            this._behaviorService = behaviorService;
+            this._componentDesigner = designer;
+            this._tab = tab;
         }
 
         public override Rectangle Bounds
@@ -43,10 +45,7 @@ namespace System.Windows.Forms
                         pnl.X = p.Bounds.Left - 5 - size.Width;
                 }
 
-                return new Rectangle(
-                     edge.X + pnl.X,
-                     edge.Y + pnl.Y,
-                     size.Width, size.Height);
+                return new Rectangle(edge.X + pnl.X, edge.Y + pnl.Y, size.Width, size.Height);
             }
         }
 
@@ -73,7 +72,7 @@ namespace System.Windows.Forms
                 }
             }
             StringFormat sf = StringFormatFactory.Center();
-            pe.Graphics.DrawString("Add Panel", SystemFonts.DefaultFont, Brushes.White, Bounds, sf);
+            pe.Graphics.DrawString(strAddPanel, SystemFonts.DefaultFont, Brushes.White, Bounds, sf);
             pe.Graphics.SmoothingMode = smbuff;
         }
     }

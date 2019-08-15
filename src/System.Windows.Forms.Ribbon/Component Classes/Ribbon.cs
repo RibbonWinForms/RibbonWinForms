@@ -16,6 +16,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Security.Permissions;
 using System.Windows.Forms.RibbonHelpers;
+using System.Windows.Forms.Extensions;
 
 namespace System.Windows.Forms
 {
@@ -24,9 +25,13 @@ namespace System.Windows.Forms
     /// </summary>
     [Designer(typeof(RibbonDesigner))]
     public class Ribbon
-         : Control, IMessageFilter
+      : Control, IMessageFilter
     {
-        private delegate void HandlerCallbackMethode();
+        private static string Credits => "Professional Ribbon\n\n2009 Jos?Manuel Menéndez Poo\nwww.menendezpoo.com";
+
+        private delegate void HandlerCallbackMethod();
+
+
 
         #region Const
 
@@ -41,6 +46,8 @@ namespace System.Windows.Forms
 
         public static int CaptionBarHeight = 24;
         public static readonly string DefaultOrbText = @"File";
+
+        private static readonly string excepOrbTextInvalid = @"OrbText mustn't be Null nor empty!";
 
         #endregion
 
@@ -868,16 +875,30 @@ namespace System.Windows.Forms
         /// <summary>
         /// Gets or sets the Text in the orb. Only available when the OrbStyle is set to Office2010
         /// </summary>
-        [DefaultValue(null)]
         [Category("Orb")]
+        [DefaultValue("File")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string OrbText
         {
             get => _orbText;
             set
             {
-                // HACK 13/08/19 tajbender: For measurement purposes, OrbText mustn't be empty, so set to DefaultOrbText if no value given
-                _orbText = (string.IsNullOrEmpty(value) ? DefaultOrbText : value);
+                // HACK 13/08/19 tajbender: For measurement purposes, OrbText mustn't be empty!
+                //                if (StringExtensions.IsNullOrWhiteSpace(value))
+                if(value.IsNullOrWhiteSpace())
+                {
+                    if (IsOpenInVisualStudioDesigner())
+                    {
+                        MessageBox.Show(Ribbon.excepOrbTextInvalid, RibbonDesigner.MessageBoxCaption,
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                        value = (string.IsNullOrEmpty(this._orbText) ? Ribbon.DefaultOrbText : this._orbText);
+                    }
+                    else
+                        throw new ArgumentException(Ribbon.excepOrbTextInvalid, paramName: "OrbText");
+                }
+
+                this._orbText = value;
                 RecalculateOrbTextSize();
                 OnRegionsChanged();
                 Invalidate();
@@ -1360,7 +1381,7 @@ namespace System.Windows.Forms
                 {
                     if (InvokeRequired)
                     {
-                        HandlerCallbackMethode del = Refresh;
+                        HandlerCallbackMethod del = this.Refresh;
                         Invoke(del);
                     }
                     else
@@ -1373,11 +1394,6 @@ namespace System.Windows.Forms
             {
             }
         }
-
-        #region cr
-        private string cr => "Professional Ribbon\n\n2009 Jos?Manuel Menéndez Poo\nwww.menendezpoo.com";
-
-        #endregion
 
         ///// <summary>
         ///// Gets or sets the Font associated with Ribbon Items.
