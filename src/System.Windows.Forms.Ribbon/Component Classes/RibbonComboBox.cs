@@ -400,7 +400,7 @@ namespace System.Windows.Forms
 
             if (DropDownButtonBounds.Contains(e.X, e.Y))
             {
-                Owner.Cursor = Cursors.Default;
+                Canvas.Cursor = Cursors.Default;
 
                 mustRedraw = !DropDownButtonSelected;
 
@@ -408,7 +408,7 @@ namespace System.Windows.Forms
             }
             else if (TextBoxBounds.Contains(e.X, e.Y))
             {
-                Owner.Cursor = AllowTextEdit ? Cursors.IBeam : Cursors.Default;
+                Canvas.Cursor = AllowTextEdit ? Cursors.IBeam : Cursors.Default;
 
                 mustRedraw = DropDownButtonSelected;
 
@@ -416,7 +416,7 @@ namespace System.Windows.Forms
             }
             else
             {
-                Owner.Cursor = Cursors.Default;
+                Canvas.Cursor = Cursors.Default;
             }
 
             if (mustRedraw)

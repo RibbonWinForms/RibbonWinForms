@@ -435,7 +435,6 @@ namespace System.Windows.Forms
             int y = rectangle.Top + (rectangle.Height - GetItemsHeight()) / 2;
 
             MoveTo(items, new Point(x, y));
-
         }
 
         /// <summary>
@@ -475,7 +474,7 @@ namespace System.Windows.Forms
                 // A DropDown menu
                 //if (item is RibbonDescriptionMenuItem)
                 //{
-                //    throw new ApplicationException("The only style supported by the RibbonButtonList is Normal");
+                //    throw new ArgumentException("The only style supported by the RibbonButtonList is Normal", nameof(item));
                 //}
             }
             else
@@ -483,7 +482,7 @@ namespace System.Windows.Forms
                 // A Panel
                 if (item is RibbonDescriptionMenuItem)
                 {
-                    throw new ApplicationException("The RibbonDescriptionMenuItem item is not supported on a panel");
+                    throw new ArgumentException("The RibbonDescriptionMenuItem item is not supported on a panel", nameof(item));
                 }
             }
         }
@@ -509,8 +508,6 @@ namespace System.Windows.Forms
         /// <param name="items">Items to add</param>
         public override void AddRange(IEnumerable<RibbonItem> items)
         {
-
-
             foreach (RibbonItem item in items)
             {
                 CheckRestrictions(item);
@@ -537,6 +534,7 @@ namespace System.Windows.Forms
             item.SetOwner(Owner);
             item.SetOwnerPanel(OwnerPanel);
             item.SetOwnerTab(OwnerTab);
+            item.SetOwnerItem(OwnerItem);
 
             base.Insert(index, item);
         }
