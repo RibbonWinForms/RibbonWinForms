@@ -40,7 +40,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NET2</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET20</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -50,7 +50,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET2</DefineConstants>
+    <DefineConstants>TRACE;NET20</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -72,6 +72,8 @@
     <Compile Include="Classes\EventArgs\RibbonButtonRenderEventArgs.cs" />
     <Compile Include="Classes\EventArgs\RibbonDropDownRenderEventArgs.cs" />
     <Compile Include="Classes\EventArgs\RibbonContextRenderEventArgs.cs" />
+    <Compile Include="System.Runtime.CompilerServices.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Classes\Interfaces\IContainsRibbonComponents.cs" />
     <Compile Include="Classes\Interfaces\IContainsSelectableRibbonItems.cs" />
     <Compile Include="Classes\Interfaces\IDropDownRibbonItem.cs" />
