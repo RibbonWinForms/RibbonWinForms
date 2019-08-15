@@ -4,7 +4,11 @@ An Office Ribbon Control for .NET WinForms
 ## Download
 https://github.com/RibbonWinForms/RibbonWinForms/releases
 
+## Install via Nuget
+https://www.nuget.org/packages/RibbonWinForms <br />
+PM> Install-Package RibbonWinForms
 
+## Screenshots
 2007 Style<br />
 <img src='https://github.com/RibbonWinForms/RibbonWinForms/blob/master/documentation/t3.png' />
 
@@ -26,8 +30,6 @@ For historical articles and source code, you can still obtain it at the old site
 This project is a result of contributions from many named and unnamed C# programmers. A project from .NET programmers for .NET programmers.
 
 Jase Menendez Poo is back with us in this repository :)
-
-by adriancs, Nov 23 2017
 
 # Introduction
 *Below is the original introductory message written by Jose Menedez Poo on May 10th, 2008*
