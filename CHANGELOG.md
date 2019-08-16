@@ -1,7 +1,8 @@
 **********************************
 6.0.0.0 (Still in Development)
 **********************************
-ADD:	`About RibbonWinForms`-Verb has been added to the Ribbon-Designer
+ADD:	`MultiSizeImageList`-Class for adding ImageList-Ability (tajbender)
+ADD:	`About RibbonWinForms`-Verb has been added to the Ribbon-Designer (tajbender)
 CHANGE: Property `Ribbon.OrbText` is now mandatory to fix drawing issues (tajbender)
 CHANGE: Examples new reside in folder `examples` instead of `src` (tajbender)
 

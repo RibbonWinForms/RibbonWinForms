@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Collections\MultiSizeImageList.cs" />
     <Compile Include="Classes\Collections\RibbonCollectionBase.cs" />
     <Compile Include="Classes\Collections\RibbonOrbMenuItemCollection.cs" />
     <Compile Include="Classes\Collections\RibbonOrbOptionButtonCollection.cs" />

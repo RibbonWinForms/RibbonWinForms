@@ -884,8 +884,7 @@ namespace System.Windows.Forms
             set
             {
                 // HACK 13/08/19 tajbender: For measurement purposes, OrbText mustn't be empty!
-                //                if (StringExtensions.IsNullOrWhiteSpace(value))
-                if(value.IsNullOrWhiteSpace())
+                if (value.IsNullOrWhiteSpace())
                 {
                     if (IsOpenInVisualStudioDesigner())
                     {
@@ -895,7 +894,7 @@ namespace System.Windows.Forms
                         value = (string.IsNullOrEmpty(this._orbText) ? Ribbon.DefaultOrbText : this._orbText);
                     }
                     else
-                        throw new ArgumentException(Ribbon.excepOrbTextInvalid, paramName: "OrbText");
+                        throw new ArgumentException(Ribbon.excepOrbTextInvalid, paramName: nameof(value));
                 }
 
                 this._orbText = value;
