@@ -313,11 +313,13 @@ namespace System.Windows.Forms
         public void DrawArrowShaded(Graphics g, Rectangle b, RibbonArrowDirection d, bool enabled)
         {
             Size arrSize = arrowSize;
+            Point lightOffset = new Point(0, 1);
 
             if (d == RibbonArrowDirection.Left || d == RibbonArrowDirection.Right)
             {
                 //Invert size
-                arrSize = new Size(arrowSize.Height, arrowSize.Width);
+                arrSize = new Size(arrowSize.Height, arrowSize.Width + 1);
+                lightOffset = new Point(1, 0);
             }
 
             Point arrowP = new Point(
@@ -326,7 +328,8 @@ namespace System.Windows.Forms
                  );
 
             Rectangle bounds = new Rectangle(arrowP, arrSize);
-            Rectangle boundsLight = bounds; boundsLight.Offset(0, 1);
+            Rectangle boundsLight = bounds; 
+            boundsLight.Offset(lightOffset);
 
             Color lt = ColorTable.ArrowLight;
             Color dk = ColorTable.Arrow;
@@ -3614,13 +3617,13 @@ namespace System.Windows.Forms
         {
             using (GraphicsPath path = RoundRectangle(bounds, 3))
             {
-                using (SolidBrush b = new SolidBrush(SystemColors.Window))
+                using (SolidBrush b = new SolidBrush(ColorTable.TextBoxSelectedBg))
                 {
                     //g.FillPath(b, path);
                     g.FillRectangle(b, bounds);
                 }
 
-                using (Pen p = new Pen(ColorTable.TextBoxBorder))
+                using (Pen p = new Pen(ColorTable.TextBoxSelectedBorder))
                 {
                     //g.DrawPath(p, path);
                     g.DrawRectangle(p, bounds);

@@ -79,6 +79,10 @@
                     RendererColorTable = new RibbonProfesionalRendererColorTableJellyBelly();
                 else if (_Theme == RibbonTheme.Halloween)
                     RendererColorTable = new RibbonProfesionalRendererColorTableHalloween();
+                else if (_Theme == RibbonTheme.VSLight)
+                    RendererColorTable = new RibbonProfesionalRendererColorTableVSLight();
+                else if (_Theme == RibbonTheme.VSDark)
+                    RendererColorTable = new RibbonProfesionalRendererColorTableVSDark();
             }
         }
 

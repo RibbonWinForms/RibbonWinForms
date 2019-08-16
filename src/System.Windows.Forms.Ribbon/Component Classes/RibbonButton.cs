@@ -641,9 +641,10 @@ namespace System.Windows.Forms
             {
                 if (Image != null)
                 {
+                    int marginTop = Owner == null ? 0 : Owner.ItemMargin.Top;
                     return new Rectangle(
                     Bounds.Left + ((Bounds.Width - Image.Width) / 2),
-                    Bounds.Top + Owner.ItemMargin.Top,
+                    Bounds.Top + marginTop,
                     Image.Width,
                     Image.Height);
                 }
@@ -687,11 +688,22 @@ namespace System.Windows.Forms
 
             if (sMode == RibbonElementSizeMode.Large)
             {
-                return Rectangle.FromLTRB(
-                    Bounds.Left + Owner.ItemMargin.Left,
-                    Bounds.Top + Owner.ItemMargin.Top + imgh,
-                    Bounds.Right - Owner.ItemMargin.Right,
-                    Bounds.Bottom - Owner.ItemMargin.Bottom);
+                if (Owner == null)
+                {
+                    return Rectangle.FromLTRB(
+                        Bounds.Left,
+                        Bounds.Top + imgh,
+                        Bounds.Right,
+                        Bounds.Bottom);
+                }
+                else
+                {
+                    return Rectangle.FromLTRB(
+                        Bounds.Left + Owner.ItemMargin.Left,
+                        Bounds.Top + Owner.ItemMargin.Top + imgh,
+                        Bounds.Right - Owner.ItemMargin.Right,
+                        Bounds.Bottom - Owner.ItemMargin.Bottom);
+                }
             }
 
             // ddw is the dropdown arrow width
@@ -834,7 +846,7 @@ namespace System.Windows.Forms
         /// <returns></returns>
         public override Size MeasureSize(object sender, RibbonElementMeasureSizeEventArgs e)
         {
-            if (!Visible && !Owner.IsDesignMode())
+            if (Owner == null || (!Visible && !Owner.IsDesignMode()))
             {
                 SetLastMeasuredSize(new Size(0, 0));
                 return LastMeasuredSize;
