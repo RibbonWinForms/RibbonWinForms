@@ -150,7 +150,7 @@ namespace RibbonDemo
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+//            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();       // 17/08/19: tajbender: Comment out cause this will crash
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -1258,7 +1258,7 @@ namespace RibbonDemo
             this.groupBox1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+//            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();         // 17/08/19: tajbender: Comment out cause this will crash
             this.splitContainer1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
