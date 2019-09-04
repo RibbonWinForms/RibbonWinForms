@@ -11,6 +11,8 @@
 
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace System.Windows.Forms.Classes.Collections
 {
@@ -61,6 +63,11 @@ namespace System.Windows.Forms.Classes.Collections
             this.LargeImageList.ImageSize = new Size(LargeWidth, LargeHeight);
         }
 
+        // TODO: Replace() ///////////////////////////////////////////////////////////////////////////////////////////
+        // TODO: Instead of “trying to add” Image(Strip)s to both Lists, which is very, very error-prone when trying
+        //       to do a “RollBack”, extracting from ImageStrip will only be done in the constructor; then,
+        //       via “Replace[Images]”, we can simply replace the existing lists by already existing ones.
+
         /// <summary>
         /// Add images contained in given ImageStrip to this <see cref="RibbonMultiSizeImageList"/> instance.<br/><br/>
         /// Valid sizes for <paramref name="imageStrip"/> are as follows:<br/>
@@ -69,7 +76,7 @@ namespace System.Windows.Forms.Classes.Collections
         /// </summary>
         /// <param name="imageStrip">An ImageStrip containing the Images that will be added.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when given ImageStrip has invalid size.</exception>
-        public int AddStrip(Bitmap imageStrip)
+        public int AddStrip(Bitmap imageStrip)      // TODO: See Replace()
         {
             int imageStripWidth = imageStrip.Width;
             int imageStripHeight = imageStrip.Height;
@@ -79,10 +86,16 @@ namespace System.Windows.Forms.Classes.Collections
             if (imageStripHeight == this.SmallImageSize.Height)                     // Small Image Extraction path
             {
                 if (0 != (imageStripWidth % this.SmallImageSize.Width))
-                    throw new RibbonBadImageStripSizeException(Width: imageStripWidth);
+                    throw new RibbonBadImageStripException(Width: imageStripWidth);
 
                 countOfImages = imageStripWidth / this.SmallImageSize.Width;
+                int scaledWidth = (this.LargeImageSize.Width) * countOfImages;
+                int scaledHeight = this.LargeImageSize.Height;
 
+                //                var scaledBitmap = blubb;
+                //var bitmap = new Bitmap(bmpStream);
+
+                //imageList.ImageSize = new Size(bitmap.Height, bitmap.Height);
 
 
 
@@ -102,107 +115,149 @@ namespace System.Windows.Forms.Classes.Collections
             throw new ArgumentOutOfRangeException(nameof(imageStrip), "Can't extract Images from ImageStrip cause of invalid height.");
         }
 
-        public void AddStrip(Bitmap smallImageStrip, Bitmap largeImageStrip)
+        public int AddStrip(Bitmap smallImageStrip, Bitmap largeImageStrip)       // TODO: See Replace()
         {
-            int initialImageCount = this.SmallImageList.Images.Count;
+            int oldTempImageCount;
 
             Debug.Assert(condition: (this.SmallImageList.Images.Count == this.LargeImageList.Images.Count),
                 "Invalid state: Count of SmallImageList does not equal count of LargeImageList");
 
+            int smallImageCount = this.VerifyImageStripTargetedForImageList(ref smallImageStrip, ref this.SmallImageList);
+            int largeImageCount = this.VerifyImageStripTargetedForImageList(ref largeImageStrip, ref this.LargeImageList);
+
+            if (smallImageCount != largeImageCount)
+                throw new RibbonBadImageStripException($"Count of images in Small Image Strip ({smallImageCount}) " +
+                    $"does not match count of images in Large Image Strip ({largeImageCount})");
+
+            int smallImagesAdded, largeImagesAdded;
+
+            //
+            // Add small images to our internal image list
+            //
+            oldTempImageCount = this.SmallImageList.Images.Count;
+
             try
             {
-                int smallImagesAdded = this.SmallImageList.Images.AddStrip(smallImageStrip);
-                int LargeImagesAdded = this.LargeImageList.Images.AddStrip(largeImageStrip);
+                smallImagesAdded = this.SmallImageList.Images.AddStrip(smallImageStrip);
 
-                if (smallImagesAdded != LargeImagesAdded)
-                    throw new Exception("");
-
-                // TODO: Check smallImagesAdded against LargeImagesAdded; Use TempImageLists to create images from strip, then add them to the existing imagelists
+                if (smallImagesAdded != smallImageCount)
+                    throw new RibbonBadImageStripException("Error while adding Images to small ImageList");
             }
             catch (Exception ex)
             {
                 // In case of exception, remove recently added images
-                while (this.SmallImageList.Images.Count > initialImageCount)
-                    this.SmallImageList.Images.RemoveAt(initialImageCount);
-                while (this.LargeImageList.Images.Count > initialImageCount)
-                    this.LargeImageList.Images.RemoveAt(initialImageCount);
+                while (this.SmallImageList.Images.Count > oldTempImageCount)
+                    this.SmallImageList.Images.RemoveAt(oldTempImageCount);
 
-                throw new Exception("Failed to add ImageStrip to RibbonMultiSizeImageList.", ex);
+                throw new RibbonBadImageStripException("Failed to add small ImageStrip to RibbonMultiSizeImageList", ex);
             }
+
+            //
+            // Add large images to our internal image list
+            //
+            oldTempImageCount = this.LargeImageList.Images.Count;
+
+            try
+            {
+                largeImagesAdded = this.LargeImageList.Images.AddStrip(largeImageStrip);
+
+                if (largeImagesAdded != largeImageCount)
+                    throw new RibbonBadImageStripException("Error while adding Images to large ImageList");
+            }
+            catch (Exception ex)
+            {
+                // In case of exception, remove recently added images
+                while (this.SmallImageList.Images.Count > oldTempImageCount)
+                    this.SmallImageList.Images.RemoveAt(oldTempImageCount);
+                while (this.LargeImageList.Images.Count > oldTempImageCount)
+                    this.LargeImageList.Images.RemoveAt(oldTempImageCount);
+
+                throw new RibbonBadImageStripException("Failed to add large ImageStrip to RibbonMultiSizeImageList", ex);
+            }
+
+            return smallImagesAdded;
         }
 
-        // TODO: Simple resize: Bitmap resizedBitmap = new Bitmap(imageList.Images[i], scaledSize);
-        // TODO: High Quality resize: https://stackoverflow.com/questions/1922040/how-to-resize-an-image-c-sharp
+        protected int VerifyImageStripTargetedForImageList(ref Bitmap imageStrip, ref ImageList targetImageList)
+        {
+            int imageStripWidth = imageStrip.Width;
+            int imageStripHeight = imageStrip.Height;
+            Size targetImageSize = targetImageList.ImageSize;
+
+            // Check width of ImageStrip
+            if (0 != (imageStripWidth % targetImageSize.Width))
+                throw new RibbonBadImageStripException(Width: imageStripWidth);
+
+            // Check height of ImageStrip
+            if (imageStripHeight != targetImageSize.Height)
+                throw new RibbonBadImageStripException(Height: imageStripHeight);
+
+            // Return number of images
+            return (imageStripWidth / targetImageSize.Width);
+        }
+
+        protected Bitmap CreateScaledBitmap(ref Bitmap sourceBitmap, ref Size targetSize, MultiSizeImageListScaleMode scaleMode)
+        {
+            //
+            // Simple resize
+            //
+            if (MultiSizeImageListScaleMode.Simple == scaleMode)
+            {
+                return new Bitmap(sourceBitmap, targetSize);
+            }
+            //
+            // High Quality resize <see href="https://stackoverflow.com/questions/1922040/how-to-resize-an-image-c-sharp"/>
+            //
+            else if (MultiSizeImageListScaleMode.HighQuality == scaleMode)
+            {
+                var destRect = new Rectangle(0, 0, targetSize.Width, targetSize.Height);
+                var destImage = new Bitmap(targetSize.Width, targetSize.Height);
+
+                destImage.SetResolution(sourceBitmap.HorizontalResolution, sourceBitmap.VerticalResolution);
+
+                using (var graphics = Graphics.FromImage(destImage))
+                {
+                    graphics.CompositingMode = CompositingMode.SourceCopy;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                    using (var wrapMode = new ImageAttributes())
+                    {
+                        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                        graphics.DrawImage(sourceBitmap, destRect, 0, 0, sourceBitmap.Width, sourceBitmap.Height, GraphicsUnit.Pixel, wrapMode);
+                    }
+                }
+
+                return destImage;
+            }
+
+            throw new ArgumentOutOfRangeException("ScaleMode", "Unknown ScaleMode");
+        }
     }
 
     /// <summary>
-    /// 
+    /// <see cref="RibbonBadImageStripException"/> is thrown by <see cref="RibbonMultiSizeImageList"/>
+    /// whenever extracting Images from the given ImageStrip fails cause of invalid input parameters.
     /// </summary>
     [Serializable()]
-    public class RibbonBadImageStripSizeException
+    public class RibbonBadImageStripException
       : Exception
     {
-        public int Width { get; }
-        public int Height { get; }
+        protected RibbonBadImageStripException()
+          : base() { }
 
-        protected RibbonBadImageStripSizeException()
-          : base()
-        {
-        }
+        public RibbonBadImageStripException(int? Width = null, int? Height = null)
+          : base(message: $"Invalid image strip size:"
+                          + (Width != null ? " Width=" + Width : "")
+                          + (Height != null ? " Height=" + Height : ""))
+        { }
 
-        //public RibbonBadImageStripSizeException(Size size, string message)
-        //    : base(message)
-        //{
-        //}
-        public RibbonBadImageStripSizeException(string message, int Width = 0, int Height = 0)
-          : base(message)
-        {
-            this.Width = Width;
-            this.Height = Height;
-        }
-        public RibbonBadImageStripSizeException(int Width = 0, int Height = 0)
-          : base(message: "Unexpected image strip size")
-        {
-            this.Width = Width;
-            this.Height = Height;
-        }
+        public RibbonBadImageStripException(string message)
+          : base(message) { }
+
+        public RibbonBadImageStripException(string message, Exception innerException)
+          : base(message, innerException) { }
     }
-
-    /*
-            /// <summary>
-            /// Load image strip from embedded resource and return as new <see cref="ImageList"/>.
-            /// </summary>
-            /// <param name="control">The control that implements IElThemedControl interface.</param>
-            /// <param name="themeName">The name of embedded resource that contains the theme.</param>
-            /// <returns>The <see cref="ImageList"/> containing the images of the loaded image strip.</returns>
-            public static ImageList LoadThemeImageListFromResource(this IElThemedControl control, string themeName)
-            {
-                try
-                {
-                    ImageList imageList = new ImageList
-                    {
-                        /// Fix bug with alpha channels by enabling transparency before adding any images to the list.
-                        /// <seealso href="https://www.codeproject.com/articles/9142/adding-and-using-32-bit-alphablended-images-and-ic"/>
-                        ColorDepth = ColorDepth.Depth32Bit
-                    };
-
-                    using (Stream bmpStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                        control.ThemeResourceNamespace + themeName + ElThemedControlExtensions.ThemeFileExtension))
-                    {
-                        var bitmap = new Bitmap(bmpStream);
-
-                        imageList.ImageSize = new Size(bitmap.Height, bitmap.Height);
-
-                        if (-1 == imageList.Images.AddStrip(bitmap))
-                            throw new Exception(@"ImageList.Images.AddStrip() failed.");
-                    }
-
-                    return imageList;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(@"Unable to get ImageList for theme.", ex);
-                }
-            }
-    */
 }
