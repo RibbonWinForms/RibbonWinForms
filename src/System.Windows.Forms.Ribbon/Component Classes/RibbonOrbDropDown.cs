@@ -55,8 +55,8 @@ namespace System.Windows.Forms
             OptionItems.SetOwner(Ribbon);
 
             OptionItemsPadding = 6;
-            Size = new Size(527, 447);
-            BorderRoundness = 8;
+            Size = new Size(527, 447);                                                  // 04/09/19: tajbender: Why is an initial size set?!? That may be the cause for some flicker, I'm pretty sure
+            BorderRoundness = 8;                                                        // Setting default value for BorderRoundness
 
             //if (!(Site != null && Site.DesignMode))
             //{

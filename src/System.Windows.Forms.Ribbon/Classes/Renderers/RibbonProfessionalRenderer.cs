@@ -216,6 +216,19 @@ namespace System.Windows.Forms
         }
 
         /// <summary>
+        /// Creates a <see cref="RoundRectangle(Rectangle, int)"/> or a <see cref="FlatRectangle(Rectangle)"/>,
+        /// in dependence of <paramref name="bordersAreRounded"/>.
+        /// </summary>
+        /// <param name="r">The rectangle.</param>
+        /// <param name="bordersAreRounded">Triggers roundness at all.</param>
+        /// <param name="radius">Roundness of corners, if rounded.</param>
+        /// <returns>The requested <see cref="GraphicsPath"/></returns>
+        public static GraphicsPath PopupRectangle(Rectangle r, bool bordersAreRounded, int radius)
+        {
+            return bordersAreRounded ? RoundRectangle(r, radius) : FlatRectangle(r);
+        }
+
+        /// <summary>
         /// Draws a rectangle with a vertical gradient
         /// </summary>
         /// <param name="g"></param>
@@ -4252,8 +4265,9 @@ namespace System.Windows.Forms
             Color OrbDropDownSeparatorlight = ColorTable.OrbDropDownSeparatorlight;
             Color OrbDropDownSeparatordark = ColorTable.OrbDropDownSeparatordark;
 
-            GraphicsPath innerPath = RoundRectangle(InnerRect, 6);
-            GraphicsPath outerPath = RoundRectangle(OuterRect, 6);
+            // 17/09/19: tajbender: Why was an default value of 6 used, not BorderRoundness-Property?
+            GraphicsPath innerPath = PopupRectangle(InnerRect, e.RibbonOrbDropDown.BordersAreRounded, e.RibbonOrbDropDown.BorderRoundness);
+            GraphicsPath outerPath = PopupRectangle(OuterRect, e.RibbonOrbDropDown.BordersAreRounded, e.RibbonOrbDropDown.BorderRoundness);
 
             e.Graphics.SmoothingMode = SmoothingMode.None;
 
@@ -5417,7 +5431,7 @@ namespace System.Windows.Forms
             {
                 if (dd != null)
                 {
-                    using (GraphicsPath r = RoundRectangle(new Rectangle(Point.Empty, new Size(dd.Size.Width - 1, dd.Size.Height - 1)), dd.BorderRoundness))
+                    using (GraphicsPath r = PopupRectangle(new Rectangle(Point.Empty, new Size(dd.Size.Width - 1, dd.Size.Height - 1)), dd.BordersAreRounded, dd.BorderRoundness))
                     {
                         SmoothingMode smb = e.Graphics.SmoothingMode;
                         e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;

@@ -55,7 +55,6 @@ namespace System.Windows.Forms
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.Selectable, false);
-            BorderRoundness = 3;
         }
 
         #endregion
@@ -63,11 +62,24 @@ namespace System.Windows.Forms
         #region Props
 
         /// <summary>
-        /// Gets or sets the roundness of the border
+        /// Gets or sets the roundness of the border.
+        /// 
+        /// This property is only valid when <see cref="BordersAreRounded"/> is true.
         /// </summary>
         [Browsable(false)]
-        public int BorderRoundness { get; set; }
+        [DefaultValue(3)]
+        public int BorderRoundness { get; set; } = 3;
 
+        /// <summary>
+        /// Enable or disable the roundness of the border.
+        /// 
+        /// For <seealso cref="RibbonOrbDropDown"/> this property is triggered when changing the <seealso cref="RibbonOrbStyle"/> using <seealso cref="Ribbon.OrbStyle"/>.
+        /// 
+        /// The radius is controlled by <see cref="BorderRoundness"/>.
+        /// </summary>
+        [Browsable(false)]
+        [DefaultValue(true)]
+        public bool BordersAreRounded { get; set; } = true;
 
         /// <summary>
         /// Gets the related ToolStripDropDown
@@ -220,7 +232,7 @@ namespace System.Windows.Forms
         {
             base.OnPaint(e);
 
-            using (GraphicsPath p = RibbonProfessionalRenderer.RoundRectangle(new Rectangle(Point.Empty, Size), BorderRoundness))
+            using (GraphicsPath p = RibbonProfessionalRenderer.PopupRectangle(new Rectangle(Point.Empty, this.Size), this.BordersAreRounded, this.BorderRoundness))
             {
                 using (Region r = new Region(p))
                 {

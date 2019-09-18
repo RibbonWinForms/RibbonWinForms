@@ -118,6 +118,7 @@ namespace System.Windows.Forms
             Sensor = new RibbonMouseSensor(this, OwnerRibbon, items);
             MeasuringSize = measuringSize;
             ScrollBarSize = 16;
+            this.BordersAreRounded = ownerRibbon.OrbDropDown.BordersAreRounded;     // HACK: 18/09/19: tajbender: Issue #11, just use OrbDropDown's BordersAreRounded-Property
 
             if (Items != null)
                 foreach (RibbonItem item in Items)

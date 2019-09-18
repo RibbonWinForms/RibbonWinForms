@@ -764,6 +764,8 @@ namespace System.Windows.Forms
                     ItemMargin = new Padding(4, 2, 4, 2);
                     ItemPadding = new Padding(1, 0, 1, 0);
                     ItemImageToTextSpacing = 4;
+
+                    OrbDropDown.BordersAreRounded = true;
                 }
                 else if ((value == RibbonOrbStyle.Office_2010) ||
                          (value == RibbonOrbStyle.Office_2010_Extended))
@@ -789,6 +791,8 @@ namespace System.Windows.Forms
                     ItemMargin = new Padding(3, 2, 0, 2);
                     ItemPadding = new Padding(1, 0, 1, 0);
                     ItemImageToTextSpacing = 11;
+
+                    OrbDropDown.BordersAreRounded = false;
                 }
                 else if (value == RibbonOrbStyle.Office_2013)
                 {
@@ -813,6 +817,8 @@ namespace System.Windows.Forms
                     ItemMargin = new Padding(2, 2, 0, 2);
                     ItemPadding = new Padding(1, 0, 1, 0);
                     ItemImageToTextSpacing = 11;
+
+                    OrbDropDown.BordersAreRounded = false;
                 }
                 UpdateRegions();
                 Invalidate();
