@@ -117,7 +117,10 @@ namespace System.Windows.Forms
 
             foreach (RibbonItem item in Panel.Items)
             {
-                item.OnPaint(this, new RibbonElementPaintEventArgs(e.ClipRectangle, e.Graphics, RibbonElementSizeMode.Large));
+                if (item.Visible)
+                {
+                    item.OnPaint(this, new RibbonElementPaintEventArgs(e.ClipRectangle, e.Graphics, RibbonElementSizeMode.Large));
+                }
             }
 
             Panel.Owner.Renderer.OnRenderRibbonPanelBackground(new RibbonPanelRenderEventArgs(Panel.Owner, e.Graphics, e.ClipRectangle, Panel, this));
