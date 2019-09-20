@@ -728,7 +728,9 @@ namespace System.Windows.Forms
         public Theme Theme => _theme == null ? Theme.Standard : _theme;
 
         /// <summary>
-        /// Gets or sets the Style of the orb
+        /// Gets or sets the Style of the orb.
+        /// 
+        /// This is where the default values are loaded when changing the OrbStyle.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [Category("Orb")]
@@ -764,6 +766,7 @@ namespace System.Windows.Forms
                     ItemMargin = new Padding(4, 2, 4, 2);
                     ItemPadding = new Padding(1, 0, 1, 0);
                     ItemImageToTextSpacing = 4;
+                    this.OrbDropDown.BorderRoundness = 8;
                 }
                 else if ((value == RibbonOrbStyle.Office_2010) ||
                          (value == RibbonOrbStyle.Office_2010_Extended))
@@ -789,6 +792,7 @@ namespace System.Windows.Forms
                     ItemMargin = new Padding(3, 2, 0, 2);
                     ItemPadding = new Padding(1, 0, 1, 0);
                     ItemImageToTextSpacing = 11;
+                    this.OrbDropDown.BorderRoundness = 2;
                 }
                 else if (value == RibbonOrbStyle.Office_2013)
                 {
@@ -813,6 +817,7 @@ namespace System.Windows.Forms
                     ItemMargin = new Padding(2, 2, 0, 2);
                     ItemPadding = new Padding(1, 0, 1, 0);
                     ItemImageToTextSpacing = 11;
+                    this.OrbDropDown.BorderRoundness = 2;
                 }
                 UpdateRegions();
                 Invalidate();
