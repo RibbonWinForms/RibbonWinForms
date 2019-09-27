@@ -4252,8 +4252,13 @@ namespace System.Windows.Forms
             Color OrbDropDownSeparatorlight = ColorTable.OrbDropDownSeparatorlight;
             Color OrbDropDownSeparatordark = ColorTable.OrbDropDownSeparatordark;
 
-            GraphicsPath innerPath = RoundRectangle(InnerRect, 6);
-            GraphicsPath outerPath = RoundRectangle(OuterRect, 6);
+            // Issue #11: OrbStyle
+            int minorBorderRoundness = e.RibbonOrbDropDown.BorderRoundness - 2;
+            if (minorBorderRoundness < 0)
+                minorBorderRoundness = 0;
+
+            GraphicsPath innerPath = RoundRectangle(InnerRect, minorBorderRoundness);
+            GraphicsPath outerPath = RoundRectangle(OuterRect, minorBorderRoundness);
 
             e.Graphics.SmoothingMode = SmoothingMode.None;
 
