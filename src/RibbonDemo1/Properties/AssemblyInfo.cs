@@ -4,11 +4,15 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+#if !NetCore
 [assembly: AssemblyTitle("RibbonDemo")]
+#endif
 [assembly: AssemblyDescription("")]
+#if !NetCore
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("RibbonDemo")]
+#endif
 [assembly: AssemblyCopyright("Copyright ©  2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -28,5 +32,7 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
+#if !NetCore
 [assembly: AssemblyVersion("3.5.2.0")]
 [assembly: AssemblyFileVersion("3.5.2.0")]
+#endif

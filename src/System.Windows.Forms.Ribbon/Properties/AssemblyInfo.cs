@@ -4,12 +4,16 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+#if !NetCore
 [assembly: AssemblyTitle("System.Windows.Forms.Ribbon")]
+#endif
 [assembly: AssemblyDescription("Ribbon Control for .NET WinForms")]
+#if !NetCore
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("https://github.com/RibbonWinForms/RibbonWinForms")]
 [assembly: AssemblyProduct("System.Windows.Forms.Ribbon")]
 [assembly: AssemblyCopyright("https://github.com/RibbonWinForms/RibbonWinForms")]
+#endif
 [assembly: AssemblyTrademark("https://github.com/RibbonWinForms/RibbonWinForms")]
 [assembly: AssemblyCulture("")]
 
@@ -33,9 +37,11 @@ using System.Runtime.InteropServices;
 // For each .NET version we need a unique AssemblyVersion. This version only change
 // in case of a new interface for users
 // Only AssemblyFileVersion had to change for bugfixes
+#if !NetCore
 #if NET2
 [assembly: AssemblyVersion("2.0.0.0")]
 #else
 [assembly: AssemblyVersion("4.0.0.0")]
 #endif
 [assembly: AssemblyFileVersion("5.0.1.0")]
+#endif

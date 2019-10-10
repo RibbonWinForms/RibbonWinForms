@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Update="Component Classes\Ribbon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonButtonList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonCaptionButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonColorChooser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonContext.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonDescriptionMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonHost.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonItemGroup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonOrbDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonOrbMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonOrbOptionButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonOrbRecentItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonPanelPopup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonPopup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonQuickAccessToolbar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonSeparator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonToolTip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Component Classes\RibbonWrappedDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="RibbonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
