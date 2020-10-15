@@ -19,27 +19,16 @@ namespace System.Windows.Forms
     {
         #region Fields
         private const int spacing = 3;
-
         internal TextBox _actualTextBox;
-
         internal bool _removingTxt;
-
         internal bool _labelVisible;
-
         internal bool _imageVisible;
-
         internal Rectangle _labelBounds;
-
         internal Rectangle _imageBounds;
-
         internal int _textboxWidth;
-
         internal int _labelWidth;
-
         internal Rectangle _textBoxBounds;
-
         internal string _textBoxText;
-
         internal bool _AllowTextEdit = true;
         /// <summary>
         /// Set to true when using a Combobox to inhibit mouse cursor from flickering as this class and Combobox 
@@ -52,16 +41,12 @@ namespace System.Windows.Forms
         /// Raised when the <see cref="TextBoxText"/> property value has changed
         /// </summary>
         public event EventHandler TextBoxTextChanged;
-
         public event KeyPressEventHandler TextBoxKeyPress;
-
         public event KeyEventHandler TextBoxKeyDown;
-
         public event KeyEventHandler TextBoxKeyUp;
-
         public event EventHandler TextBoxValidating;
-
         public event EventHandler TextBoxValidated;
+        public event EventHandler TextBoxLeave;
         #endregion
         #region Ctor
         public RibbonTextBox()
@@ -211,14 +196,13 @@ namespace System.Windows.Forms
         }
         #endregion
         #region Methods
+
         /// <summary>
         /// Starts editing the text and focuses the TextBox
         /// </summary>
         public void StartEdit()
         {
-            //if (!Enabled) return;
             PlaceActualTextBox();
-
             _actualTextBox.SelectAll();
             _actualTextBox.Focus();
 
@@ -238,9 +222,7 @@ namespace System.Windows.Forms
         protected void PlaceActualTextBox()
         {
             _actualTextBox = new TextBox();
-
             InitTextBox(_actualTextBox);
-
             _actualTextBox.TextChanged += _actualTextbox_TextChanged;
             _actualTextBox.KeyDown += _actualTextbox_KeyDown;
             _actualTextBox.KeyUp += _actualTextbox_KeyUp;
@@ -249,18 +231,21 @@ namespace System.Windows.Forms
             _actualTextBox.VisibleChanged += _actualTextBox_VisibleChanged;
             _actualTextBox.Validating += _actualTextbox_Validating;
             _actualTextBox.Validated += _actualTextbox_Validated;
-
+            _actualTextBox.Leave += _actualTextbox_Leave;
             _actualTextBox.PasswordChar = PasswordChar;
-
             _actualTextBox.Visible = true;
-            //_actualTextBox.AcceptsTab = true;
             Canvas.Controls.Add(_actualTextBox);
             Owner.ActiveTextBox = this;
         }
 
         public void _actualTextBox_VisibleChanged(object sender, EventArgs e)
         {
-            if (!(sender as TextBox).Visible && !_removingTxt)
+            if (!(sender is TextBox box))
+            {
+                return;
+            }
+            if (!box.Visible && 
+                !_removingTxt)
             {
                 RemoveActualTextBox();
             }
@@ -279,10 +264,7 @@ namespace System.Windows.Forms
 
             TextBoxText = _actualTextBox.Text;
             _actualTextBox.Visible = false;
-            if (_actualTextBox.Parent != null)
-            {
-                _actualTextBox.Parent.Controls.Remove(_actualTextBox);
-            }
+            _actualTextBox.Parent?.Controls.Remove(_actualTextBox);
             _actualTextBox.Dispose();
             _actualTextBox = null;
 
@@ -300,7 +282,6 @@ namespace System.Windows.Forms
             t.Text = TextBoxText;
             t.BorderStyle = BorderStyle.None;
             t.Width = TextBoxBounds.Width - 2;
-
             t.Location = new Point(
                 TextBoxBounds.Left + 2,
                 Bounds.Top + (Bounds.Height - t.Height) / 2);
@@ -316,6 +297,11 @@ namespace System.Windows.Forms
             RemoveActualTextBox();
         }
 
+        public void _actualTextbox_Leave(object sender, EventArgs e)
+        {
+            TextBoxLeave?.Invoke(this, e);
+        }
+
         /// <summary>
         /// Handles the KeyDown event of the actual TextBox
         /// </summary>
@@ -323,10 +309,7 @@ namespace System.Windows.Forms
         /// <param name="e"></param>
         public void _actualTextbox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (TextBoxKeyDown != null)
-            {
-                TextBoxKeyDown(this, e);
-            }
+            TextBoxKeyDown?.Invoke(this, e);
 
             if (e.KeyCode == Keys.Return ||
                 e.KeyCode == Keys.Enter ||
@@ -343,10 +326,7 @@ namespace System.Windows.Forms
         /// <param name="e"></param>
         public void _actualTextbox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (TextBoxKeyUp != null)
-            {
-                TextBoxKeyUp(this, e);
-            }
+            TextBoxKeyUp?.Invoke(this, e);
 
             if (e.KeyCode == Keys.Return ||
                 e.KeyCode == Keys.Enter ||
@@ -369,10 +349,7 @@ namespace System.Windows.Forms
                 return;
             }
 
-            if (TextBoxKeyPress != null)
-            {
-                TextBoxKeyPress(this, e);
-            }
+            TextBoxKeyPress?.Invoke(this, e);
 
             //bool next = false;
             //RibbonItem nextItem = this;
@@ -438,11 +415,7 @@ namespace System.Windows.Forms
             {
                 return;
             }
-
-            if (TextBoxValidating != null)
-            {
-                TextBoxValidating(this, e);
-            }
+            TextBoxValidating?.Invoke(this, e);
         }
 
         /// <summary>
@@ -456,11 +429,7 @@ namespace System.Windows.Forms
             {
                 return;
             }
-
-            if (TextBoxValidated != null)
-            {
-                TextBoxValidated(this, e);
-            }
+            TextBoxValidated?.Invoke(this, e);
         }
 
         /// <summary>
@@ -470,9 +439,9 @@ namespace System.Windows.Forms
         /// <param name="e"></param>
         public void _actualTextbox_TextChanged(object sender, EventArgs e)
         {
-            //Text = (sender as TextBox).Text;
+            if (sender is TextBox box)
             {
-                TextBoxText = (sender as TextBox).Text;
+                TextBoxText = box.Text;
             }
         }
 
@@ -499,15 +468,15 @@ namespace System.Windows.Forms
                 Owner.Renderer.OnRenderRibbonItemImage(new RibbonItemBoundsEventArgs(Owner, e.Graphics, e.Clip, this, _imageBounds));
             }
 
-            using (StringFormat f = StringFormatFactory.NearCenterNoWrap(StringTrimming.None))
+            using (var f = StringFormatFactory.NearCenterNoWrap(StringTrimming.None))
             {
                 Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, TextBoxTextBounds, TextBoxText, f));
-
-                if (LabelVisible)
+                if (!LabelVisible)
                 {
-                    f.Alignment = (StringAlignment)TextAlignment;
-                    Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, LabelBounds, Text, f));
+                    return;
                 }
+                f.Alignment = (StringAlignment)TextAlignment;
+                Owner.Renderer.OnRenderRibbonItemText(new RibbonTextEventArgs(Owner, e.Graphics, Bounds, this, LabelBounds, Text, f));
             }
         }
 
@@ -566,15 +535,12 @@ namespace System.Windows.Forms
                 return LastMeasuredSize;
             }
 
-            Size size = Size.Empty;
-
-            int w = 0;
-            int iwidth = Image != null ? Image.Width + spacing : 0;
-            int lwidth = string.IsNullOrEmpty(Text) ? 0 : _labelWidth > 0 ? _labelWidth : e.Graphics.MeasureString(Text, Owner.Font).ToSize().Width + spacing;
-            int twidth = TextBoxWidth;
-
+            var size = Size.Empty;
+            var w = 0;
+            var iwidth = Image?.Width + spacing ?? 0;
+            var lwidth = string.IsNullOrEmpty(Text) ? 0 : _labelWidth > 0 ? _labelWidth : e.Graphics.MeasureString(Text, Owner.Font).ToSize().Width + spacing;
+            var twidth = TextBoxWidth;
             w += TextBoxWidth;
-
             switch (e.SizeMode)
             {
                 case RibbonElementSizeMode.Large:
@@ -584,9 +550,7 @@ namespace System.Windows.Forms
                     w += iwidth;
                     break;
             }
-
             SetLastMeasuredSize(new Size(w, MeasureHeight()));
-
             return LastMeasuredSize;
         }
 
@@ -596,7 +560,6 @@ namespace System.Windows.Forms
             {
                 return;
             }
-
             base.OnMouseEnter(e);
             if (TextBoxBounds.Contains(e.Location))
             {
@@ -610,9 +573,7 @@ namespace System.Windows.Forms
             {
                 return;
             }
-
             base.OnMouseLeave(e);
-
             Canvas.Cursor = Cursors.Default;
         }
 
@@ -622,9 +583,7 @@ namespace System.Windows.Forms
             {
                 return;
             }
-
             base.OnMouseDown(e);
-
             if (TextBoxBounds.Contains(e.X, e.Y) && _AllowTextEdit)
             {
                 StartEdit();
@@ -644,16 +603,17 @@ namespace System.Windows.Forms
              * Combobox so that the there is no overlap between the textbox and dropdown. However for some reason 
              * the two controls don't work the same so the position and rendering of the Combobox end up wrong.
             */
-            if (!_disableTextboxCursor)
+            if (_disableTextboxCursor)
             {
-                if (TextBoxBounds.Contains(e.X, e.Y) && AllowTextEdit)
-                {
-                    Canvas.Cursor = Cursors.IBeam;
-                }
-                else
-                {
-                    Canvas.Cursor = Cursors.Default;
-                }
+                return;
+            }
+            if (TextBoxBounds.Contains(e.X, e.Y) && AllowTextEdit)
+            {
+                Canvas.Cursor = Cursors.IBeam;
+            }
+            else
+            {
+                Canvas.Cursor = Cursors.Default;
             }
         }
 
@@ -667,13 +627,22 @@ namespace System.Windows.Forms
             {
                 return;
             }
-
             NotifyOwnerRegionsChanged();
+            TextBoxTextChanged?.Invoke(this, e);
+        }
 
-            if (TextBoxTextChanged != null)
+        /// <summary>
+        /// Raises the <see cref="TextBoxLeave"/> event
+        /// </summary>
+        /// <param name="e"></param>
+        public void OnTextLeave(EventArgs e)
+        {
+            if (!Enabled)
             {
-                TextBoxTextChanged(this, e);
+                return;
             }
+            NotifyOwnerRegionsChanged();
+            TextBoxLeave?.Invoke(this, e);
         }
         #endregion
     }
