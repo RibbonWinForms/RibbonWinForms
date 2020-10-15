@@ -62,20 +62,20 @@ namespace System.Windows.Forms
         public RibbonFormHelper(Form f)
         {
             Form = f;
-            Form.Load += Form_Load;
-            Form.ResizeEnd += _form_ResizeEnd;
-            Form.MinimumSizeChanged += _form_ResizeEnd;
-            Form.MaximumSizeChanged += _form_ResizeEnd; 
-            Form.Layout += _form_Layout;
-            Form.TextChanged += _form_TextChanged;
+            Form.Load += DoFormLoad;
+            Form.ResizeEnd += DoFormResizeEnd;
+            Form.MinimumSizeChanged += DoFormResizeEnd;
+            Form.MaximumSizeChanged += DoFormResizeEnd; 
+            Form.Layout += DoFormLayout;
+            Form.TextChanged += DoFormTextChanged;
         }
-        private void _form_TextChanged(object sender, EventArgs e)
+        private void DoFormTextChanged(object sender, EventArgs e)
         {
             UpdateRibbonConditions();
             Form.Refresh();
             Form.Update();
         }
-        private void _form_Layout(object sender, LayoutEventArgs e)
+        private void DoFormLayout(object sender, LayoutEventArgs e)
         {
             if (_lastState == Form.WindowState)
             {
@@ -85,22 +85,28 @@ namespace System.Windows.Forms
             // in case the RibbonForm is started in WindowState.Maximized and the WindowState changes to normal
             // the size of the RibbonForm is set to the values of _storeSize - which has not been set yet!
             if (_storeSize.IsEmpty)
+            {
                 _storeSize = Form.Size;
-
+            }
+            
             if (WinApi.IsGlassEnabled)
+            {
                 Form.Invalidate();
-            else  // on XP systems Invalidate is not sufficient in case the Form contains a control with DockStyle.Fill
-                Form.Refresh();
+            }
 
+            // on XP systems Invalidate is not sufficient in case the Form contains a control with DockStyle.Fill
+            else
+            {
+                Form.Refresh();
+            }
             _lastState = Form.WindowState;
         }
-
-        private void _form_ResizeEnd(object sender, EventArgs e)
+        private void DoFormResizeEnd(object sender, EventArgs e)
         {
             UpdateRibbonConditions();
             Form.Refresh();
+            Form.Update();
         }
-
         #endregion
 
         #region Properties
@@ -258,11 +264,12 @@ namespace System.Windows.Forms
 
         private void RibbonOrbStyleChanged(object sender, EventArgs e)
         {
-            if (_frameExtended)
+            if (!_frameExtended)
             {
-                _frameExtended = false;
-                Form_Load(sender, e);
+                return;
             }
+            _frameExtended = false;
+            DoFormLoad(sender, e);
         }
 
         /// <summary>
@@ -270,7 +277,7 @@ namespace System.Windows.Forms
         /// </summary>
         /// <param name="sender">Object that raised the event</param>
         /// <param name="e">Event data</param>
-        protected virtual void Form_Load(object sender, EventArgs e)
+        protected virtual void DoFormLoad(object sender, EventArgs e)
         {
             if (DesignMode) return;
             if (Ribbon == null)
@@ -317,7 +324,7 @@ namespace System.Windows.Forms
         public virtual void ReapplyGlass()
         {
             _frameExtended = false;
-            Form_Load(this, EventArgs.Empty);
+            DoFormLoad(this, EventArgs.Empty);
         }
 
         /// <summary>

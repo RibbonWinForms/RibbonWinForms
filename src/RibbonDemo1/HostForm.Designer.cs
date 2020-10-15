@@ -145,12 +145,12 @@ namespace RibbonDemo
             this.ribbon1.CaptionBarVisible = false;
             this.ribbon1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ribbon1.Location = new System.Drawing.Point(0, 0);
-            this.ribbon1.Minimized = true;
+            this.ribbon1.Minimized = false;
             this.ribbon1.Name = "ribbon1";
             // 
             // 
             // 
-            this.ribbon1.OrbDropDown.BorderRoundness = 8;
+            this.ribbon1.OrbDropDown.BorderRoundness = 2;
             this.ribbon1.OrbDropDown.Location = new System.Drawing.Point(0, 0);
             this.ribbon1.OrbDropDown.Name = "";
             this.ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 72);
@@ -164,7 +164,6 @@ namespace RibbonDemo
             this.ribbon1.Size = new System.Drawing.Size(889, 132);
             this.ribbon1.TabIndex = 1;
             this.ribbon1.Tabs.Add(this.ribbonTab1);
-            this.ribbon1.TabsMargin = new System.Windows.Forms.Padding(6, 26, 20, 0);
             this.ribbon1.TabSpacing = 3;
             this.ribbon1.Text = "ribbon1";
             this.ribbon1.ThemeColor = System.Windows.Forms.RibbonTheme.Blue_2010;
@@ -208,6 +207,7 @@ namespace RibbonDemo
             this.ribbonComboBox1.DropDownItems.Add(this.ribbonHost2);
             this.ribbonComboBox1.DropDownResizable = true;
             this.ribbonComboBox1.Name = "ribbonComboBox1";
+            this.ribbonComboBox1.SelectedIndex = -1;
             this.ribbonComboBox1.Text = "Date:";
             this.ribbonComboBox1.TextBoxText = "";
             // 
