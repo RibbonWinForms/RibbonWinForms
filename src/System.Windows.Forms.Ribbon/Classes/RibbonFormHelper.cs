@@ -413,13 +413,14 @@ namespace System.Windows.Forms
                 }
                 else if (m.Msg == WinApi.WM_NCHITTEST && (int)m.Result == 0) //0x84
                 {
-                    m.Result = new IntPtr(Convert.ToInt32(NonClientHitTest(new Point(WinApi.LoWord((int)m.LParam), WinApi.HiWord((int)m.LParam)))));
+                    m.Result = new IntPtr(Convert.ToInt32(NonClientHitTest(new Point(WinApi.Get_X_LParam(m.LParam), WinApi.Get_Y_LParam(m.LParam)))));
+                    //m.Result = new IntPtr(Convert.ToInt32(NonClientHitTest(new Point(WinApi.LoWord((int)m.LParam), WinApi.HiWord((int)m.LParam)))));
                     handled = true;
                 }
                 else if (m.Msg == WinApi.WM_NCRBUTTONUP) //0x00A5
                 {
-                    int xMouse = WinApi.Get_X_LParam((int)m.LParam);
-                    int yMouse = WinApi.Get_Y_LParam((int)m.LParam);
+                    int xMouse = WinApi.Get_X_LParam(m.LParam);
+                    int yMouse = WinApi.Get_Y_LParam(m.LParam);
                     int hitTest = WinApi.LoWord((int)m.WParam);
                     if (hitTest == (int)WinApi.HitTest.HTCAPTION || hitTest == (int)WinApi.HitTest.HTSYSMENU)
                     {

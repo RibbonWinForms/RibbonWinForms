@@ -2152,7 +2152,7 @@ namespace System.Windows.Forms
                         caption = Rectangle.FromLTRB(0, 0, captionRight, CaptionBarSize);
                     }
 
-                    Point screenPoint = new Point(WinApi.LoWord((int)m.LParam), WinApi.HiWord((int)m.LParam));
+                    Point screenPoint = new Point(WinApi.Get_X_LParam(m.LParam), WinApi.Get_Y_LParam(m.LParam));
                     Point ribbonPoint = PointToClient(screenPoint);
                     bool onCaptionButtons = false;
 

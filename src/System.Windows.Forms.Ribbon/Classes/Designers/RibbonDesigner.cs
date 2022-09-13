@@ -253,7 +253,7 @@ namespace System.Windows.Forms
                         return;
                     case 0x202: //WM_LBUTTONUP
                     case 0x205: //WM_RBUTTONUP
-                        HitOn(WinApi.LoWord((int)m.LParam), WinApi.HiWord((int)m.LParam));
+                        HitOn(WinApi.Get_X_LParam(m.LParam), WinApi.Get_Y_LParam(m.LParam));
                         return;
                     default:
                         break;
