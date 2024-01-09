@@ -1532,15 +1532,19 @@ namespace System.Windows.Forms
         {
             OrbPressed = true;
             if (RightToLeft == RightToLeft.No)
+            {
                 if (OrbStyle == RibbonOrbStyle.Office_2007)
                     OrbDropDown.Show(PointToScreen(new Point(OrbBounds.X - 4, OrbBounds.Bottom - OrbDropDown.ContentMargin.Top + 2)));
                 else if (OrbStyle == RibbonOrbStyle.Office_2010 || OrbStyle == RibbonOrbStyle.Office_2010_Extended || OrbStyle == RibbonOrbStyle.Office_2013)//Michael Spradlin - 05/03/2013 Office 2013 Style Changes
                     OrbDropDown.Show(PointToScreen(new Point(OrbBounds.X - 4, OrbBounds.Bottom)));
-                else
-                    if (OrbStyle == RibbonOrbStyle.Office_2007)
+            }
+            else
+            {
+                if (OrbStyle == RibbonOrbStyle.Office_2007)
                     OrbDropDown.Show(PointToScreen(new Point(OrbBounds.Right + 4 - OrbDropDown.Width, OrbBounds.Bottom - OrbDropDown.ContentMargin.Top + 2)));
                 else if (OrbStyle == RibbonOrbStyle.Office_2010 || OrbStyle == RibbonOrbStyle.Office_2010_Extended || OrbStyle == RibbonOrbStyle.Office_2013) //Michael Spradlin - 05/03/2013 Office 2013 Style Changes
                     OrbDropDown.Show(PointToScreen(new Point(OrbBounds.Right + 4 - OrbDropDown.Width, OrbBounds.Bottom)));
+            }
         }
 
         /// <summary>
