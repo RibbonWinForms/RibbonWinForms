@@ -556,7 +556,7 @@ namespace System.Windows.Forms
             int heightSum = OwnerRibbon.DropDownMargin.Vertical;
             int maxWidth = 0;
             int scrollableHeight = 0;
-            using (Graphics g = CreateGraphics())
+            using (Graphics g = OwnerRibbon.CreateGraphics())
             {
                 foreach (RibbonItem item in Items)
                 {
