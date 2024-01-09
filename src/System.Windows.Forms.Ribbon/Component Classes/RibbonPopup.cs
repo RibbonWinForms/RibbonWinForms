@@ -86,7 +86,7 @@ namespace System.Windows.Forms
         {
             if (WrappedDropDown == null)
             {
-                ToolStripControlHost host = new ToolStripControlHost(this);
+                ToolStripControlHost host = new SafeToolStripControlHost(this);
                 WrappedDropDown = new RibbonWrappedDropDown
                 {
                     AutoClose = RibbonDesigner.Current != null
@@ -219,6 +219,8 @@ namespace System.Windows.Forms
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+            if (!WinApi.IsWindows)
+                return;
 
             using (GraphicsPath p = RibbonProfessionalRenderer.RoundRectangle(new Rectangle(Point.Empty, Size), BorderRoundness))
             {
@@ -250,5 +252,24 @@ namespace System.Windows.Forms
         }
 
         #endregion
+    }
+
+    public class SafeToolStripControlHost : ToolStripControlHost
+    {
+        public SafeToolStripControlHost(Control c)
+            : base(c)
+        { }
+
+        protected override void Dispose(bool disposing)
+        {
+            try
+            {
+                // This can cause an unhandled exception in Mono, so catch it unconditionally.
+                // TODO: figure out the deeper reason why it happens.
+                base.Dispose(disposing);
+            }
+            catch (Exception)
+            { }
+        }
     }
 }

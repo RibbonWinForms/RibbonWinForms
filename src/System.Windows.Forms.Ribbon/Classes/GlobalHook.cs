@@ -417,6 +417,9 @@ namespace System.Windows.Forms.RibbonHelpers
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         private void InstallHook()
         {
+            if (!WinApi.IsWindows)
+                return;
+
             // Error check
             if (_handle != IntPtr.Zero)
                 throw new InvalidOperationException("Hook is already installed");

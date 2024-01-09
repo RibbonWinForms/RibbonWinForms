@@ -180,7 +180,7 @@ namespace System.Windows.Forms
                 {
                     //Lets measure the height of the text so we take into account the font and its size
                     SizeF cs;
-                    using (Graphics g = CreateGraphics())
+                    using (Graphics g = Ribbon.CreateGraphics())
                     {
                         cs = g.MeasureString(RecentItemsCaption, Ribbon.RibbonTabFont);
                     }
@@ -394,7 +394,7 @@ namespace System.Windows.Forms
             {
                 #region important to do the item max width check before the ContentBounds and other stuff is used (internal Property stuff)
                 int itemMaxWidth = 0;
-                using (Graphics g = CreateGraphics())
+                using (Graphics g = Ribbon.CreateGraphics())
                 {
                     foreach (RibbonItem item in MenuItems)
                     {
@@ -476,7 +476,7 @@ namespace System.Windows.Forms
 
             curright = ClientSize.Width - ContentMargin.Right;
 
-            using (Graphics g = CreateGraphics())
+            using (Graphics g = Ribbon.CreateGraphics())
             {
                 foreach (RibbonItem item in OptionItems)
                 {
